@@ -2,12 +2,6 @@
 
 = Introduction =
 
-Add your content here.
+OpenAssembler is collection of python tools. Ensure more visual controll and representation for the user over the vfx pipeline.
 
-
-= Details =
-
-Add your content here.  Format your content with:
-  * Text in *bold* or _italic_
-  * Headings, paragraphs, and lists
-  * Automatic links to other wiki pages
+Goals: Create a node-based open environment which is easily extendable and customizable.
