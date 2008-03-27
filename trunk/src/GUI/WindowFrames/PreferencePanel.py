@@ -18,11 +18,44 @@ class LoadPreferences(PreferencesManagement):
         TargetCanvas.create_window(5,pos,window=fr,anchor="nw")
         return pos+15
 
+    def controllerTextLine(self,TargetCanvas,Node,pos,varriable,parametername,defaultvalue):
+        fr=Frame(TargetCanvas,height=30,width=145,bg="gray35",bd=0)
+        fr.grid
+        iofont = tkFont.Font ( family="Keyboard", size=6 )
+        Label(fr,text=parametername+":",anchor="nw",width=28,font=iofont,bg="gray35").grid(row=0,column=0,pady=2)
+        e=Entry(fr,font=iofont,width=28,bg="gray55",relief="groove",bd=1,textvariable=variable,highlightbackground="gray35",justify=LEFT)
+        e.grid(row=1,column=0,sticky=N,pady=0)
+        variable.set(defaultvalue)
+        e.bind('<Return>',lambda event:self.ChangeSettings(Node, parametername, variable.get()))
+        TargetCanvas.create_window(5,pos,window=fr,anchor="nw")
+        return pos+35
+
+    def controllerNumberSimple(self,TargetCanvas,Node,pos,varriable,parametername,defaultvalue):
+        fr=Frame(TargetCanvas,height=30,width=145,bg="gray35",bd=0)
+        fr.grid
+        iofont = tkFont.Font ( family="Keyboard", size=6 )
+        Label(fr,text=parametername+":",anchor="nw",width=28,font=iofont,bg="gray35").grid(row=0,column=0,pady=2)
+        e=Entry(fr,font=iofont,width=28,bg="gray55",relief="groove",bd=1,textvariable=variable,highlightbackground="gray35",justify=LEFT)
+        e.grid(row=1,column=0,sticky=N,pady=0)
+        variable.set(defaultvalue)
+        e.bind('<Return>',lambda event:self.ChangeSettings(Node, parametername, variable.get()))
+        TargetCanvas.create_window(5,pos,window=fr,anchor="nw")
+        return pos+35
+
+
+    def openFile(self,TargetCanvas,Node, parametername, variable):
+        fdiagback=tkFileDialog.Open(filetypes=[('Anyfile','*')]).show()
+        if str(fdiagback)==(""):
+            pass
+        else:
+            variable.set(fdiagback)
+            self.ChangeSettings(Node, parametername, variable.get())
+            self.loadPreferences(TargetCanvas,Node)
+        return
 
     def controllerPath(self,TargetCanvas,Node,pos,variable,parametername,defaultvalue):
         fr=Frame(TargetCanvas,height=30,width=145,bg="gray35",bd=0)
         fr.grid
-        #a=tkFileDialog.askopenfilename()
         iofont = tkFont.Font ( family="Keyboard", size=6 )
         Label(fr,text=parametername+":",anchor="nw",width=28,font=iofont,bg="gray35").grid(row=0,column=0,columnspan=2,pady=2)
         e=Entry(fr,font=iofont,width=23,bg="gray55",relief="groove",bd=1,textvariable=variable,highlightbackground="gray35",justify=LEFT)
@@ -31,9 +64,7 @@ class LoadPreferences(PreferencesManagement):
         e.bind('<Return>',lambda event:self.ChangeSettings(Node, parametername, variable.get()))
         b=Button (fr,width=4,highlightcolor="gray35",bd=1,height=0,padx=0,pady=0,highlightbackground="gray35",text="Open",font=iofont)
         b.grid(row=1,column=1)
-        bbind('<B1>',lambda event:self.ChangeSettings(Node, parametername, openit))
-        def openit(self):
-            pass
+        b.bind('<B1-ButtonRelease>', lambda event:self.openFile(TargetCanvas,Node, parametername, variable))
         TargetCanvas.create_window(5,pos,window=fr,anchor="nw")
         return pos+35
 
@@ -52,11 +83,20 @@ class LoadPreferences(PreferencesManagement):
                 m=len(string)
                 height=self.controllerPath(TargetCanvas,Node,height,string[m-1],datas[n][1],datas[n][2])
 
+            if datas[n][3]=="TextLine":
+                string.append(StringVar())
+                m=len(string)
+                height=self.controllerNumberSimple(TargetCanvas,Node,height,string[m-1],datas[n][1],datas[n][2])
+
+            if datas[n][3]=="SimpleNumber":
+                db.append(DoubleVar())
+                m=len(db)
+                height=self.controllerTextLine(TargetCanvas,Node,height,db[m-1],datas[n][1],datas[n][2])
 
             if datas[n][3]=="Boolean":
                 inter.append(StringVar())
                 z=len(inter)
-                height=self.controllerBoolean(TargetCanvas,Node,height,inter[z-1],datas[n][1],1)
+                height=self.controllerBoolean(TargetCanvas,Node,height,inter[z-1],datas[n][1],None)
                 if str(datas[n][2])=="True":
                     inter[z-1].set("True")
                 else:

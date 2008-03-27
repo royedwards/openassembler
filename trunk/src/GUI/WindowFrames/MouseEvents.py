@@ -98,7 +98,10 @@ class NodeEditorCanvasEvents(GUI_Elements_forNodes,ConnectLine,LoadPreferences,R
         EventTags=TargetCanvas.gettags(CURRENT)
         try:
             if EventTags[1]=='UPPERLABEL':
-                self.AddNodeRenamer(event, TargetCanvas,EventTags)
+                if self.getNodeName(EventTags[0])==self.nodeInPreferences.get():
+                    pass
+                else:
+                    self.AddNodeRenamer(event, TargetCanvas,EventTags)
             else:
                 self.loadPreferences(preferencespanel,EventTags[0])
         except:

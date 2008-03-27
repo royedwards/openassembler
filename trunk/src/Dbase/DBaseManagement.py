@@ -54,16 +54,19 @@ class PreferencesManagement:
         return returnvalue
 
     def ChangeSettings(self,Node,controller,newvalue):
-        rootdoc=minidom.parse(RUNTIME_NODELIST_FOLDER + "/RuntimeNodeList.xml")
-        root=rootdoc.documentElement
-        actuellenode=root.childNodes[FindNamedNode(root,("Node"+str(Node)))].childNodes[FindNamedNode(root.childNodes[FindNamedNode(root,("Node"+str(Node)))],"Data")]
-        controllerlink=actuellenode.childNodes[FindNamedNode(actuellenode,str(controller))]
-        controllerlink.firstChild.nodeValue=str(newvalue)
-        print "Node"+str(Node)+"."+str(controller)+" set to: "+controllerlink.firstChild.nodeValue
-        xmlfileoutput=open((RUNTIME_NODELIST_FOLDER + "/RuntimeNodeList.xml"),"w")
-        xmlfileoutput.write(root.toxml())
-        xmlfileoutput.close()
-        root.unlink
+        if str(newvalue)=='':
+            pass
+        else:
+            rootdoc=minidom.parse(RUNTIME_NODELIST_FOLDER + "/RuntimeNodeList.xml")
+            root=rootdoc.documentElement
+            actuellenode=root.childNodes[FindNamedNode(root,("Node"+str(Node)))].childNodes[FindNamedNode(root.childNodes[FindNamedNode(root,("Node"+str(Node)))],"Data")]
+            controllerlink=actuellenode.childNodes[FindNamedNode(actuellenode,str(controller))]
+            controllerlink.firstChild.nodeValue=str(newvalue)
+            print "Node"+str(Node)+"."+str(controller)+" set to: "+controllerlink.firstChild.nodeValue
+            xmlfileoutput=open((RUNTIME_NODELIST_FOLDER + "/RuntimeNodeList.xml"),"w")
+            xmlfileoutput.write(root.toxml())
+            xmlfileoutput.close()
+            root.unlink
 
 class RuntimeNodeRegister:
 
@@ -134,6 +137,13 @@ class RuntimeNodeRegister:
         root.unlink
         root_trick.unlink
         root_runtime.unlink
+
+    def getNodeName(self,Node):
+        rootdoc=minidom.parse(RUNTIME_NODELIST_FOLDER + "/RuntimeNodeList.xml")
+        root=rootdoc.documentElement
+        actuellenode=root.childNodes[FindNamedNode(root,("Node"+str(Node)))].getAttribute("Name")
+        root.unlink
+        return actuellenode
 
     def _CHCRuntimeNodeName(self,ID,NewName):
         rootdoc=minidom.parse(RUNTIME_NODELIST_FOLDER + "/RuntimeNodeList.xml")
