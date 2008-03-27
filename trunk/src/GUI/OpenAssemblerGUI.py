@@ -1,5 +1,5 @@
 #! /usr/bin/env python
-#test
+
 #---------------------------------------------------------------------------------------------------------------------
 #
 #    Gui Starting script....
@@ -26,7 +26,7 @@ class _Application(Frame,CanvasInitSliderBar,CanvasInitNodeEditor,CanvasInitTime
     def __init__(self, master=None):
         Frame.__init__(self, master)
         self.pack(fill=BOTH, expand=1)
-        print "SetEditor Starting up...."
+        print "OpenAssembler Starting up...."
         print "Owner: Laszlo Mates, laszlo.mates@gmail.com"
         self._createWidgets()
 
@@ -47,7 +47,7 @@ class _Application(Frame,CanvasInitSliderBar,CanvasInitNodeEditor,CanvasInitTime
         self.currentFrame=IntVar()
         self.currentFrame.set(25)
         self.nodeInPreferences=StringVar()
-        self.nodeInPreferences.set("SetEditorGUI")
+        self.nodeInPreferences.set("OpenAssembler")
 
         menuline=self.StartUpMenuLineCanvas("MenuLineCanvas","top")
         mview=self.StartUpMicroViewerCanvas("MicroViewer", "right")
@@ -68,6 +68,6 @@ app.master.title("OpenAssembler 0.1beta")
 app.tk_setPalette("gray35")
 app.master.wm_resizable(width=False ,height=False)
 app.mainloop()
-print "SetEditor Closed."
+print "OpenAssembler Closed."
 print "---Thank You!---"
 

@@ -1,6 +1,6 @@
 #------------------------------------------------------------------------------------------------------------------------------------
 #
-#    Dbase management for SetEditor. XML is used to store date.
+#    Dbase management for OpenAssembler. XML is used to store date.
 #
 #    Created by: Laszlo Mates (laszlo.mates@gmail.com)
 #    2007
@@ -69,7 +69,7 @@ class RuntimeNodeRegister:
 
     def Create_RuntimeDBase(self):
         runtimeNodeList=minidom.getDOMImplementation()
-        root=runtimeNodeList.createDocument("", "SetEditorRuntimers", "")
+        root=runtimeNodeList.createDocument("", "OpenAssemblerRuntimers", "")
         xmlfileoutput=open((RUNTIME_NODELIST_FOLDER + "/RuntimeNodeList.xml"),"w")
         xmlfileoutput.write(root.toxml())
         xmlfileoutput.close()
@@ -108,7 +108,7 @@ class RuntimeNodeRegister:
         root_runtime=rootruntimedoc.documentElement
 
         runtimeNodeList_trick=minidom.getDOMImplementation()
-        root_trick=runtimeNodeList_trick.createDocument("", "SetEditorRuntimersx", "")
+        root_trick=runtimeNodeList_trick.createDocument("", "OpenAssemblerRuntimersx", "")
 
         mdn=root_trick.createElement(str(ID))
         root_trick.firstChild.appendChild(mdn)
