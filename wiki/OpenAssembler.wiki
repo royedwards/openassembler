@@ -5,3 +5,89 @@
 OpenAssembler is collection of python tools. Ensure more visual controll and representation for the user over the vfx pipeline.
 
 Goals: Create a node-based open environment which is easily extendable and customizable.
+
+==== Structure and status: ====
+
+ NodeSliderBar(99%): Where your initial nodes take places, you can slide the nodes to extend the staks.
+  Initial tests, idea: Done
+  Codeing, tests: Done
+  Xml based: Done
+  '''Resizeable: Not started''' (takes 10 minutes when everything else is ready)
+
+ NodeEditorCanvas(85%): Where you can work with the nodes...
+  Initial tests, idea: Done
+  Node generation: Done
+  Node positions write back to runtimeXML: Not started (takes 1 hour when the save-specific-attribute-backtoXML process is ready)
+  Accessing node funtionality (on-node buttons...): WIP
+   Kill button: working
+   Preferences button: working
+   '''Note button: not working''' (takes 3-5 hours to find out and code)
+   '''Run/Examine button: not working''' (takes 10 minutes when the luncher process is ready)
+  Connection line mechanism and generation: Done
+  '''Connection poit attributes write back to runtimeXML: Not started''' (takes 1 hour when the save-specific-attribute-backtoXML process is ready)
+  Deleting nodes: Done
+  Zoom, Move, Reset view, Snap to center: Done (maybe some adjustment needed after the resizing...)
+  Rename nodes: Done (maybe more option will come for renaming nodes...)
+  '''Miniature view for the complete scene: Not started''' (takes 1 day but not se important so I will do it when everything else is working)
+  '''Resizeable: Not started''' (takes 10 minutes when everything else is ready)
+
+ PreferencePlane(40%): Where you can set the preferences and settings for nodes and for the main scene preferences too...
+  Initial tests: Done
+  Load from xml: Done
+  Build up the controllers: Done
+  Current controller list: WIP
+   Path: Done
+   Boolean: Done
+   '''Number: Not started''' (takes 1 hour)
+   '''Number with slider: Not Started''' (takes 1 hour)
+   '''Color: Not started''' (takes 2 days)
+   .
+   .
+   .
+  '''Settings saved back to xml: Not started''' (takes 1 day, this is top important now!!!)
+  '''Resizeable: Not started''' (takes 10 minutes when everything else is ready)
+
+ TimeLine(timeline: 99% other buttons on this shelf: 20%): Where you can set the time-range and the curent frame, and there are other important buttons on this shelf
+  Initial test: Done
+  Time-range and current frame: Done
+  Delete node button: Done
+  '''Run this node (Entry and button): Not started''' (takes 3 hours when the run function is working)
+  Any other function button can be here...
+   .
+   .
+   .
+  '''Resizeable: Not started''' (takes 10 minutes when everything else is ready)
+
+ MenuLine(0%): Where you can access the basic features New/Save/Load and maybe shot-based path setter...
+  Init: Done
+  '''New/Save/Load buttons: Not yet started''' (takes 1 day the save button when the xml handler tool is finsihed, 2-3 days the load button and 5 hour the new scene button.)
+  Any other function button can be here...
+   .
+   .
+   .
+  '''Resizeable: Not started''' (takes 10 minutes when everything else is ready)
+
+ DBaseManagement: Where we have all our functions to manage xml databases
+  ''(Maybe later I have to rewrite it from scratch and keep all datas in memory and write them out with the save function
+   and maybe I have to construct a more logic and structured code, but it is working now, so no problem at all)''
+  Initial tests, idea: Done (maybe re-written once)
+  XML base handlers: Done
+  Init runtimeXML: Done
+  Register runtime nodes: Done
+  Generate unique node IDs: Done
+  Register line: Done
+  Delete items: Done
+  Change node name: Done
+  Get slider bar node list: Done
+  Setup node basic variables: Done
+  Load preferences from xml to preference plane: Done
+  '''Write back specific data attribute and value to xml: Not started''' (takes about a day or a littlebit more... this is the most important)
+  '''Generate scene specific settings and link it to the runtimeXML: Not started'''
+  '''Save connection parameters to xml: Not started'''
+  '''Save node positions: Not started'''
+  '''Save scene: Not started'''
+  '''Load scene: Not started'''
+
+ Running mechanism(0%): Processes and functions to run your node network
+  '''Idea: The idea is thet every node contains several python functions which will be organized and executed like a python script... this was never tested but I am almost 100% sure it will work.
+  This will take a few week to complete... and it is posseable that it will require to rewrite something or re-think something in the existing code. Fingers crossed...'''
