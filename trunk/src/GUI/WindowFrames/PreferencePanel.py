@@ -18,7 +18,7 @@ class LoadPreferences(PreferencesManagement):
         TargetCanvas.create_window(5,pos,window=fr,anchor="nw")
         return pos+15
 
-    def controllerTextLine(self,TargetCanvas,Node,pos,varriable,parametername,defaultvalue):
+    def controllerTextLine(self,TargetCanvas,Node,pos,variable,parametername,defaultvalue):
         fr=Frame(TargetCanvas,height=30,width=145,bg="gray35",bd=0)
         fr.grid
         iofont = tkFont.Font ( family="Keyboard", size=6 )
@@ -30,7 +30,19 @@ class LoadPreferences(PreferencesManagement):
         TargetCanvas.create_window(5,pos,window=fr,anchor="nw")
         return pos+35
 
-    def controllerNumberSimple(self,TargetCanvas,Node,pos,varriable,parametername,defaultvalue):
+    def controllerMassText(self,TargetCanvas,Node,pos,variable,parametername,defaultvalue):
+        fr=Frame(TargetCanvas,height=30,width=145,bg="gray35",bd=0)
+        fr.grid
+        iofont = tkFont.Font ( family="Keyboard", size=6 )
+        Label(fr,text=parametername+":",anchor="nw",width=28,font=iofont,bg="gray35").grid(row=0,column=0,pady=2)
+        e=Text(fr,font=iofont,width=28,bg="gray55",relief="sunken",wrap="word",bd=2,highlightbackground="gray35")
+        e.grid(row=1,column=0,sticky=N)
+        #variable.set(defaultvalue)
+        #e.bind('<Return>',lambda event:self.ChangeSettings(Node, parametername, variable.get()))
+        TargetCanvas.create_window(5,pos,window=fr,anchor="nw")
+        return pos+35
+
+    def controllerNumberSimple(self,TargetCanvas,Node,pos,variable,parametername,defaultvalue):
         fr=Frame(TargetCanvas,height=30,width=145,bg="gray35",bd=0)
         fr.grid
         iofont = tkFont.Font ( family="Keyboard", size=6 )
@@ -131,7 +143,8 @@ class CanvasInitPreferencePanel:
         TargetCanvas = Canvas (self, width=150, height=267,relief=GROOVE, cursor="draft_large", confine="false",bg="gray35",bd=2)
         TargetCanvas.grid(row=61,column=2,rowspan=110,sticky=S)
         self.controllerNodeHeader(TargetCanvas)
-
+        vrr=StringVar()
+        h=self.controllerMassText(TargetCanvas, "2424353", 20, vrr, "Note", "long...long...note")
         print "PreferencePanel Initialised."
         return TargetCanvas
 
