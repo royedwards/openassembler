@@ -53,13 +53,42 @@ class PreferencesManagement:
         root.unlink
         return returnvalue
 
-    def ChangeSettings(self,Node,controller,newvalue):
+    def getNodeNote(self,Node):
+        rootdoc=minidom.parse(RUNTIME_NODELIST_FOLDER + "/RuntimeNodeList.xml")
+        root=rootdoc.documentElement
+        nodename = (root.childNodes[FindNamedNode(root,("Node"+str(Node)))].getAttribute("Name"))
+        actuellenode=root.childNodes[FindNamedNode(root,("Node"+str(Node)))]
+        actuelleGen=actuellenode.childNodes[FindNamedNode(actuellenode,("Generation"))]
+        labels=actuelleGen.childNodes[FindNamedNode(actuelleGen,("Labels"))]
+        notevalue=labels.childNodes[FindNamedNode(labels,("Note"))].firstChild.nodeValue
+        root.unlink
+        set=(str(nodename),str(notevalue))
+        return set
+
+    def ChangeNote(self,Node,newvalue):
         if str(newvalue)=='':
             pass
         else:
             rootdoc=minidom.parse(RUNTIME_NODELIST_FOLDER + "/RuntimeNodeList.xml")
             root=rootdoc.documentElement
-            actuellenode=root.childNodes[FindNamedNode(root,("Node"+str(Node)))].childNodes[FindNamedNode(root.childNodes[FindNamedNode(root,("Node"+str(Node)))],"Data")]
+            actuellenode=root.childNodes[FindNamedNode(root,("Node"+str(Node)))]
+            actuelleGen=actuellenode.childNodes[FindNamedNode(actuellenode,("Generation"))]
+            labels=actuelleGen.childNodes[FindNamedNode(actuelleGen,("Labels"))]
+            notevalue=labels.childNodes[FindNamedNode(labels,("Note"))].firstChild.nodeValue=str(newvalue)
+            print "Node"+str(Node)+"."+"Note"+" set to: "+labels.childNodes[FindNamedNode(labels,("Note"))].firstChild.nodeValue
+            xmlfileoutput=open((RUNTIME_NODELIST_FOLDER + "/RuntimeNodeList.xml"),"w")
+            xmlfileoutput.write(root.toxml())
+            xmlfileoutput.close()
+            root.unlink
+
+
+    def ChangeSettings(self,Node,container,controller,newvalue):
+        if str(newvalue)=='':
+            pass
+        else:
+            rootdoc=minidom.parse(RUNTIME_NODELIST_FOLDER + "/RuntimeNodeList.xml")
+            root=rootdoc.documentElement
+            actuellenode=root.childNodes[FindNamedNode(root,("Node"+str(Node)))].childNodes[FindNamedNode(root.childNodes[FindNamedNode(root,("Node"+str(Node)))],container)]
             controllerlink=actuellenode.childNodes[FindNamedNode(actuellenode,str(controller))]
             controllerlink.firstChild.nodeValue=str(newvalue)
             print "Node"+str(Node)+"."+str(controller)+" set to: "+controllerlink.firstChild.nodeValue

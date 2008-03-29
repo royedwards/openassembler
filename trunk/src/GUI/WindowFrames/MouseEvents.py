@@ -55,6 +55,8 @@ class NodeEditorCanvasEvents(GUI_Elements_forNodes,ConnectLine,LoadPreferences,R
                 TargetCanvas.delete(Eventtag[4])
             if str(Eventtag[1])=="PREFERENCESBUTTON":
                 self.loadPreferences(preferencespanel,Eventtag[0])
+            if str(Eventtag[1])=="NOTEBUTTON":
+                self.loadNote(preferencespanel, Eventtag[0])
             else:
                 pass
         except:
@@ -105,7 +107,7 @@ class NodeEditorCanvasEvents(GUI_Elements_forNodes,ConnectLine,LoadPreferences,R
             else:
                 self.loadPreferences(preferencespanel,EventTags[0])
         except:
-            pass
+            self.resetPreferencePlane(preferencespanel)
 
 
     def NodeEditorPan_Move(self, event,TargetCanvas,lastx,lasty,Eventtag):
@@ -163,6 +165,3 @@ class NodeEditorCanvasEvents(GUI_Elements_forNodes,ConnectLine,LoadPreferences,R
             BoundingBoxAllCenter_Y=0
         except:
             pass
-
-
-
