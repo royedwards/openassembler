@@ -51,6 +51,8 @@ class NodeEditorCanvasEvents(GUI_Elements_forNodes,ConnectLine,LoadPreferences,R
     def B1ClickNodeEditor(self,event,TargetCanvas,lasx,lasty,Eventtag,preferencespanel):
         try:
             if str(Eventtag[1])=="CLOSEBUTTON":
+                if self.getNodeName(Eventtag[0])==self.nodeInPreferences.get():
+                    self.resetPreferencePlane(preferencespanel)
                 self.DeleteItem(TargetCanvas,Eventtag[0])
                 TargetCanvas.delete(Eventtag[4])
             if str(Eventtag[1])=="PREFERENCESBUTTON":
@@ -65,6 +67,8 @@ class NodeEditorCanvasEvents(GUI_Elements_forNodes,ConnectLine,LoadPreferences,R
         if str(TargetCanvas.cget('cursor'))=="pirate":
             EventTags=TargetCanvas.gettags(CURRENT)
             if len(EventTags)>0:
+                if self.getNodeName(EventTags[0])==self.nodeInPreferences.get():
+                    self.resetPreferencePlane(preferencespanel)
                 self.DeleteItem(TargetCanvas,EventTags[0])
                 TargetCanvas.delete(EventTags[4])
             TargetCanvas.configure(cursor="draft_large")
