@@ -44,8 +44,10 @@ class ConnectLine(NodeVarInit,RuntimeNodeRegister):
             lineID=self._NewNodeID()
             for n in range (0,(len(self.RuntimeLines))):
                 if (str(self.RuntimeLines[n][6])== str(uni_in)):
-                    self.DeleteItem(TargetCanvas,self.RuntimeLines[n][0])
-                    #TargetCanvas.delete((str(self.RuntimeLines[n][0])+"select"))
+                    if self.checkIfMultiNode(Tonode, input)=="False":
+                        self.DeleteItem(TargetCanvas,self.RuntimeLines[n][0])
+                    else:
+                        pass
                 else:
                     pass
             self.RegisterLine(lineID,Fromnode,output,uni_out,Tonode,input,uni_in)

@@ -157,9 +157,10 @@ class RuntimeNodeRegister:
         root=rootsettingdoc.documentElement
         generation_root=(root.childNodes[FindNamedNode(root,Functype)].childNodes[FindNamedNode(root.childNodes[FindNamedNode(root,Functype)],"Generation")].cloneNode(1))
         Data_root=(root.childNodes[FindNamedNode(root,Functype)].childNodes[FindNamedNode(root.childNodes[FindNamedNode(root,Functype)],"Data")].cloneNode(1))
-
+        source_root=(root.childNodes[FindNamedNode(root,Functype)].childNodes[FindNamedNode(root.childNodes[FindNamedNode(root,Functype)],"Source")].cloneNode(1))
         mroot.appendChild(generation_root)
         mroot.appendChild(Data_root)
+        mroot.appendChild(source_root)
         xmlfileoutput=open((RUNTIME_NODELIST_FOLDER + "/RuntimeNodeList.xml"),"w")
         xmlfileoutput.write(root_runtime.toxml())
         xmlfileoutput.close()
@@ -240,6 +241,14 @@ class RuntimeNodeRegister:
                 pass
             else:
                 self.DeleteLines(TargetCanvas,theList)
+
+    def checkIfMultiNode(self,Node,Input):
+        rootruntimedoc=minidom.parse((RUNTIME_NODELIST_FOLDER + "/RuntimeNodeList.xml"))
+        root=rootruntimedoc.documentElement
+        actuellenode=root.childNodes[FindNamedNode(root,("Node"+str(Node)))]
+        datapart=actuellenode.childNodes[FindNamedNode(actuellenode,"Data")]
+        inp=datapart.childNodes[FindNamedNode(datapart,str(Input))].getAttribute("MultiConnection")
+        return inp
 
     def RegisterLine(self,lineID,Fromnode,output,uni_out,Tonode,input,uni_in):
         rootruntimedoc=minidom.parse((RUNTIME_NODELIST_FOLDER + "/RuntimeNodeList.xml"))
@@ -346,6 +355,7 @@ class VarDefs:
         rootdoc=minidom.parse(GUI_SETTINGS_FOLDER + "/NodeTypeSettings.xml")
         root=rootdoc.documentElement
         generation_root=(root.childNodes[FindNamedNode(root,Functype)].childNodes[FindNamedNode(root.childNodes[FindNamedNode(root,Functype)],"Generation")])
+        data_root=(root.childNodes[FindNamedNode(root,Functype)].childNodes[FindNamedNode(root.childNodes[FindNamedNode(root,Functype)],"Data")])
 
         nodeshapestyle = generation_root.childNodes[FindNamedNode(generation_root,"NodeShapeStyle")].firstChild.nodeValue
 
@@ -359,12 +369,13 @@ class VarDefs:
         Previewlabel=labels.childNodes[FindNamedNode(labels,"PreviewLabel")].firstChild.nodeValue
         Note=labels.childNodes[FindNamedNode(labels,"Note")].firstChild.nodeValue
 
-        inputs=generation_root.childNodes[FindNamedNode(generation_root,"Inputs")]
-        inpno=inputs.childNodes.length
+        inpno=data_root.childNodes.length
         inputs_out=[]
         for n in range (0,inpno):
-            tmp=((str(inputs.childNodes[n].nodeName)),(str(inputs.childNodes[n].getAttribute("Type"))))
-            inputs_out.append((str(inputs.childNodes[n].nodeName)))
+            if ((str(data_root.childNodes[n].getAttribute("Connection"))))=="False":
+                pass
+            else:
+                inputs_out.append((str(data_root.childNodes[n].nodeName)))
 
         outputs=generation_root.childNodes[FindNamedNode(generation_root,"Outputs")]
         outno=outputs.childNodes.length
@@ -372,10 +383,6 @@ class VarDefs:
         for n in range (0,outno):
             tmp=((str(outputs.childNodes[n].nodeName)),(str(outputs.childNodes[n].getAttribute("Type"))))
             outs_out.append((str(outputs.childNodes[n].nodeName)))
-
-        icons=generation_root.childNodes[FindNamedNode(generation_root,"Icons")]
-        prvicon=icons.childNodes[FindNamedNode(icons,"PreviewIcon")].firstChild.nodeValue
-        nodeicon=icons.childNodes[FindNamedNode(icons,"NodeIcon")].firstChild.nodeValue
 
         outvalues=(str(nodeshapestyle),str(upperlabel),str(Previewlabel),str(Note),str(topcolor),str(midcolor),str(botcolor),(inputs_out),(outs_out))
 
@@ -440,7 +447,6 @@ def _createNodeTypeSettings():
         Generation_image.appendChild(nss)
         nsstext=root.createTextNode("SHAPE02")
         nss.appendChild(nsstext)
-
         colors=root.createElement("Colors")
         Generation_image.appendChild(colors)
         colattr=root.createAttribute("Type")
@@ -493,18 +499,6 @@ def _createNodeTypeSettings():
         ntlabel.setAttributeNode(ntlabelattr)
         ntlabeltext=root.createTextNode("Note to Image node...")
         ntlabel.appendChild(ntlabeltext)
-        inps=root.createElement("Inputs")
-        Generation_image.appendChild(inps)
-        inpattr=root.createAttribute("Type")
-        inpattr.value="SubCategory"
-        inps.setAttributeNode(inpattr)
-        inp1=root.createElement("ImageIn")
-        inps.appendChild(inp1)
-        inp1attr=root.createAttribute("Type")
-        inp1attr.value="Path"
-        inp1.setAttributeNode(inp1attr)
-        inp1txt=root.createTextNode("")
-        inp1.appendChild(inp1txt)
         oups=root.createElement("Outputs")
         Generation_image.appendChild(oups)
         oupattr=root.createAttribute("Type")
@@ -524,25 +518,6 @@ def _createNodeTypeSettings():
         out2.setAttributeNode(out2attr)
         out2txt=root.createTextNode("")
         out2.appendChild(out2txt)
-        icn=root.createElement("Icons")
-        Generation_image.appendChild(icn)
-        icnattr=root.createAttribute("Type")
-        icnattr.value="SubCategory"
-        icn.setAttributeNode(icnattr)
-        pricn=root.createElement("PreviewIcon")
-        icn.appendChild(pricn)
-        pricnattr=root.createAttribute("Type")
-        pricnattr.value="Path"
-        pricn.setAttributeNode(pricnattr)
-        pricntxt=root.createTextNode("/itt/meg/itt.gif")
-        pricn.appendChild(pricntxt)
-        ndicn=root.createElement("NodeIcon")
-        icn.appendChild(ndicn)
-        ndicnattr=root.createAttribute("Type")
-        ndicnattr.value="Path"
-        ndicn.setAttributeNode(ndicnattr)
-        ndicntxt=root.createTextNode("/itt/meg/ittanagy.gif")
-        ndicn.appendChild(ndicntxt)
         pos=root.createElement("Position")
         Generation_image.appendChild(pos)
         posattr=root.createAttribute("Type")
@@ -568,11 +543,20 @@ def _createNodeTypeSettings():
         datattr=root.createAttribute("Type")
         datattr.value="SubCategory"
         Data.setAttributeNode(datattr)
-        impath=root.createElement("ImagePath")
+        impath=root.createElement("ImageIn")
         Data.appendChild(impath)
         impathattr=root.createAttribute("Type")
         impathattr.value="Path"
         impath.setAttributeNode(impathattr)
+
+        impathattr2=root.createAttribute("Connection")
+        impathattr2.value="True"
+        impath.setAttributeNode(impathattr2)
+
+        impathattr2=root.createAttribute("MultiConnection")
+        impathattr2.value="True"
+        impath.setAttributeNode(impathattr2)
+
         impathtext=root.createTextNode("...")
         impath.appendChild(impathtext)
 
@@ -581,6 +565,15 @@ def _createNodeTypeSettings():
         cttattr=root.createAttribute("Type")
         cttattr.value="Boolean"
         ctt.setAttributeNode(cttattr)
+
+        cttattr2=root.createAttribute("Connection")
+        cttattr2.value="False"
+        ctt.setAttributeNode(cttattr2)
+
+        cttattr2=root.createAttribute("MultiConnection")
+        cttattr2.value="False"
+        ctt.setAttributeNode(cttattr2)
+
         ctttext=root.createTextNode("True")
         ctt.appendChild(ctttext)
 
@@ -589,8 +582,31 @@ def _createNodeTypeSettings():
         cltattr=root.createAttribute("Type")
         cltattr.value="Boolean"
         clt.setAttributeNode(cltattr)
+
+        cltattr2=root.createAttribute("Connection")
+        cltattr2.value="False"
+        clt.setAttributeNode(cltattr2)
+
+        cltattr2=root.createAttribute("MultiConnection")
+        cltattr2.value="False"
+        clt.setAttributeNode(cltattr2)
+
         clttext=root.createTextNode("False")
         clt.appendChild(clttext)
+
+
+        source=root.createElement("Source")
+        Image.appendChild(source)
+        sattr=root.createAttribute("Type")
+        sattr.value="SubCategory"
+        source.setAttributeNode(sattr)
+        sfile=root.createElement("Sourcecode")
+        source.appendChild(sfile)
+        sfa=root.createAttribute("Type")
+        sfa.value="pyc"
+        sfile.setAttributeNode(sfa)
+        tart=root.createTextNode("...")
+        sfile.appendChild(tart)
 
         files.write(root.toxml())
         files.close()
