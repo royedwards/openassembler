@@ -9,6 +9,7 @@
 
 from xml.dom import minidom
 
+
 #------------------------------------------------------------------------------------------------------------------------------------
 #    Global file structure variables
 #------------------------------------------------------------------------------------------------------------------------------------
@@ -249,6 +250,21 @@ class RuntimeNodeRegister:
         datapart=actuellenode.childNodes[FindNamedNode(actuellenode,"Data")]
         inp=datapart.childNodes[FindNamedNode(datapart,str(Input))].getAttribute("MultiConnection")
         return inp
+
+    def writeConnections(self,Node,input,newID):
+        rootruntimedoc=minidom.parse((RUNTIME_NODELIST_FOLDER + "/RuntimeNodeList.xml"))
+        root=rootruntimedoc.documentElement
+        actuellenode=root.childNodes[FindNamedNode(root,("Node"+str(Node)))]
+        datapart=actuellenode.childNodes[FindNamedNode(actuellenode,"Data")]
+        inp=str(datapart.childNodes[FindNamedNode(datapart,str(input))].firstChild.nodeValue)
+        if inp[:1]==":":
+            datapart.childNodes[FindNamedNode(datapart,str(input))].firstChild.nodeValue=str(datapart.childNodes[FindNamedNode(datapart,str(input))].firstChild.nodeValue)+":"+str(newID)
+        else:
+            datapart.childNodes[FindNamedNode(datapart,str(input))].firstChild.nodeValue=":"+str(newID)
+        xmlfileoutput=open((RUNTIME_NODELIST_FOLDER + "/RuntimeNodeList.xml"),"w")
+        xmlfileoutput.write(root.toxml())
+        xmlfileoutput.close()
+        root.unlink
 
     def RegisterLine(self,lineID,Fromnode,output,uni_out,Tonode,input,uni_in):
         rootruntimedoc=minidom.parse((RUNTIME_NODELIST_FOLDER + "/RuntimeNodeList.xml"))

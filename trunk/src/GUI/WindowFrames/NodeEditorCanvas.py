@@ -15,10 +15,10 @@ class CanvasInitNodeEditor(NodeEditorCanvasEvents):
             self.B1ClickNodeEditor(event, TargetCanvas,self.lastx,self.lasty,EventTags,preferencespanel)
         TargetCanvas.bind("<Button-1>", handlerB1Click)
 
-        def handlerRelease(event, self=self, TargetCanvas=TargetCanvas):
+        def handlerRelease(event, self=self, TargetCanvas=TargetCanvas,preferencespanel=preferencespanel):
             self.lastx=event.x
             self.lasty=event.y
-            self.ReleaseNodeEditor(event, TargetCanvas,self.lastx,self.lasty)
+            self.ReleaseNodeEditor(event, TargetCanvas,self.lastx,self.lasty,preferencespanel)
 
         TargetCanvas.bind("<B1-ButtonRelease>", handlerRelease)
         TargetCanvas.bind("<B2-ButtonRelease>", handlerRelease)

@@ -77,7 +77,7 @@ class NodeEditorCanvasEvents(GUI_Elements_forNodes,ConnectLine,LoadPreferences,R
         except:
             pass
 
-    def ReleaseNodeEditor(self,event,TargetCanvas,lasx,lasty):
+    def ReleaseNodeEditor(self,event,TargetCanvas,lasx,lasty,preferencespanel):
         EventTags=TargetCanvas.gettags(CURRENT)
         if len(EventTags)>0:
             if EventTags[0]=="LineUnderCreateTMP":
@@ -88,6 +88,8 @@ class NodeEditorCanvasEvents(GUI_Elements_forNodes,ConnectLine,LoadPreferences,R
                 try:
                     if EventTags[3]=="IN":
                         self.DrawNewLine(TargetCanvas, self.origin_node,self.origin_out,self.origin_uni, EventTags[0],EventTags[2],EventTags[1])
+                        if self.getNodeName(EventTags[0]) == self.nodeInPreferences.get():
+                            self.loadPreferences(preferencespanel, EventTags[0])
                 except:
                     pass
         else:
