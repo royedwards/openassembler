@@ -87,9 +87,10 @@ class NodeEditorCanvasEvents(GUI_Elements_forNodes,ConnectLine,LoadPreferences,R
             else:
                 try:
                     if EventTags[3]=="IN":
-                        self.DrawNewLine(TargetCanvas, self.origin_node,self.origin_out,self.origin_uni, EventTags[0],EventTags[2],EventTags[1])
-                        if self.getNodeName(EventTags[0]) == self.nodeInPreferences.get():
-                            self.loadPreferences(preferencespanel, EventTags[0])
+                        if self.checkMultipleSelfConnection(self.origin_node, self.origin_out, EventTags[0], EventTags[2])==0:
+                            self.DrawNewLine(TargetCanvas, self.origin_node,self.origin_out,self.origin_uni, EventTags[0],EventTags[2],EventTags[1])
+                            if self.getNodeName(EventTags[0]) == self.nodeInPreferences.get():
+                                self.loadPreferences(preferencespanel, EventTags[0])
                 except:
                     pass
         else:

@@ -193,6 +193,21 @@ class RuntimeNodeRegister:
         for n in range(0,len(LineList)):
             rootruntimedoc=minidom.parse((RUNTIME_NODELIST_FOLDER + "/RuntimeNodeList.xml"))
             root_runtime=rootruntimedoc.documentElement
+            for m in range (0,len(self.RuntimeLines)):
+                if self.RuntimeLines[m][0]==LineList[n]:
+                    if self.IDChc((self.RuntimeLines[m][4]))=="false":
+                        actuellenode=root_runtime.childNodes[FindNamedNode(root_runtime,("Node"+str(self.RuntimeLines[m][4])))]
+                        datapart=actuellenode.childNodes[FindNamedNode(actuellenode,"Data")]
+                        inp=datapart.childNodes[FindNamedNode(datapart,str(self.RuntimeLines[m][5]))].firstChild.nodeValue
+                        if inp==(":"+str(LineList[n])):
+                            datapart.childNodes[FindNamedNode(datapart,str(self.RuntimeLines[m][5]))].firstChild.nodeValue="..."
+                        else:
+                            pos=inp.find((":"+str(LineList[n])))
+                            cc=len((":"+str(LineList[n])))
+                            ret=inp[:pos]+inp[(pos+cc):]
+                            datapart.childNodes[FindNamedNode(datapart,str(self.RuntimeLines[m][5]))].firstChild.nodeValue=inp[:pos]+inp[(pos+cc):]
+                    else:
+                        pass
             print str(root_runtime.childNodes[FindNamedNode(root_runtime,("Node"+str(LineList[n])))].getAttribute('FuncType'))+ ' ('+ str(LineList[n]) + ') deleted...'
             root_runtime.removeChild(root_runtime.childNodes[FindNamedNode(root_runtime,("Node"+str(LineList[n])))])
             xmlfileoutput=open((RUNTIME_NODELIST_FOLDER + "/RuntimeNodeList.xml"),"w")
@@ -249,6 +264,7 @@ class RuntimeNodeRegister:
         actuellenode=root.childNodes[FindNamedNode(root,("Node"+str(Node)))]
         datapart=actuellenode.childNodes[FindNamedNode(actuellenode,"Data")]
         inp=datapart.childNodes[FindNamedNode(datapart,str(Input))].getAttribute("MultiConnection")
+        root.unlink
         return inp
 
     def writeConnections(self,Node,input,newID):
@@ -265,6 +281,22 @@ class RuntimeNodeRegister:
         xmlfileoutput.write(root.toxml())
         xmlfileoutput.close()
         root.unlink
+
+    def getConnectedIDList(self,node,input):
+        pass
+
+    def checkMultipleSelfConnection(self,fromnode,output,tonode,input):
+        if len(self.RuntimeLines)==0:
+            return 0
+        else:
+            for n in range(0,len(self.RuntimeLines)):
+                if self.RuntimeLines[n][3]==(str(fromnode)+str(output)) and self.RuntimeLines[n][6]==(str(tonode)+str(input)):
+                    return self.RuntimeLines[n][0]
+                else:
+                    return 0
+
+    def delConnection(self,lineID):
+        pass
 
     def RegisterLine(self,lineID,Fromnode,output,uni_out,Tonode,input,uni_in):
         rootruntimedoc=minidom.parse((RUNTIME_NODELIST_FOLDER + "/RuntimeNodeList.xml"))

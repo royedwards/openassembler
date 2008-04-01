@@ -22,7 +22,7 @@ class NodeType02:
         x=InputParameters[2][0]
         y=InputParameters[2][1]
         FuctionType=InputParameters[4]
-        iofont = tkFont.Font ( family="Keyboard", size=4 )
+        iofont = tkFont.Font ( family="mincho", size=6 )
         sizex=150
         if len(Input)>len(Output):
             sizey=40+len(Input)*30+20
@@ -72,7 +72,6 @@ class NodeType02:
         x=InputParameters[2][0]
         y=InputParameters[2][1]
         Ident=InputParameters[3]
-        #Type=InputParameters[4]
         Note=InputParameters[5][3]
         NodeCenterLabel=InputParameters[5][2]
         BaseColorBottom=InputParameters[5][6]

@@ -10,7 +10,7 @@ class LoadPreferences(PreferencesManagement):
     def controllerBoolean(self,TargetCanvas,Node,pos,varriable,parametername,defaultvalue):
         fr=Frame(TargetCanvas,height=30,width=145,bg="gray35",bd=0)
         fr.grid
-        iofont = tkFont.Font ( family="Keyboard", size=6 )
+        iofont = tkFont.Font ( family="mincho", size=8 )
         ch=Checkbutton(fr,text=parametername,variable=varriable,onvalue="True",offvalue="False",font=iofont,anchor="w",width=25,height=0)
         ch.grid()
         ch.var=varriable
@@ -21,7 +21,7 @@ class LoadPreferences(PreferencesManagement):
     def controllerTextLine(self,TargetCanvas,Node,pos,variable,parametername,defaultvalue):
         fr=Frame(TargetCanvas,height=30,width=145,bg="gray35",bd=0)
         fr.grid
-        iofont = tkFont.Font ( family="Keyboard", size=6 )
+        iofont = tkFont.Font ( family="mincho", size=8 )
         Label(fr,text=parametername+":",anchor="nw",width=28,font=iofont,bg="gray35").grid(row=0,column=0,pady=2)
         e=Entry(fr,font=iofont,width=28,bg="gray55",relief="groove",bd=1,textvariable=variable,highlightbackground="gray35",justify=LEFT)
         e.grid(row=1,column=0,sticky=N,pady=0)
@@ -33,7 +33,7 @@ class LoadPreferences(PreferencesManagement):
     def controllerMassText(self,TargetCanvas,Node,pos,variable,parametername,defaultvalue):
         fr=Frame(TargetCanvas,height=30,width=145,bg="gray35",bd=0)
         fr.grid
-        iofont = tkFont.Font ( family="Keyboard", size=6 )
+        iofont = tkFont.Font ( family="mincho", size=8 )
         Label(fr,text=parametername+":",anchor="nw",width=28,font=iofont,bg="gray35").grid(row=0,column=0,pady=2)
         e=Text(fr,font=iofont,width=28,height=26,bg="gray55",relief="sunken",wrap="word",bd=2,highlightbackground="gray35")
         e.grid(row=1,column=0,sticky=N)
@@ -52,7 +52,7 @@ class LoadPreferences(PreferencesManagement):
     def controllerNumberSimple(self,TargetCanvas,Node,pos,variable,parametername,defaultvalue):
         fr=Frame(TargetCanvas,height=30,width=145,bg="gray35",bd=0)
         fr.grid
-        iofont = tkFont.Font ( family="Keyboard", size=6 )
+        iofont = tkFont.Font ( family="mincho", size=8 )
         Label(fr,text=parametername+":",anchor="nw",width=28,font=iofont,bg="gray35").grid(row=0,column=0,pady=2)
         e=Entry(fr,font=iofont,width=28,bg="gray55",relief="groove",bd=1,textvariable=variable,highlightbackground="gray35",justify=LEFT)
         e.grid(row=1,column=0,sticky=N,pady=0)
@@ -75,7 +75,7 @@ class LoadPreferences(PreferencesManagement):
     def controllerPath(self,TargetCanvas,Node,pos,variable,parametername,defaultvalue):
         fr=Frame(TargetCanvas,height=30,width=145,bg="gray35",bd=0)
         fr.grid
-        iofont = tkFont.Font ( family="Keyboard", size=6 )
+        iofont = tkFont.Font ( family="mincho", size=8 )
         Label(fr,text=parametername+":",anchor="nw",width=28,font=iofont,bg="gray35").grid(row=0,column=0,columnspan=2,pady=2)
         e=Entry(fr,font=iofont,width=23,bg="gray55",relief="groove",bd=1,textvariable=variable,highlightbackground="gray35",justify=LEFT)
         e.grid(row=1,column=0,sticky=N,pady=0)
@@ -159,7 +159,7 @@ class CanvasInitPreferencePanel:
     def controllerNodeHeader(self,TargetCanvas):
         fr=Frame(TargetCanvas,bg="gray35")
         fr.grid()
-        iofont = tkFont.Font ( family="Keyboard", size=6 )
+        iofont = tkFont.Font ( family="mincho", size=8 )
         label=Label(fr,textvariable=self.nodeInPreferences,anchor="nw",width=28,font=iofont,bg="gray15",relief="flat")
         label.grid()
         TargetCanvas.create_window(5,5,window=fr,anchor="nw",tag="header")

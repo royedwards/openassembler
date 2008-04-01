@@ -4,19 +4,15 @@ import tkFont
 
 
 class CanvasInitTimeLine(NodeEditorCanvasEvents):
-    def __init__(self):
-        pass
-    def _name(self):
-        return "TimeLineCanvasInit"
 
     def delItemPress(self,editorcanvas):
         editorcanvas.configure(cursor="pirate")
 
     def timeLine_init(self,TargetCanvas,editorcanvas):
-        timelineFrame=Frame(TargetCanvas,height=11,width=165,bg="gray35")
+        timelineFrame=Frame(TargetCanvas,height=11,width=225,bg="gray35")
         timelineFrame.grid_propagate(0)
 
-        iofont = tkFont.Font ( family="Keyboard", size=4 )
+        iofont = tkFont.Font ( family="mincho", size=6 )
         e=Entry(timelineFrame,width=4,bd=1,font=iofont,textvariable=self.startFrame,bg="gray35",highlightbackground="gray35",justify=RIGHT,relief=GROOVE)
         e.grid(row=1,column=1)
 
@@ -39,9 +35,17 @@ class CanvasInitTimeLine(NodeEditorCanvasEvents):
         e3=Entry(timelineFrame,width=4,bd=1,font=iofont,textvariable=self.endFrame,highlightbackground="gray35",bg="gray35",justify=RIGHT,relief=GROOVE)
         e3.grid(row=1,column=7)
 
-        delitem=Button(timelineFrame,width=3,bd=1,height=0,padx=0,pady=0,highlightbackground="gray35",bg="darkred",fg="gray75",activebackground="darkred",activeforeground="gray75",text="Del",font=iofont)
+        delitem=Button(timelineFrame,width=3,bd=1,padx=0,pady=0,bg="darkred",activebackground="darkred",activeforeground="gray75",text="Del",font=iofont)
         delitem.grid(row=1,column=8,padx=15)
         delitem.bind('<Button-1>', lambda event: self.delItemPress(editorcanvas))
+
+        duplicate=Button(timelineFrame,width=5,bd=1,padx=0,pady=0,text="Dupl.",font=iofont)
+        duplicate.grid(row=1,column=9)
+        #dulicate.bind('<Button-1>', lambda event: self.delItemPress(editorcanvas))
+
+        instance=Button(timelineFrame,width=5,bd=1,padx=0,pady=0,text="Inst.",font=iofont)
+        instance.grid(row=1,column=10)
+        #dulicate.bind('<Button-1>', lambda event: self.delItemPress(editorcanvas))
 
         TargetCanvas.create_window(5,9,window=timelineFrame,anchor='w')
 
