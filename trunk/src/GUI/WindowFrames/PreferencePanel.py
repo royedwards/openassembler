@@ -126,6 +126,7 @@ class LoadPreferences(PreferencesManagement):
         height=20
         string=[]
         inter=[]
+        db=[]
         for n in range(0,len(datas)):
             if datas[n][3]=="Path":
                 string.append(StringVar())
@@ -136,6 +137,11 @@ class LoadPreferences(PreferencesManagement):
                 string.append(StringVar())
                 m=len(string)
                 height=self.controllerNumberSimple(TargetCanvas,Node,height,string[m-1],datas[n][1],datas[n][2])
+
+            if datas[n][3]=="MassText":
+                string.append(StringVar())
+                m=len(string)
+                height=self.controllerMassText(TargetCanvas,Node,height,string[m-1],datas[n][1],datas[n][2])
 
             if datas[n][3]=="SimpleNumber":
                 db.append(DoubleVar())

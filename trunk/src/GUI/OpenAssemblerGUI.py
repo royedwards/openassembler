@@ -39,6 +39,7 @@ class _Application(Frame,CanvasInitSliderBar,CanvasInitNodeEditor,CanvasInitTime
         self.origin_out=""
         self.origin_uni=""
         self.Create_RuntimeDBase()
+        self.CreateGlobalPreferences(1, 100, "Basic scene setup...")
         self.RuntimeLines=[]
         self.startFrame=IntVar()
         self.startFrame.set(1)
@@ -49,13 +50,13 @@ class _Application(Frame,CanvasInitSliderBar,CanvasInitNodeEditor,CanvasInitTime
         self.nodeInPreferences=StringVar()
         self.nodeInPreferences.set("OpenAssembler")
 
-        menuline=self.StartUpMenuLineCanvas("MenuLineCanvas","top")
+
         mview=self.StartUpMicroViewerCanvas("MicroViewer", "right")
 
 
         ppanel=self.StartUpPreferencePanelCanvas("PreferencePanel", "right")
         editorcanvas=self.StartUpNodeEditorCanvas("NodeEditorCanvas", "top",ppanel)
-
+        menuline=self.StartUpMenuLineCanvas("MenuLineCanvas","top",ppanel)
         tline=self.StartUpTimeLineCanvas("TimeLineCanvas", "bottom",editorcanvas)
         slider=self.StartUpSliderBarCanvas("SliderBar", "bottom",editorcanvas)
 

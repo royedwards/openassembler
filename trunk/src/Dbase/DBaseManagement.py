@@ -100,6 +100,61 @@ class PreferencesManagement:
 
 class RuntimeNodeRegister:
 
+    def CreateGlobalPreferences(self,startframe,endframe,note):
+        ID="Node0000000"
+
+        rootruntimedoc=minidom.parse((RUNTIME_NODELIST_FOLDER + "/RuntimeNodeList.xml"))
+        root_runtime=rootruntimedoc.documentElement
+
+        runtimeNodeList_trick=minidom.getDOMImplementation()
+        root_trick=runtimeNodeList_trick.createDocument("", "OpenAssemblerRuntimersx", "")
+
+        mdn=root_trick.createElement(str(ID))
+        root_trick.firstChild.appendChild(mdn)
+        attr=root_trick.createAttribute("Name")
+        attr.value="GlobalScenePreferences"
+        mdn.setAttributeNode(attr)
+        attr2=root_trick.createAttribute("FuncType")
+        attr2.value="GlobalScenePreferences"
+        mdn.setAttributeNode(attr2)
+
+        data=root_trick.createElement("Data")
+        mdn.appendChild(data)
+
+
+        sf=root_trick.createElement("StartFrame")
+        sfx=root_trick.createTextNode(str(startframe))
+        sf.appendChild(sfx)
+        data.appendChild(sf)
+        attr3=root_trick.createAttribute("Type")
+        attr3.value="SimpleNumber"
+        sf.setAttributeNode(attr3)
+
+        sf=root_trick.createElement("EndFrame")
+        sfx=root_trick.createTextNode(str(endframe))
+        sf.appendChild(sfx)
+        data.appendChild(sf)
+        attr3=root_trick.createAttribute("Type")
+        attr3.value="SimpleNumber"
+        sf.setAttributeNode(attr3)
+
+        sf=root_trick.createElement("Note")
+        sfx=root_trick.createTextNode(str(note))
+        sf.appendChild(sfx)
+        data.appendChild(sf)
+        attr3=root_trick.createAttribute("Type")
+        attr3.value="MassText"
+        sf.setAttributeNode(attr3)
+
+        mroot=root_trick.firstChild.firstChild.cloneNode(1)
+        root_runtime.appendChild(mroot)
+
+        xmlfileoutput=open((RUNTIME_NODELIST_FOLDER + "/RuntimeNodeList.xml"),"w")
+        xmlfileoutput.write(root_runtime.toxml())
+        xmlfileoutput.close()
+        root_trick.unlink
+        root_runtime.unlink
+
     def Create_RuntimeDBase(self):
         runtimeNodeList=minidom.getDOMImplementation()
         root=runtimeNodeList.createDocument("", "OpenAssemblerRuntimers", "")
@@ -114,7 +169,10 @@ class RuntimeNodeRegister:
         runno=root.childNodes.length
         for n in range (0,runno):
             idval=str(root.childNodes[n].nodeName)
-            IDList.append(idval[4:])
+            if str(idval)=="Node0000000":
+                pass
+            else:
+                IDList.append(idval[4:])
         return IDList
 
     def IDChc(self,NewID):
@@ -130,6 +188,33 @@ class RuntimeNodeRegister:
             return "false"
         else:
             return "true"
+
+    def writeBackOneNodePosition(self,TargetCanvas,ID):
+        functype=self.getNodeFuncType(ID)
+        bb=TargetCanvas.bbox((str(functype)+str(ID)+"select"))
+        rootdoc=minidom.parse(RUNTIME_NODELIST_FOLDER + "/RuntimeNodeList.xml")
+        root=rootdoc.documentElement
+        actuellenode=root.childNodes[FindNamedNode(root,("Node"+str(ID)))]
+        actuelleGen=actuellenode.childNodes[FindNamedNode(actuellenode,("Generation"))]
+        poss=actuelleGen.childNodes[FindNamedNode(actuelleGen,("Position"))]
+        posix=poss.childNodes[FindNamedNode(poss,("X"))].firstChild.nodeValue=str(bb[0])
+        posiy=poss.childNodes[FindNamedNode(poss,("Y"))].firstChild.nodeValue=str(bb[1])
+        xmlfileoutput=open((RUNTIME_NODELIST_FOLDER + "/RuntimeNodeList.xml"),"w")
+        xmlfileoutput.write(root.toxml())
+        xmlfileoutput.close()
+        root.unlink
+
+    def writeBackNodePositions(self,TargetCanvas):
+        IDs=self.GetIDList()
+        iis=self.GetIDList()
+        for f in range(0,len(iis)):
+            for h in range (0,len(self.RuntimeLines)):
+                if str(self.RuntimeLines[h][0])==str(iis[f]):
+                    IDs.remove(iis[f])
+
+
+        for n in range (0,len(IDs)):
+            self.writeBackOneNodePosition(TargetCanvas, IDs[n])
 
     def RegisterRuntimeNode(self,InputParameters):
         ID=("Node" + str(InputParameters[1]))
@@ -173,6 +258,13 @@ class RuntimeNodeRegister:
         rootdoc=minidom.parse(RUNTIME_NODELIST_FOLDER + "/RuntimeNodeList.xml")
         root=rootdoc.documentElement
         actuellenode=root.childNodes[FindNamedNode(root,("Node"+str(Node)))].getAttribute("Name")
+        root.unlink
+        return actuellenode
+
+    def getNodeFuncType(self,Node):
+        rootdoc=minidom.parse(RUNTIME_NODELIST_FOLDER + "/RuntimeNodeList.xml")
+        root=rootdoc.documentElement
+        actuellenode=root.childNodes[FindNamedNode(root,("Node"+str(Node)))].getAttribute("FuncType")
         root.unlink
         return actuellenode
 
@@ -282,9 +374,6 @@ class RuntimeNodeRegister:
         xmlfileoutput.close()
         root.unlink
 
-    def getConnectedIDList(self,node,input):
-        pass
-
     def checkMultipleSelfConnection(self,fromnode,output,tonode,input):
         if len(self.RuntimeLines)==0:
             return 0
@@ -294,9 +383,6 @@ class RuntimeNodeRegister:
                     return self.RuntimeLines[n][0]
                 else:
                     return 0
-
-    def delConnection(self,lineID):
-        pass
 
     def RegisterLine(self,lineID,Fromnode,output,uni_out,Tonode,input,uni_in):
         rootruntimedoc=minidom.parse((RUNTIME_NODELIST_FOLDER + "/RuntimeNodeList.xml"))
@@ -543,7 +629,7 @@ def _createNodeTypeSettings():
         ntlabel=root.createElement("Note")
         labels.appendChild(ntlabel)
         ntlabelattr=root.createAttribute("Type")
-        ntlabelattr.value="String"
+        ntlabelattr.value="MassText"
         ntlabel.setAttributeNode(ntlabelattr)
         ntlabeltext=root.createTextNode("Note to Image node...")
         ntlabel.appendChild(ntlabeltext)

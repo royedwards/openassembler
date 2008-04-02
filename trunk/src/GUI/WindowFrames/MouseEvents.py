@@ -99,7 +99,7 @@ class NodeEditorCanvasEvents(GUI_Elements_forNodes,ConnectLine,LoadPreferences,R
             TargetCanvas.delete("LineUnderCreateTMP")
         except:
             pass
-
+        self.writeBackNodePositions(TargetCanvas)
         self.origin_node=""
 
 
