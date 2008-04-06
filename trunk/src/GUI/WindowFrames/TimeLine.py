@@ -13,7 +13,7 @@ class CanvasInitTimeLine(NodeEditorCanvasEvents):
         timelineFrame.grid_propagate(0)
 
         iofont = tkFont.Font ( family="mincho", size=6 )
-        e=Entry(timelineFrame,width=4,bd=1,font=iofont,textvariable=self.startFrame,bg="gray35",highlightbackground="gray35",justify=RIGHT,relief=GROOVE)
+        e=Entry(timelineFrame,width=4,bd=1,state="readonly",font=iofont,textvariable=self.startFrame,fg="gray15",justify=RIGHT,relief=GROOVE)
         e.grid(row=1,column=1)
 
         r= Button (timelineFrame,width=2,highlightcolor="gray35",bd=1,height=0,padx=0,pady=0,highlightbackground="gray35",text="<<",font=iofont)
@@ -23,7 +23,7 @@ class CanvasInitTimeLine(NodeEditorCanvasEvents):
         o.grid(row=1,column=3)
         o.bind('<Button-1>',lambda event:(self.currentFrame.set(self.currentFrame.get()-1)))
 
-        e2=Entry(timelineFrame,width=4,bd=0,font=iofont,textvariable=self.currentFrame,highlightbackground="gray35",fg="red",bg="lightblue",justify=RIGHT)
+        e2=Entry(timelineFrame,width=4,bd=0,state="readonly",font=iofont,textvariable=self.currentFrame,highlightbackground="gray35",fg="red",bg="lightblue",justify=RIGHT)
         e2.grid(row=1,column=4)
         b=backfor=Button(timelineFrame,width=2,highlightcolor="gray35",bd=1,height=0,padx=0,pady=0,highlightbackground="gray35",text="->",font=iofont)
         b.grid(row=1,column=5)
@@ -32,7 +32,7 @@ class CanvasInitTimeLine(NodeEditorCanvasEvents):
         o2.grid(row=1,column=6)
         o2.bind('<Button-1>',lambda event:(self.currentFrame.set(self.endFrame.get())))
 
-        e3=Entry(timelineFrame,width=4,bd=1,font=iofont,textvariable=self.endFrame,highlightbackground="gray35",bg="gray35",justify=RIGHT,relief=GROOVE)
+        e3=Entry(timelineFrame,width=4,bd=1,state="readonly",font=iofont,textvariable=self.endFrame,fg="gray15",justify=RIGHT,relief=GROOVE)
         e3.grid(row=1,column=7)
 
         delitem=Button(timelineFrame,width=3,bd=1,padx=0,pady=0,bg="darkred",activebackground="darkred",activeforeground="gray75",text="Del",font=iofont)

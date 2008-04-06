@@ -42,11 +42,11 @@ class _Application(Frame,CanvasInitSliderBar,CanvasInitNodeEditor,CanvasInitTime
         self.CreateGlobalPreferences(1, 100, "Basic scene setup...")
         self.RuntimeLines=[]
         self.startFrame=IntVar()
-        self.startFrame.set(1)
+        self.startFrame.set(self.getFrameRange()[0])
         self.endFrame=IntVar()
-        self.endFrame.set(100)
+        self.endFrame.set(self.getFrameRange()[1])
         self.currentFrame=IntVar()
-        self.currentFrame.set(25)
+        self.currentFrame.set(self.startFrame.get())
         self.nodeInPreferences=StringVar()
         self.nodeInPreferences.set("OpenAssembler")
 

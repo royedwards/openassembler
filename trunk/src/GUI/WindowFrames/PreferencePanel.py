@@ -18,6 +18,19 @@ class LoadPreferences(PreferencesManagement):
         TargetCanvas.create_window(5,pos,window=fr,anchor="nw")
         return pos+15
 
+    def controllerSeparator(self,TargetCanvas,Node,pos,variable,parametername,defaultvalue):
+        fr=Frame(TargetCanvas,height=30,width=145,bg="gray35",bd=0)
+        fr.grid
+        iofont = tkFont.Font ( family="mincho", size=8 )
+        plen=len(parametername)
+        ta=int((34-plen)/2)
+        tach=""
+        for n in range(0,ta):
+            tach=tach+"-"
+        Label(fr,text=tach+parametername+tach,anchor="nw",width=28,font=iofont,bg="gray35").grid(row=0,column=0,pady=0)
+        TargetCanvas.create_window(5,pos,window=fr,anchor="nw")
+        return pos+15
+
     def controllerTextLine(self,TargetCanvas,Node,pos,variable,parametername,defaultvalue):
         fr=Frame(TargetCanvas,height=30,width=145,bg="gray35",bd=0)
         fr.grid
@@ -48,18 +61,73 @@ class LoadPreferences(PreferencesManagement):
         a=str(textzone.get(1.0,END))[:-1]
         self.ChangeNote(Node, str(a))
 
+    def numval(self,event,v):
+            if event.char in "1234567890":
+                pass
+            elif event.keycode==36:
+                pass
+            else:
+                q=v.get()
+                w=str(q)
+                er=w[:-1]
+                v.set(er)
 
     def controllerNumberSimple(self,TargetCanvas,Node,pos,variable,parametername,defaultvalue):
-        fr=Frame(TargetCanvas,height=30,width=145,bg="gray35",bd=0)
+        fr=Frame(TargetCanvas,height=10,width=145,bg="gray35",bd=0)
         fr.grid
         iofont = tkFont.Font ( family="mincho", size=8 )
-        Label(fr,text=parametername+":",anchor="nw",width=28,font=iofont,bg="gray35").grid(row=0,column=0,pady=2)
-        e=Entry(fr,font=iofont,width=28,bg="gray55",relief="groove",bd=1,textvariable=variable,highlightbackground="gray35",justify=LEFT)
-        e.grid(row=1,column=0,sticky=N,pady=0)
+        Label(fr,text=parametername+":",anchor="nw",width=20,font=iofont,bg="gray35").grid(row=0,column=0,pady=2)
+        e=Entry(fr,font=iofont,width=7,bg="gray55",relief="groove",bd=1,textvariable=variable,highlightbackground="gray35",justify=LEFT)
+        e.grid(row=0,column=1,sticky=SW)
         variable.set(defaultvalue)
         e.bind('<Return>',lambda event:self.ChangeSettings(Node, "Data",parametername, variable.get()))
+        e.bind('<KeyRelease>',lambda event: self.numval(event,variable))
         TargetCanvas.create_window(5,pos,window=fr,anchor="nw")
-        return pos+35
+        return pos+17
+
+    def SFGlobalnter(self,variable,Node,parametername):
+        if int(variable.get())<int(self.endFrame.get()):
+            self.ChangeSettings(Node, "Data",parametername, variable.get())
+            self.startFrame.set(variable.get())
+        else:
+            self.ChangeSettings(Node, "Data",parametername, (self.endFrame.get()-1))
+            self.startFrame.set((self.endFrame.get()-1))
+            variable.set((self.endFrame.get()-1))
+
+    def SFGlobal(self,TargetCanvas,Node,pos,variable,parametername,defaultvalue):
+        fr=Frame(TargetCanvas,height=10,width=145,bg="gray35",bd=0)
+        fr.grid
+        iofont = tkFont.Font ( family="mincho", size=8 )
+        Label(fr,text=parametername+":",anchor="nw",width=20,font=iofont,bg="gray35").grid(row=0,column=0,pady=2)
+        e=Entry(fr,font=iofont,width=7,bg="gray55",relief="groove",bd=1,textvariable=variable,highlightbackground="gray35",justify=LEFT)
+        e.grid(row=0,column=1,sticky=SW)
+        variable.set(defaultvalue)
+        e.bind('<Return>',lambda event:self.SFGlobalnter(variable,Node,parametername))
+        e.bind('<KeyRelease>',lambda event: self.numval(event,variable))
+        TargetCanvas.create_window(5,pos,window=fr,anchor="nw")
+        return pos+17
+
+    def EFGlobalnter(self,variable,Node,parametername):
+        if int(variable.get())>int(self.startFrame.get()):
+            self.ChangeSettings(Node, "Data",parametername, variable.get())
+            self.endFrame.set(variable.get())
+        else:
+            self.ChangeSettings(Node, "Data",parametername, (self.startFrame.get()+1))
+            self.endFrame.set((self.startFrame.get()+1))
+            variable.set((self.startFrame.get()+1))
+
+    def EFGlobal(self,TargetCanvas,Node,pos,variable,parametername,defaultvalue):
+        fr=Frame(TargetCanvas,height=10,width=145,bg="gray35",bd=0)
+        fr.grid
+        iofont = tkFont.Font ( family="mincho", size=8 )
+        Label(fr,text=parametername+":",anchor="nw",width=20,font=iofont,bg="gray35").grid(row=0,column=0,pady=2)
+        e=Entry(fr,font=iofont,width=7,bg="gray55",relief="groove",bd=1,textvariable=variable,highlightbackground="gray35",justify=LEFT)
+        e.grid(row=0,column=1,sticky=SW)
+        variable.set(defaultvalue)
+        e.bind('<Return>',lambda event:self.EFGlobalnter(variable,Node,parametername))
+        e.bind('<KeyRelease>',lambda event: self.numval(event,variable))
+        TargetCanvas.create_window(5,pos,window=fr,anchor="nw")
+        return pos+17
 
 
     def openFile(self,TargetCanvas,Node, parametername, variable):
@@ -123,7 +191,7 @@ class LoadPreferences(PreferencesManagement):
         TargetCanvas.bind("<B1-Motion>",handlerB1Move)
         datas=self.examineSettings(Node)
         self.nodeInPreferences.set(datas[0][0])
-        height=20
+        height=25
         string=[]
         inter=[]
         db=[]
@@ -143,10 +211,25 @@ class LoadPreferences(PreferencesManagement):
                 m=len(string)
                 height=self.controllerMassText(TargetCanvas,Node,height,string[m-1],datas[n][1],datas[n][2])
 
+            if datas[n][3]=="Separator":
+                string.append(StringVar())
+                m=len(string)
+                height=self.controllerSeparator(TargetCanvas,Node,height,string[m-1],datas[n][1],datas[n][2])
+
             if datas[n][3]=="SimpleNumber":
-                db.append(DoubleVar())
-                m=len(db)
-                height=self.controllerTextLine(TargetCanvas,Node,height,db[m-1],datas[n][1],datas[n][2])
+                string.append(StringVar())
+                m=len(string)
+                height=self.controllerNumberSimple(TargetCanvas,Node,height,string[m-1],datas[n][1],datas[n][2])
+
+            if datas[n][3]=="SFGlobal":
+                string.append(StringVar())
+                m=len(string)
+                height=self.SFGlobal(TargetCanvas,Node,height,string[m-1],datas[n][1],datas[n][2])
+
+            if datas[n][3]=="EFGlobal":
+                string.append(StringVar())
+                m=len(string)
+                height=self.EFGlobal(TargetCanvas,Node,height,string[m-1],datas[n][1],datas[n][2])
 
             if datas[n][3]=="Boolean":
                 inter.append(StringVar())

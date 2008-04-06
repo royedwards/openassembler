@@ -121,13 +121,20 @@ class RuntimeNodeRegister:
         data=root_trick.createElement("Data")
         mdn.appendChild(data)
 
+        sf=root_trick.createElement("Timing")
+        sfx=root_trick.createTextNode("...")
+        sf.appendChild(sfx)
+        data.appendChild(sf)
+        attr3=root_trick.createAttribute("Type")
+        attr3.value="Separator"
+        sf.setAttributeNode(attr3)
 
         sf=root_trick.createElement("StartFrame")
         sfx=root_trick.createTextNode(str(startframe))
         sf.appendChild(sfx)
         data.appendChild(sf)
         attr3=root_trick.createAttribute("Type")
-        attr3.value="SimpleNumber"
+        attr3.value="SFGlobal"
         sf.setAttributeNode(attr3)
 
         sf=root_trick.createElement("EndFrame")
@@ -135,7 +142,15 @@ class RuntimeNodeRegister:
         sf.appendChild(sfx)
         data.appendChild(sf)
         attr3=root_trick.createAttribute("Type")
-        attr3.value="SimpleNumber"
+        attr3.value="EFGlobal"
+        sf.setAttributeNode(attr3)
+
+        sf=root_trick.createElement("Misc")
+        sfx=root_trick.createTextNode("...")
+        sf.appendChild(sfx)
+        data.appendChild(sf)
+        attr3=root_trick.createAttribute("Type")
+        attr3.value="Separator"
         sf.setAttributeNode(attr3)
 
         sf=root_trick.createElement("Note")
@@ -253,12 +268,14 @@ class RuntimeNodeRegister:
         root.unlink
         root_trick.unlink
         root_runtime.unlink
+        del root, root_trick, root_runtime, xmlfileoutput, mroot, source_root, Data_root, generation_root
 
     def getNodeName(self,Node):
         rootdoc=minidom.parse(RUNTIME_NODELIST_FOLDER + "/RuntimeNodeList.xml")
         root=rootdoc.documentElement
         actuellenode=root.childNodes[FindNamedNode(root,("Node"+str(Node)))].getAttribute("Name")
         root.unlink
+        del rootdoc, root
         return actuellenode
 
     def getNodeFuncType(self,Node):
@@ -266,7 +283,19 @@ class RuntimeNodeRegister:
         root=rootdoc.documentElement
         actuellenode=root.childNodes[FindNamedNode(root,("Node"+str(Node)))].getAttribute("FuncType")
         root.unlink
+        del rootdoc, root
         return actuellenode
+
+    def getFrameRange(self):
+        rootdoc=minidom.parse(RUNTIME_NODELIST_FOLDER + "/RuntimeNodeList.xml")
+        root=rootdoc.documentElement
+        actuellenode=root.childNodes[FindNamedNode(root,("Node0000000"))]
+        dta=actuellenode.childNodes[FindNamedNode(actuellenode,("Data"))]
+        sf=dta.childNodes[FindNamedNode(dta,("StartFrame"))].firstChild.nodeValue
+        ef=dta.childNodes[FindNamedNode(dta,("EndFrame"))].firstChild.nodeValue
+        root.unlink
+        del actuellenode, root, rootdoc, dta
+        return (sf,ef)
 
     def _CHCRuntimeNodeName(self,ID,NewName):
         rootdoc=minidom.parse(RUNTIME_NODELIST_FOLDER + "/RuntimeNodeList.xml")
