@@ -38,6 +38,7 @@ class _Application(Frame,CanvasInitSliderBar,CanvasInitNodeEditor,CanvasInitTime
         self.origin_node=""
         self.origin_out=""
         self.origin_uni=""
+        self.sceneFileName=""
         self.Create_RuntimeDBase()
         self.CreateGlobalPreferences(1, 100, "Basic scene setup...")
         self.RuntimeLines=[]
@@ -56,7 +57,7 @@ class _Application(Frame,CanvasInitSliderBar,CanvasInitNodeEditor,CanvasInitTime
 
         ppanel=self.StartUpPreferencePanelCanvas("PreferencePanel", "right")
         editorcanvas=self.StartUpNodeEditorCanvas("NodeEditorCanvas", "top",ppanel)
-        menuline=self.StartUpMenuLineCanvas("MenuLineCanvas","top",ppanel)
+        menuline=self.StartUpMenuLineCanvas("MenuLineCanvas","top",ppanel,editorcanvas)
         tline=self.StartUpTimeLineCanvas("TimeLineCanvas", "bottom",editorcanvas)
         slider=self.StartUpSliderBarCanvas("SliderBar", "bottom",editorcanvas)
 
@@ -65,7 +66,8 @@ class _Application(Frame,CanvasInitSliderBar,CanvasInitNodeEditor,CanvasInitTime
 
 
 app= _Application()
-app.master.title("OpenAssembler 0.1beta")
+app.master.title("OpenAssembler 0.04beta")
+app.tk_strictMotif(1)
 app.tk_setPalette("gray35")
 app.master.wm_resizable(width=False ,height=False)
 app.mainloop()

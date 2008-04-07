@@ -48,6 +48,10 @@ class NodeVarInit(RuntimeNodeRegister,VarDefs):
         ReturnVar=self._initVars(TargetCanvas,ID,x,y,Ident,Functype)
         return ReturnVar
 
+    def OpenGenerateVars(self,TargetCanvas,ID,x,y,Ident,Functype):
+        ReturnVar=self._initVars(TargetCanvas,ID,x,y,Ident,Functype)
+        return ReturnVar
+
     def forceID(self,VariableSet,NewID):
         VariableSet[1]=NewID
         return VariableSet

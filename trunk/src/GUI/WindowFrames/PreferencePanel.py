@@ -48,7 +48,7 @@ class LoadPreferences(PreferencesManagement):
         fr.grid
         iofont = tkFont.Font ( family="mincho", size=8 )
         Label(fr,text=parametername+":",anchor="nw",width=28,font=iofont,bg="gray35").grid(row=0,column=0,pady=2)
-        e=Text(fr,font=iofont,width=28,height=26,bg="gray55",relief="sunken",wrap="word",bd=2,highlightbackground="gray35")
+        e=Text(fr,font=iofont,width=28,height=16,bg="gray55",relief="sunken",wrap="word",bd=2,highlightbackground="gray35")
         e.grid(row=1,column=0,sticky=N)
         e.insert(CURRENT, defaultvalue)
         b=Button (fr,width=28,highlightcolor="gray35",bd=1,height=0,padx=0,pady=0,highlightbackground="gray35",text="Save",font=iofont)

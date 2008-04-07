@@ -36,6 +36,63 @@ def FindNamedNode(inBranch,nameToFind):
 #------------------------------------------------------------------------------------------------------------------------------------
 #    Class to handle runtime data management
 #------------------------------------------------------------------------------------------------------------------------------------
+class openScene:
+
+    def OpenCopyNode(self,openfile,Node):
+        rootdoc=minidom.parse(openfile)
+        root=rootdoc.documentElement
+        tocopy = (root.childNodes[FindNamedNode(root,("Node"+str(Node)))].cloneNode(1))
+        rootdoc2=minidom.parse(RUNTIME_NODELIST_FOLDER + "/RuntimeNodeList.xml")
+        root_runtime=rootdoc2.documentElement
+        root_runtime.appendChild(tocopy)
+        xmlfileoutput=open((RUNTIME_NODELIST_FOLDER + "/RuntimeNodeList.xml"),"w")
+        xmlfileoutput.write(root_runtime.toxml())
+        xmlfileoutput.close()
+        root.unlink
+        root_runtime.unlink
+
+
+    def OpenexamineSettings(self,openfile,Node):
+        returnvalue=[]
+        rootdoc=minidom.parse(openfile)
+        root=rootdoc.documentElement
+        nodename = (root.childNodes[FindNamedNode(root,("Node"+str(Node)))].getAttribute("Name"))
+        counter=root.childNodes[FindNamedNode(root,("Node"+str(Node)))].childNodes[FindNamedNode(root.childNodes[FindNamedNode(root,("Node"+str(Node)))],"Data")].childNodes.length
+        for n in range (0,counter):
+            attrname = root.childNodes[FindNamedNode(root,("Node"+str(Node)))].childNodes[FindNamedNode(root.childNodes[FindNamedNode(root,("Node"+str(Node)))],"Data")].childNodes[n].nodeName
+            attrvalu = root.childNodes[FindNamedNode(root,("Node"+str(Node)))].childNodes[FindNamedNode(root.childNodes[FindNamedNode(root,("Node"+str(Node)))],"Data")].childNodes[n].firstChild.nodeValue
+            attrtype = root.childNodes[FindNamedNode(root,("Node"+str(Node)))].childNodes[FindNamedNode(root.childNodes[FindNamedNode(root,("Node"+str(Node)))],"Data")].childNodes[n].getAttribute("Type")
+            set=(str(nodename),str(attrname),str(attrvalu),str(attrtype))
+            returnvalue.append(set)
+        root.unlink
+        return returnvalue
+
+    def OpenGetIDList(self,infile):
+        rootdoc=minidom.parse(infile)
+        root=rootdoc.documentElement
+        IDList=[]
+        runno=root.childNodes.length
+        for n in range (0,runno):
+            idval=str(root.childNodes[n].nodeName)
+            if str(idval)=="Node0000000":
+                pass
+            else:
+                IDList.append(idval[4:])
+        return IDList
+
+    def OpensettingsforGeneration(self,infile,ID,TargetCanvas):
+        rootdoc=minidom.parse(infile)
+        root=rootdoc.documentElement
+        functy=root.childNodes[FindNamedNode(root,("Node"+str(ID)))].getAttribute("FuncType")
+        actuellenode=root.childNodes[FindNamedNode(root,("Node"+str(ID)))]
+        actuelleGen=actuellenode.childNodes[FindNamedNode(actuellenode,("Generation"))]
+        poss=actuelleGen.childNodes[FindNamedNode(actuelleGen,("Position"))]
+        posix=poss.childNodes[FindNamedNode(poss,("X"))].firstChild.nodeValue
+        posiy=poss.childNodes[FindNamedNode(poss,("Y"))].firstChild.nodeValue
+        root.unlink
+        generated=self.OpenGenerateVars(TargetCanvas,ID,int(posix),int(posiy),"MAIN",str(functy))
+
+        return generated
 
 class PreferencesManagement:
 
@@ -70,17 +127,28 @@ class PreferencesManagement:
         if str(newvalue)=='':
             pass
         else:
-            rootdoc=minidom.parse(RUNTIME_NODELIST_FOLDER + "/RuntimeNodeList.xml")
-            root=rootdoc.documentElement
-            actuellenode=root.childNodes[FindNamedNode(root,("Node"+str(Node)))]
-            actuelleGen=actuellenode.childNodes[FindNamedNode(actuellenode,("Generation"))]
-            labels=actuelleGen.childNodes[FindNamedNode(actuelleGen,("Labels"))]
-            notevalue=labels.childNodes[FindNamedNode(labels,("Note"))].firstChild.nodeValue=str(newvalue)
-            print "Node"+str(Node)+"."+"Note"+" set to: "+labels.childNodes[FindNamedNode(labels,("Note"))].firstChild.nodeValue
-            xmlfileoutput=open((RUNTIME_NODELIST_FOLDER + "/RuntimeNodeList.xml"),"w")
-            xmlfileoutput.write(root.toxml())
-            xmlfileoutput.close()
-            root.unlink
+            if Node=="0000000":
+                rootdoc=minidom.parse(RUNTIME_NODELIST_FOLDER + "/RuntimeNodeList.xml")
+                root=rootdoc.documentElement
+                actuellenode=root.childNodes[FindNamedNode(root,("Node"+str(Node)))]
+                actuelleGen=actuellenode.childNodes[FindNamedNode(actuellenode,("Data"))]
+                notevalue=actuelleGen.childNodes[FindNamedNode(actuelleGen,("Note"))].firstChild.nodeValue=str(newvalue)
+                xmlfileoutput=open((RUNTIME_NODELIST_FOLDER + "/RuntimeNodeList.xml"),"w")
+                xmlfileoutput.write(root.toxml())
+                xmlfileoutput.close()
+                root.unlink
+            else:
+                rootdoc=minidom.parse(RUNTIME_NODELIST_FOLDER + "/RuntimeNodeList.xml")
+                root=rootdoc.documentElement
+                actuellenode=root.childNodes[FindNamedNode(root,("Node"+str(Node)))]
+                actuelleGen=actuellenode.childNodes[FindNamedNode(actuellenode,("Generation"))]
+                labels=actuelleGen.childNodes[FindNamedNode(actuelleGen,("Labels"))]
+                notevalue=labels.childNodes[FindNamedNode(labels,("Note"))].firstChild.nodeValue=str(newvalue)
+                print "Node"+str(Node)+"."+"Note"+" set to: "+labels.childNodes[FindNamedNode(labels,("Note"))].firstChild.nodeValue
+                xmlfileoutput=open((RUNTIME_NODELIST_FOLDER + "/RuntimeNodeList.xml"),"w")
+                xmlfileoutput.write(root.toxml())
+                xmlfileoutput.close()
+                root.unlink
 
 
     def ChangeSettings(self,Node,container,controller,newvalue):
@@ -99,6 +167,11 @@ class PreferencesManagement:
             root.unlink
 
 class RuntimeNodeRegister:
+
+    def runtimeDBasePath(self):
+        x=(RUNTIME_NODELIST_FOLDER + "/RuntimeNodeList.xml")
+        return x
+
 
     def CreateGlobalPreferences(self,startframe,endframe,note):
         ID="Node0000000"
