@@ -2,7 +2,7 @@
 
 #---------------------------------------------------------------------------------------------------------------------
 #
-#    Gui Starting script....
+#    Open Assembler Node Creator....
 #
 #    Created by: Laszlo Mates (laszlo.mates@gmail.com)
 #    2007
@@ -47,19 +47,48 @@ class _Application(Frame,CanvasInitSliderBar):
         self.Settingspanel()
 
     def Settingspanel(self):
-        settingswindow = Toplevel(bg="gray55")
+        settingswindow = Toplevel(bg="gray35")
         settingswindow.title("Node Settings")
         placerowvar=StringVar()
-        Label(settingswindow,bg="gray55",width=10,text="Row",anchor="w").grid(row=0,column=0)
-        placerow = Entry(settingswindow,bg="gray55",width=10,textvariable=placerowvar,state="readonly")
+        Label(settingswindow,bg="gray35",width=10,text="Row",anchor="w").grid(row=0,column=0)
+        placerow = Entry(settingswindow,bg="gray35",width=10,textvariable=placerowvar,state="readonly")
         placerowvar.set("UP")
         placerow.grid(row=0,column=1)
 
         placecolumnvar=IntVar()
-        Label(settingswindow,bg="gray55",width=10,text="Column",anchor="w").grid(row=0,column=2)
-        placecolumn = Entry(settingswindow,bg="gray55",width=10,textvariable=placecolumnvar,state="readonly")
+        Label(settingswindow,bg="gray35",width=10,text="Slot",anchor="w").grid(row=0,column=2)
+        placecolumn = Entry(settingswindow,bg="gray35",width=10,textvariable=placecolumnvar,state="readonly")
         placecolumnvar.set(5)
         placecolumn.grid(row=0,column=3)
+
+
+        name=StringVar()
+        Label(settingswindow,bg="gray35",width=10,text="Name",anchor="w").grid(row=1,column=0)
+        nameentry = Entry(settingswindow,bg="gray35",width=10,textvariable=name)
+        name.set("...")
+        nameentry.grid(row=1,column=1)
+
+        sname=StringVar()
+        Label(settingswindow,bg="gray35",width=10,text="Short name",anchor="w").grid(row=1,column=2)
+        sn = Entry(settingswindow,bg="gray35",width=10,textvariable=sname)
+        sname.set("...")
+        sn.grid(row=1,column=3)
+
+        Label(settingswindow,bg="gray35",width=45,text="Note",anchor="c").grid(row=2,column=0, columnspan=4)
+        notee=Text(settingswindow,width=45,height=5,bg="gray35",relief="sunken",wrap="word",bd=2,highlightbackground="gray35")
+        notee.grid(row=3,column=0,columnspan=4)
+        notee.insert(CURRENT, "SomeNote to here")
+
+        Label(settingswindow,bg="gray35",width=45,text="Node-Shape-Style",anchor="c").grid(row=4,column=0, columnspan=4)
+        shapetypes=Listbox(settingswindow,width=20,height=4,bg="gray35")
+        shapetypes.grid(row=5,column=0,columnspan=2, sticky="nw")
+        shapetypes.insert(END,"Normal")
+        shapetypes.insert(END,"No-Input")
+        shapetypes.insert(END,"No-Output")
+        shapetypes.insert(END,"No-Input and No-Output")
+        canv=Canvas(settingswindow,width=200,height=100,relief=GROOVE,bg="gray55",bd=2)
+        canv.grid(row=5,column=2,columnspan=2,rowspan=3)
+
 
         settingswindow.master.wm_resizable(width=False ,height=False)
 
