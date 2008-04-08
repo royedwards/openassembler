@@ -17,13 +17,19 @@ class CanvasInitSliderBar(SliderBarDbaseSupport,NodeListCategoriser,SliderBarEve
             self.sliderlastx=event.x
             self.sliderlasty=event.y
             return self.B1ClickEvent(event, TargetCanvas)
-        TargetCanvas.bind("<Button-1>", handlerB1Click)
+        if EditorCanvas==None:
+            pass
+        else:
+            TargetCanvas.bind("<Button-1>", handlerB1Click)
 
         def handlerB1DoubleClick(event, self=self, TargetCanvas=TargetCanvas,EditorCanvas=EditorCanvas):
             self.sliderlastx=event.x
             self.sliderlasty=event.y
             return self.B1DoubleClickEvent(event, TargetCanvas,EditorCanvas)
-        TargetCanvas.bind("<Double-Button-1>", handlerB1DoubleClick)
+        if EditorCanvas==None:
+            pass
+        else:
+            TargetCanvas.bind("<Double-Button-1>", handlerB1DoubleClick)
 
         def handlerB1Move(event, self=self, TargetCanvas=TargetCanvas,EditorCanvas=EditorCanvas):
             tmp=self.mouseMove_SliderBar(event, TargetCanvas)

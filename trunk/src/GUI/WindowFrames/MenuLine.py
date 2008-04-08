@@ -46,7 +46,7 @@ class CanvasInitMenuLine(LoadPreferences,CanvasInitPreferencePanel,RuntimeNodeRe
 
     def SaveScene(self):
         if self.sceneFileName=="":
-            fdiagback=tkFileDialog.SaveAs(filetypes=[('OpenAsembler Scene','*.oas')],title="Save OpenAssembler scene file as:").show()
+            fdiagback=tkFileDialog.SaveAs(filetypes=[('OpenAsembler Scene','*.oas')],defaultextension="oas",title="Save OpenAssembler scene file as:").show()
             if fdiagback==():
                 print "Save canceled..."
             else:
@@ -68,8 +68,8 @@ class CanvasInitMenuLine(LoadPreferences,CanvasInitPreferencePanel,RuntimeNodeRe
             print "OpenAssembler scene saved at: "+str(self.sceneFileName)
 
     def OpenScene(self,ppanel, editor):
-        fdiagback=tkFileDialog.Open(filetypes=[('OpenAssembler Scene','*.oas')], title="Open OpenAssembler Scene:").show()
-        if fdiagback=="":
+        fdiagback=tkFileDialog.Open(filetypes=[('OpenAssembler Scene','*.oas')], title="Open OpenAssembler Scene:",defaultextension="oas").show()
+        if (fdiagback=="") or (fdiagback==()):
             pass
         else:
             print "Loading file: "+ fdiagback

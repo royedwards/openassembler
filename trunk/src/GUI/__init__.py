@@ -1,1 +1,1 @@
-__all__=['Nodes','WindowFrames','OpenAssemblerGUI']
+__all__=['Nodes','WindowFrames','OpenAssemblerGUI','OANodeCreator']
