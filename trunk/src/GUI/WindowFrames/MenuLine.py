@@ -2,13 +2,14 @@ from Tkinter import *
 from GUI.WindowFrames.PreferencePanel import LoadPreferences, CanvasInitPreferencePanel
 from Dbase.DBaseManagement import RuntimeNodeRegister, openScene
 from GUI.Nodes.NodeList import NodeListCategoriser
+from GUI.Nodes.ConnectionLine import ConnectLine
 
 
 import tkFont
 import tkFileDialog
 
 
-class CanvasInitMenuLine(LoadPreferences,CanvasInitPreferencePanel,RuntimeNodeRegister,openScene,NodeListCategoriser):
+class CanvasInitMenuLine(LoadPreferences,CanvasInitPreferencePanel,RuntimeNodeRegister,openScene,NodeListCategoriser,ConnectLine):
 
     def NewScene(self,ppanel,editor):
         self.lastx=30
@@ -68,7 +69,7 @@ class CanvasInitMenuLine(LoadPreferences,CanvasInitPreferencePanel,RuntimeNodeRe
 
     def OpenScene(self,ppanel, editor):
         fdiagback=tkFileDialog.Open(filetypes=[('OpenAssembler Scene','*.oas')], title="Open OpenAssembler Scene:").show()
-        if fdiagback==():
+        if fdiagback=="":
             pass
         else:
             print "Loading file: "+ fdiagback
@@ -101,16 +102,32 @@ class CanvasInitMenuLine(LoadPreferences,CanvasInitPreferencePanel,RuntimeNodeRe
 
 
             nodelist=self.OpenGetIDList(fdiagback)
+            print nodelist
             for n in range (0,len(nodelist)):
-                defvars=self.OpensettingsforGeneration(fdiagback, nodelist[n],editor)
-                self.PutNode(defvars)
-                self.OpenCopyNode(fdiagback, nodelist[n])
-                #self.RegisterRuntimeNode(defvars)
-        # put nodes to screen
+                if self.OpenGetFuncType(fdiagback, nodelist[n])=="NodeConnectionLine":
+                    pass
+                else:
+                    defvars=self.OpensettingsforGeneration(fdiagback, nodelist[n],editor)
+                    self.PutNode(defvars)
+                    self.OpenCopyNode(fdiagback, nodelist[n])
+                    startText=str(self.OpenGetFuncType(fdiagback, nodelist[n]))+str(nodelist[n])
+                    nam=self.getNodeName(nodelist[n])
+                    if startText != nam:
+                        editor.itemconfig(startText, text=nam,tag=(str(nodelist[n]),'UPPERLABEL',str(self.OpenGetFuncType(fdiagback, nodelist[n])),nam,(str(startText)+"select")))
+                        editor.dtag(startText)
+                    else:
+                        pass
 
-        # connect lines
+            print "-> Nodes loaded..."
 
-        # new runtime base..
+            for n in range(0,len(nodelist)):
+                if self.OpenGetFuncType(fdiagback, nodelist[n])=="NodeConnectionLine":
+                    lingen=self.OpenGetgenerationDataforLines(fdiagback, nodelist[n])
+                    self.DrawNewLine(editor, lingen[0], lingen[1], lingen[2], lingen[3], lingen[4], lingen[5])
+                else:
+                    pass
+            print "-> Connections loaded..."
+
 
     def menuLine_init(self,TargetCanvas,preferencescanvas,editor):
         timelineFrame=Frame(TargetCanvas,height=11,width=220,bg="gray35")

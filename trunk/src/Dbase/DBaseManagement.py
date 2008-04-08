@@ -80,6 +80,26 @@ class openScene:
                 IDList.append(idval[4:])
         return IDList
 
+    def OpenGetFuncType(self,infile,ID):
+        rootdoc=minidom.parse(infile)
+        root=rootdoc.documentElement
+        functy=root.childNodes[FindNamedNode(root,("Node"+str(ID)))].getAttribute("FuncType")
+        root.unlink
+        return functy
+
+    def OpenGetgenerationDataforLines(self,infile,ID):
+        rootdoc=minidom.parse(infile)
+        root=rootdoc.documentElement
+        fromnode=root.childNodes[FindNamedNode(root,("Node"+str(ID)))].getAttribute("FromNode")
+        fromnodeout=root.childNodes[FindNamedNode(root,("Node"+str(ID)))].getAttribute("FromNode-Output")
+        fromnodeuni=root.childNodes[FindNamedNode(root,("Node"+str(ID)))].getAttribute("Uni_Out")
+        tonode=root.childNodes[FindNamedNode(root,("Node"+str(ID)))].getAttribute("ToNode")
+        tonodein=root.childNodes[FindNamedNode(root,("Node"+str(ID)))].getAttribute("ToNode-Input")
+        tonodeuni=root.childNodes[FindNamedNode(root,("Node"+str(ID)))].getAttribute("Uni_In")
+        root.unlink
+        retu=(fromnode,fromnodeout,fromnodeuni,tonode, tonodein,tonodeuni)
+        return retu
+
     def OpensettingsforGeneration(self,infile,ID,TargetCanvas):
         rootdoc=minidom.parse(infile)
         root=rootdoc.documentElement
@@ -91,7 +111,6 @@ class openScene:
         posiy=poss.childNodes[FindNamedNode(poss,("Y"))].firstChild.nodeValue
         root.unlink
         generated=self.OpenGenerateVars(TargetCanvas,ID,int(posix),int(posiy),"MAIN",str(functy))
-
         return generated
 
 class PreferencesManagement:
@@ -285,8 +304,8 @@ class RuntimeNodeRegister:
         actuellenode=root.childNodes[FindNamedNode(root,("Node"+str(ID)))]
         actuelleGen=actuellenode.childNodes[FindNamedNode(actuellenode,("Generation"))]
         poss=actuelleGen.childNodes[FindNamedNode(actuelleGen,("Position"))]
-        posix=poss.childNodes[FindNamedNode(poss,("X"))].firstChild.nodeValue=str(bb[0])
-        posiy=poss.childNodes[FindNamedNode(poss,("Y"))].firstChild.nodeValue=str(bb[1])
+        posix=poss.childNodes[FindNamedNode(poss,("X"))].firstChild.nodeValue=str(bb[0]*2-25)
+        posiy=poss.childNodes[FindNamedNode(poss,("Y"))].firstChild.nodeValue=str(bb[1]*2-25)
         xmlfileoutput=open((RUNTIME_NODELIST_FOLDER + "/RuntimeNodeList.xml"),"w")
         xmlfileoutput.write(root.toxml())
         xmlfileoutput.close()
