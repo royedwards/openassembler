@@ -1,6 +1,6 @@
 from Tkinter import *
 from GUI.WindowFrames.PreferencePanel import LoadPreferences, CanvasInitPreferencePanel
-from Dbase.DBaseManagement import RuntimeNodeRegister, openScene
+from Dbase.DBaseManagement import RuntimeNodeRegister, openScene, PreferencesManagement
 from GUI.Nodes.NodeList import NodeListCategoriser
 from GUI.Nodes.ConnectionLine import ConnectLine
 
@@ -9,7 +9,7 @@ import tkFont
 import tkFileDialog
 
 
-class CanvasInitMenuLine(LoadPreferences,CanvasInitPreferencePanel,RuntimeNodeRegister,openScene,NodeListCategoriser,ConnectLine):
+class CanvasInitMenuLine(LoadPreferences,CanvasInitPreferencePanel,RuntimeNodeRegister,openScene,PreferencesManagement,NodeListCategoriser,ConnectLine):
 
     def NewScene(self,ppanel,editor):
         self.lastx=30
@@ -102,7 +102,6 @@ class CanvasInitMenuLine(LoadPreferences,CanvasInitPreferencePanel,RuntimeNodeRe
 
 
             nodelist=self.OpenGetIDList(fdiagback)
-            print nodelist
             for n in range (0,len(nodelist)):
                 if self.OpenGetFuncType(fdiagback, nodelist[n])=="NodeConnectionLine":
                     pass
@@ -119,6 +118,13 @@ class CanvasInitMenuLine(LoadPreferences,CanvasInitPreferencePanel,RuntimeNodeRe
                         pass
 
             print "-> Nodes loaded..."
+
+            for n in range(0,len(nodelist)):
+                if self.OpenGetFuncType(fdiagback, nodelist[n])=="NodeConnectionLine":
+                    lingen=self.OpenGetgenerationDataforLines(fdiagback, nodelist[n])
+                    self.ChangeSettings(lingen[3], "Data", lingen[4], "...")
+                else:
+                    pass
 
             for n in range(0,len(nodelist)):
                 if self.OpenGetFuncType(fdiagback, nodelist[n])=="NodeConnectionLine":

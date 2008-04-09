@@ -574,6 +574,21 @@ class RuntimeNodeRegister:
 
 class SliderBarDbaseSupport:
 
+    def DeleteSliderBarNode(self,nodeName):
+        rootdoc=minidom.parse(GUI_SETTINGS_FOLDER + "/SliderBarNodeList.xml")
+        root=rootdoc.documentElement
+        b=None
+        for n in range(0,root.childNodes.length):
+            for m in range(0,root.childNodes[n].childNodes.length):
+                if str(root.childNodes[n].childNodes[m].firstChild.nodeValue)==str(nodeName):
+                    print root.childNodes[n].childNodes[m].nodeName +" : "+ str(root.childNodes[n].childNodes[m].firstChild.nodeValue)
+                    b=root.childNodes[n].childNodes[m]
+            try:
+                root.childNodes[n].removeChild(b)
+                print root.toprettyxml()
+            except:
+                pass
+
     def GetSliderBarNodeList(self):
        rootdoc=minidom.parse(GUI_SETTINGS_FOLDER + "/SliderBarNodeList.xml")
        root=rootdoc.documentElement
@@ -650,6 +665,10 @@ class VarDefs:
 #    _createNodeTypeSettings()                Generates the base node style description xml and the first data entry.
 #
 #------------------------------------------------------------------------------------------------------------------------------------
+
+
+
+
 
 def _createSliderBarNodeList():
         nodeListDoc=minidom.getDOMImplementation()
