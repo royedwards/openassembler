@@ -575,19 +575,96 @@ class RuntimeNodeRegister:
 class SliderBarDbaseSupport:
 
     def DeleteSliderBarNode(self,nodeName):
-        rootdoc=minidom.parse(GUI_SETTINGS_FOLDER + "/SliderBarNodeList.xml")
+        if nodeName=="":
+            pass
+        else:
+            rootdoc=minidom.parse(GUI_SETTINGS_FOLDER + "/SliderBarNodeList.xml")
+            root=rootdoc.documentElement
+            b=None
+            for n in range(0,root.childNodes.length):
+                for m in range(0,root.childNodes[n].childNodes.length):
+                    if str(root.childNodes[n].childNodes[m].firstChild.nodeValue)==str(nodeName):
+                        print root.childNodes[n].childNodes[m].nodeName +" : "+ str(root.childNodes[n].childNodes[m].firstChild.nodeValue)
+                        b=root.childNodes[n].childNodes[m]
+                try:
+                    root.childNodes[n].removeChild(b)
+                    print root.toprettyxml()
+                except:
+                    pass
+            root.unlink
+            rootdoc=minidom.parse(GUI_SETTINGS_FOLDER + "/NodeTypeSettings.xml")
+            root=rootdoc.documentElement
+            b=None
+            for n in range(0,root.childNodes.length):
+                if str(root.childNodes[n].nodeName)==str(nodeName):
+                        b=root.childNodes[n]
+                try:
+                    root.removeChild(b)
+                    print root.toprettyxml()
+                except:
+                    pass
+            root.unlink
+
+    def getRowAndPosition(self,nodeName):
+        slot=None
+        row=None
+        if nodeName=="":
+            pass
+        else:
+            rootdoc=minidom.parse(GUI_SETTINGS_FOLDER + "/SliderBarNodeList.xml")
+            root=rootdoc.documentElement
+            for n in range(0,root.childNodes.length):
+                for m in range(0,root.childNodes[n].childNodes.length):
+                    if str(root.childNodes[n].childNodes[m].firstChild.nodeValue)==str(nodeName):
+                        row= root.childNodes[n].nodeName
+                        slot=root.childNodes[n].childNodes[m].nodeName
+            root.unlink
+            return (row,slot)
+
+
+    def getNodeSettings(self,Functype):
+        if Functype=="":
+            return [()]
+        rootdoc=minidom.parse(GUI_SETTINGS_FOLDER + "/NodeTypeSettings.xml")
         root=rootdoc.documentElement
-        b=None
-        for n in range(0,root.childNodes.length):
-            for m in range(0,root.childNodes[n].childNodes.length):
-                if str(root.childNodes[n].childNodes[m].firstChild.nodeValue)==str(nodeName):
-                    print root.childNodes[n].childNodes[m].nodeName +" : "+ str(root.childNodes[n].childNodes[m].firstChild.nodeValue)
-                    b=root.childNodes[n].childNodes[m]
-            try:
-                root.childNodes[n].removeChild(b)
-                print root.toprettyxml()
-            except:
-                pass
+        generation_root=(root.childNodes[FindNamedNode(root,Functype)].childNodes[FindNamedNode(root.childNodes[FindNamedNode(root,Functype)],"Generation")])
+        data_root=(root.childNodes[FindNamedNode(root,Functype)].childNodes[FindNamedNode(root.childNodes[FindNamedNode(root,Functype)],"Data")])
+        source_root=(root.childNodes[FindNamedNode(root,Functype)].childNodes[FindNamedNode(root.childNodes[FindNamedNode(root,Functype)],"Source")])
+
+        nodeshapestyle = generation_root.childNodes[FindNamedNode(generation_root,"NodeShapeStyle")].firstChild.nodeValue
+
+        colors=generation_root.childNodes[FindNamedNode(generation_root,"Colors")]
+        topcolor=colors.childNodes[FindNamedNode(colors,"TopColor")].firstChild.nodeValue
+        midcolor=colors.childNodes[FindNamedNode(colors,"MiddleColor")].firstChild.nodeValue
+        botcolor=colors.childNodes[FindNamedNode(colors,"BottomColor")].firstChild.nodeValue
+
+        labels=generation_root.childNodes[FindNamedNode(generation_root,"Labels")]
+        upperlabel=labels.childNodes[FindNamedNode(labels,"UpperLabel")].firstChild.nodeValue
+        Previewlabel=labels.childNodes[FindNamedNode(labels,"PreviewLabel")].firstChild.nodeValue
+        Note=labels.childNodes[FindNamedNode(labels,"Note")].firstChild.nodeValue
+
+        inpno=data_root.childNodes.length
+        inputs_out=[]
+        for n in range (0,inpno):
+                inpnname=str(data_root.childNodes[n].nodeName)
+                inpconn=str(data_root.childNodes[n].getAttribute("Connection"))
+                inpmulti=str(data_root.childNodes[n].getAttribute("MultiConnection"))
+                inptyp=str(data_root.childNodes[n].getAttribute("Type"))
+                inpp=(inpnname,inpconn,inpmulti,inptyp)
+                inputs_out.append((inpp))
+
+        outputs=generation_root.childNodes[FindNamedNode(generation_root,"Outputs")]
+        outno=outputs.childNodes.length
+        outs_out=[]
+        for n in range (0,outno):
+            tmp=((str(outputs.childNodes[n].nodeName)),(str(outputs.childNodes[n].getAttribute("Type"))))
+            outs_out.append((tmp))
+
+        sourcefile=str(source_root.firstChild.firstChild.nodeValue)
+
+        outvalues=(str(nodeshapestyle),str(upperlabel),str(Previewlabel),str(Note),str(topcolor),str(midcolor),str(botcolor),(inputs_out),(outs_out),sourcefile)
+        root.unlink
+        return outvalues
 
     def GetSliderBarNodeList(self):
        rootdoc=minidom.parse(GUI_SETTINGS_FOLDER + "/SliderBarNodeList.xml")
