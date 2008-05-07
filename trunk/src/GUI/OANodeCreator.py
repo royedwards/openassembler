@@ -45,7 +45,7 @@ class _Application(Frame,CanvasInitSliderBar,NodeListCategoriser,SliderBarDbaseS
     def midbutton(self):
         pass
 
-    def shownode(self,canvas,type,collection):
+    def shownode(self,canvas,name,sname,nodeshape,topc,midc,botc,ins,outs):
         canvas.delete(ALL)
         VarInitReturn=[]
         VarInitReturn.append(canvas)
@@ -53,21 +53,19 @@ class _Application(Frame,CanvasInitSliderBar,NodeListCategoriser,SliderBarDbaseS
         cord=(60,20)
         VarInitReturn.append(cord)
         VarInitReturn.append("MAIN")
-        VarInitReturn.append("Mainfelirat")
-
-        nodeshapestyle = "SHAPE02"
-        topcolor="gray50"
-        midcolor="gray60"
-        botcolor="gray70"
-        upperlabel="Test"
-        Previewlabel="TST"
-        Note="Ugyselaccik"
-        inputs_out=[]
-        inputs_out.append("In01")
-        inputs_out.append("In02")
-        outs_out=[]
-        outs_out.append("Out01")
-        outvalues=(str(nodeshapestyle),str(upperlabel),str(Previewlabel),str(Note),str(topcolor),str(midcolor),str(botcolor),(inputs_out),(outs_out))
+        VarInitReturn.append(name)
+        if nodeshape=="Normal":
+            nodeshapestyle = "SHAPE02"
+        else:
+            nodeshapestyle = "SHAPE02"
+            print "You must select a node shape to view it!!! Normal node shape is used in this case..."
+        topcolor=topc
+        midcolor=midc
+        botcolor=botc
+        upperlabel=name
+        Previewlabel=sname
+        Note="..."
+        outvalues=(str(nodeshapestyle),str(upperlabel),str(Previewlabel),str(Note),str(topcolor),str(midcolor),str(botcolor),ins,outs)
         VarInitReturn.append(outvalues)
         self.PutNode(VarInitReturn)
 
@@ -94,6 +92,10 @@ class _Application(Frame,CanvasInitSliderBar,NodeListCategoriser,SliderBarDbaseS
         nameentry = Entry(settingswindow,bg="gray35",width=10,textvariable=name)
         name.set(invars[1])
         nameentry.grid(row=1,column=1)
+        def nameback():
+            pass
+        nameentry.bind("<Return>",lambda event: nameback())
+
 
         sname=StringVar()
         Label(settingswindow,bg="gray35",width=10,text="Short name",anchor="w").grid(row=1,column=2)
@@ -117,11 +119,14 @@ class _Application(Frame,CanvasInitSliderBar,NodeListCategoriser,SliderBarDbaseS
         canv.grid(row=5,column=2,columnspan=2,rowspan=3)
         if invars[0]=="SHAPE02":
             shapetypes.selection_set(0, 0)
-            self.shownode(canv,shapetypes.selection_get())
-        shapetypes.bind("<ButtonRelease-1>",lambda event:self.shownode(canv,shapetypes.selection_get()))
+        #shapetypes.bind("<ButtonRelease-1>",lambda event:self.shownode(canv,shapetypes.selection_get()))
 
         viewbutton=Button(settingswindow,text="View it !!!", padx=43,pady=5)
         viewbutton.grid(row=6,column=0,columnspan=2, sticky="w")
+        try:
+            viewbutton.bind("<Button-1>",lambda event:self.shownode(canv,name.get(),sname.get(),shapetypes.selection_get(),topcolor.get(),midcolor.get(),bottcolor.get(),invars[7],invars[8]))
+        except:
+            pass
 
         topcolor=StringVar()
         Label(settingswindow,bg="gray35",width=10,text="TopColor",anchor="w").grid(row=0,column=4)

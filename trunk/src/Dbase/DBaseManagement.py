@@ -722,14 +722,14 @@ class VarDefs:
             if ((str(data_root.childNodes[n].getAttribute("Connection"))))=="False":
                 pass
             else:
-                inputs_out.append((str(data_root.childNodes[n].nodeName)))
+                inputs_out.append([(str(data_root.childNodes[n].nodeName)),"othercomehere"])
 
         outputs=generation_root.childNodes[FindNamedNode(generation_root,"Outputs")]
         outno=outputs.childNodes.length
         outs_out=[]
         for n in range (0,outno):
             tmp=((str(outputs.childNodes[n].nodeName)),(str(outputs.childNodes[n].getAttribute("Type"))))
-            outs_out.append((str(outputs.childNodes[n].nodeName)))
+            outs_out.append([(str(outputs.childNodes[n].nodeName)),"others"])
 
         outvalues=(str(nodeshapestyle),str(upperlabel),str(Previewlabel),str(Note),str(topcolor),str(midcolor),str(botcolor),(inputs_out),(outs_out))
 
