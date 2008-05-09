@@ -45,6 +45,46 @@ class _Application(Frame,CanvasInitSliderBar,NodeListCategoriser,SliderBarDbaseS
     def midbutton(self):
         pass
 
+    def outputsettings(self):
+        outputwindow = Toplevel(bg="gray35")
+        outputwindow.wm_resizable(width=False ,height=False)
+        outputwindow.title("Output Settings")
+        paramname=StringVar()
+        Label(outputwindow,bg="gray35",width=10,text="Output Name:",anchor="w").grid(row=0,column=0)
+        param = Entry(outputwindow,bg="gray35",width=10,textvariable=paramname)
+        paramname.set("name")
+        param.grid(row=0,column=1)
+
+        scrollout=Scrollbar(outputwindow)
+        scrollout.grid(row=1,column=2,sticky=N+S+W)
+        Label(outputwindow,bg="gray35",text="Parameter type:",anchor="c").grid(row=1,column=0)
+        outypes=Listbox(outputwindow,height=4,bg="gray35")
+        outypes.grid(row=1,column=1, sticky="nw")
+        outypes.config(yscrollcommand=scrollout.set)
+        scrollout.config(command=outypes.yview)
+        outypes.insert(END,"Path")
+        outypes.insert(END,"Number")
+        outypes.insert(END,"Color")
+        outypes.insert(END,"OneLinerText")
+        outypes.insert(END,"Path")
+        outypes.insert(END,"Number")
+        outypes.insert(END,"Color")
+        outypes.insert(END,"OneLinerText")
+
+        okbutt=Button(outputwindow,text="OK, save it!", padx=43,pady=5)
+        okbutt.grid(row=2,column=0, sticky="w")
+        try:
+            okbutt.bind("<Button-1>",lambda event:self.shownode(canv,name.get(),sname.get(),shapetypes.selection_get(),topcolor.get(),midcolor.get(),bottcolor.get(),invars[7],invars[8]))
+        except:
+            pass
+        cancelbutton=Button(outputwindow,text="Cancel!!!", padx=43,pady=5)
+        cancelbutton.grid(row=2,column=1, columnspan=2,sticky="e")
+        try:
+            cancelbutton.bind("<Button-1>",lambda event:self.shownode(canv,name.get(),sname.get(),shapetypes.selection_get(),topcolor.get(),midcolor.get(),bottcolor.get(),invars[7],invars[8]))
+        except:
+            pass
+
+
     def shownode(self,canvas,name,sname,nodeshape,topc,midc,botc,ins,outs):
         canvas.delete(ALL)
         VarInitReturn=[]
@@ -157,6 +197,7 @@ class _Application(Frame,CanvasInitSliderBar,NodeListCategoriser,SliderBarDbaseS
         scrollout.config(command=outs.yview)
         newout=Button(settingswindow,text="NEW",width=4,pady=2)
         newout.grid(row=3,column=5,sticky="ne")
+        newout.bind("<Button-1>", lambda event:self.outputsettings())
         editout=Button(settingswindow,text="EDIT",width=4,pady=2)
         editout.grid(row=3,column=5,sticky="e")
         delout=Button(settingswindow,text="DEL",width=4,pady=2)
