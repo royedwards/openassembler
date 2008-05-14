@@ -45,7 +45,7 @@ class _Application(Frame,CanvasInitSliderBar,NodeListCategoriser,SliderBarDbaseS
     def midbutton(self):
         pass
 
-    def outputsettings(self):
+    def outputsettings(self,out_area,originallist):
         outputwindow = Toplevel(bg="gray35")
         outputwindow.wm_resizable(width=False ,height=False)
         outputwindow.title("Output Settings")
@@ -63,26 +63,90 @@ class _Application(Frame,CanvasInitSliderBar,NodeListCategoriser,SliderBarDbaseS
         outypes.config(yscrollcommand=scrollout.set)
         scrollout.config(command=outypes.yview)
         outypes.insert(END,"Path")
-        outypes.insert(END,"Number")
-        outypes.insert(END,"Color")
-        outypes.insert(END,"OneLinerText")
-        outypes.insert(END,"Path")
-        outypes.insert(END,"Number")
-        outypes.insert(END,"Color")
-        outypes.insert(END,"OneLinerText")
+        outypes.insert(END,"TextLine")
+        outypes.insert(END,"MassText")
+        outypes.insert(END,"Separator")
+        outypes.insert(END,"SimpleNumber")
+        outypes.insert(END,"Boolean")
+        outypes.insert(END,"--None--")
+        outypes.insert(END,"--None--")
+        def okbuttrun(outputwindow,out_area,paramname,outypes,originallist):
+            try:
+                x=outypes.selection_get()
+                if x!="Normal":
+                    out_area.append((paramname.get(),outypes.selection_get()))
+                    originallist.insert(END,str(paramname.get()))
+                    outputwindow.destroy()
+                else:
+                    print "You must select a parameter type!!!!"
+            except:
+                print "You must select a parameter type!!!!"
+
 
         okbutt=Button(outputwindow,text="OK, save it!", padx=43,pady=5)
         okbutt.grid(row=2,column=0, sticky="w")
         try:
-            okbutt.bind("<Button-1>",lambda event:self.shownode(canv,name.get(),sname.get(),shapetypes.selection_get(),topcolor.get(),midcolor.get(),bottcolor.get(),invars[7],invars[8]))
+            okbutt.bind("<Button-1>",lambda event:okbuttrun(outputwindow,out_area,paramname,outypes,originallist))
         except:
             pass
         cancelbutton=Button(outputwindow,text="Cancel!!!", padx=43,pady=5)
         cancelbutton.grid(row=2,column=1, columnspan=2,sticky="e")
         try:
-            cancelbutton.bind("<Button-1>",lambda event:self.shownode(canv,name.get(),sname.get(),shapetypes.selection_get(),topcolor.get(),midcolor.get(),bottcolor.get(),invars[7],invars[8]))
+            cancelbutton.bind("<Button-1>",lambda event:outputwindow.destroy())
         except:
             pass
+
+    def inputsettings(self,out_area,originallist):
+        outputwindow = Toplevel(bg="gray35")
+        outputwindow.wm_resizable(width=False ,height=False)
+        outputwindow.title("Settings editor")
+        paramname=StringVar()
+        Label(outputwindow,bg="gray35",width=10,text="Output Name:",anchor="w").grid(row=0,column=0)
+        param = Entry(outputwindow,bg="gray35",width=10,textvariable=paramname)
+        paramname.set("name")
+        param.grid(row=0,column=1)
+
+        scrollout=Scrollbar(outputwindow)
+        scrollout.grid(row=1,column=2,sticky=N+S+W)
+        Label(outputwindow,bg="gray35",text="Parameter type:",anchor="c").grid(row=1,column=0)
+        outypes=Listbox(outputwindow,height=4,bg="gray35")
+        outypes.grid(row=1,column=1, sticky="nw")
+        outypes.config(yscrollcommand=scrollout.set)
+        scrollout.config(command=outypes.yview)
+        outypes.insert(END,"Path")
+        outypes.insert(END,"TextLine")
+        outypes.insert(END,"MassText")
+        outypes.insert(END,"Separator")
+        outypes.insert(END,"SimpleNumber")
+        outypes.insert(END,"Boolean")
+        outypes.insert(END,"--None--")
+        outypes.insert(END,"--None--")
+        def okbuttrun(outputwindow,out_area,paramname,outypes,originallist):
+            try:
+                x=outypes.selection_get()
+                if x!="Normal":
+                    out_area.append((paramname.get(),outypes.selection_get()))
+                    originallist.insert(END,str(paramname.get()))
+                    outputwindow.destroy()
+                else:
+                    print "You must select a parameter type!!!!"
+            except:
+                print "You must select a parameter type!!!!"
+
+
+        okbutt=Button(outputwindow,text="OK, save it!", padx=43,pady=5)
+        okbutt.grid(row=2,column=0, sticky="w")
+        try:
+            okbutt.bind("<Button-1>",lambda event:okbuttrun(outputwindow,out_area,paramname,outypes,originallist))
+        except:
+            pass
+        cancelbutton=Button(outputwindow,text="Cancel!!!", padx=43,pady=5)
+        cancelbutton.grid(row=2,column=1, columnspan=2,sticky="e")
+        try:
+            cancelbutton.bind("<Button-1>",lambda event:outputwindow.destroy())
+        except:
+            pass
+
 
 
     def shownode(self,canvas,name,sname,nodeshape,topc,midc,botc,ins,outs):
@@ -186,36 +250,49 @@ class _Application(Frame,CanvasInitSliderBar,NodeListCategoriser,SliderBarDbaseS
         midcolor.set(invars[5])
         nameentry.grid(row=1,column=5)
 
+        output_tmp=[]
         Label(settingswindow,bg="gray35",width=10,text="Outputs",anchor="c").grid(row=2,column=4)
         scrollout=Scrollbar(settingswindow)
         scrollout.grid(row=3,column=5,sticky=N+S+W)
         outs=Listbox(settingswindow,width=10,height=4,bg="gray35")
         outs.grid(row=3,column=4, sticky=N+S+W)
         for n in range(0,len(invars[8])):
-            outs.insert(END,invars[8][n][0])
+            nam= invars[8][n][0]
+            typ= invars[8][n][1]
+            output_tmp.append((nam,typ))
+        for n in range(0,len(output_tmp)):
+            outs.insert(END,output_tmp[n][0])
         outs.config(yscrollcommand=scrollout.set)
         scrollout.config(command=outs.yview)
         newout=Button(settingswindow,text="NEW",width=4,pady=2)
         newout.grid(row=3,column=5,sticky="ne")
-        newout.bind("<Button-1>", lambda event:self.outputsettings())
-        editout=Button(settingswindow,text="EDIT",width=4,pady=2)
-        editout.grid(row=3,column=5,sticky="e")
+        newout.bind("<Button-1>", lambda event:self.outputsettings(output_tmp,outs))
+        #editout=Button(settingswindow,text="EDIT",width=4,pady=2)
+        #editout.grid(row=3,column=5,sticky="e")
         delout=Button(settingswindow,text="DEL",width=4,pady=2)
         delout.grid(row=3,column=5,sticky="se")
 
+        settings_tmp=[]
         Label(settingswindow,bg="gray35",width=10,text="Settings",anchor="c").grid(row=4,column=4)
         scrollset=Scrollbar(settingswindow)
         scrollset.grid(row=5,column=5,sticky=N+S+W,rowspan=2)
         sets=Listbox(settingswindow,width=10,height=4,bg="gray35")
         sets.grid(row=5,column=4,rowspan=2,sticky=N+S+W)
         for n in range(0,len(invars[7])):
-            sets.insert(END,invars[7][n][0])
+            param0=invars[7][n][0]
+            param1=invars[7][n][1]
+            param2=invars[7][n][2]
+            param3=invars[7][n][3]
+            settings_tmp.append((param0,param1,param2,param3))
+        for n in range(0,len(settings_tmp)):
+            sets.insert(END,settings_tmp[n][0])
         sets.config(yscrollcommand=scrollset.set)
         scrollset.config(command=sets.yview)
         newset=Button(settingswindow,text="NEW",width=4,pady=2)
         newset.grid(row=5,column=5,sticky="ne")
-        editset=Button(settingswindow,text="EDIT",width=4,pady=2)
-        editset.grid(row=5,column=5,sticky="e")
+        #editset=Button(settingswindow,text="EDIT",width=4,pady=2)
+        #editset.grid(row=5,column=5,sticky="e")
+        newset.bind("<Button-1>", lambda event:self.inputsettings(output_tmp,outs))
         delset=Button(settingswindow,text="DEL",width=4,pady=2)
         delset.grid(row=5,column=5,sticky="se")
 
