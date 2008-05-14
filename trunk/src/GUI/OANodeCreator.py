@@ -96,6 +96,15 @@ class _Application(Frame,CanvasInitSliderBar,NodeListCategoriser,SliderBarDbaseS
         except:
             pass
 
+    def deloutput(self,outvar,listbox):
+        for n in range(0,len(outvar)):
+            try:
+                if outvar[n][0]==listbox.selection_get():
+                    del outvar[n]
+                    listbox.delete(listbox.curselection()[0])
+            except:
+                pass
+
     def inputsettings(self,out_area,originallist):
         outputwindow = Toplevel(bg="gray35")
         outputwindow.wm_resizable(width=False ,height=False)
@@ -125,23 +134,33 @@ class _Application(Frame,CanvasInitSliderBar,NodeListCategoriser,SliderBarDbaseS
             try:
                 x=outypes.selection_get()
                 if x!="Normal":
-                    out_area.append((paramname.get(),outypes.selection_get()))
+                    out_area.append((paramname.get(),varriableconnect.get(),mvarriableconnect.get(),outypes.selection_get()))
                     originallist.insert(END,str(paramname.get()))
                     outputwindow.destroy()
                 else:
                     print "You must select a parameter type!!!!"
             except:
                 print "You must select a parameter type!!!!"
+        varriableconnect=StringVar()
+        ch=Checkbutton(outputwindow,text="Connectable?",variable=varriableconnect,onvalue="True",offvalue="False",anchor="w")
+        ch.grid(row=2,column=0)
+        varriableconnect.set("True")
+        ch.var=varriableconnect
 
+        mvarriableconnect=StringVar()
+        mch=Checkbutton(outputwindow,text="MultipleConnections?",variable=mvarriableconnect,onvalue="True",offvalue="False",anchor="w")
+        mch.grid(row=2,column=1)
+        mvarriableconnect.set("False")
+        mch.var=mvarriableconnect
 
         okbutt=Button(outputwindow,text="OK, save it!", padx=43,pady=5)
-        okbutt.grid(row=2,column=0, sticky="w")
+        okbutt.grid(row=3,column=0, sticky="w")
         try:
             okbutt.bind("<Button-1>",lambda event:okbuttrun(outputwindow,out_area,paramname,outypes,originallist))
         except:
             pass
         cancelbutton=Button(outputwindow,text="Cancel!!!", padx=43,pady=5)
-        cancelbutton.grid(row=2,column=1, columnspan=2,sticky="e")
+        cancelbutton.grid(row=3,column=1, columnspan=2,sticky="e")
         try:
             cancelbutton.bind("<Button-1>",lambda event:outputwindow.destroy())
         except:
@@ -158,7 +177,11 @@ class _Application(Frame,CanvasInitSliderBar,NodeListCategoriser,SliderBarDbaseS
         VarInitReturn.append(cord)
         VarInitReturn.append("MAIN")
         VarInitReturn.append(name)
-        if nodeshape=="Normal":
+        try:
+            tmmp=nodeshape.selection_get()
+        except:
+            tmmp="Normal"
+        if tmmp=="Normal":
             nodeshapestyle = "SHAPE02"
         else:
             nodeshapestyle = "SHAPE02"
@@ -169,7 +192,11 @@ class _Application(Frame,CanvasInitSliderBar,NodeListCategoriser,SliderBarDbaseS
         upperlabel=name
         Previewlabel=sname
         Note="..."
-        outvalues=(str(nodeshapestyle),str(upperlabel),str(Previewlabel),str(Note),str(topcolor),str(midcolor),str(botcolor),ins,outs)
+        iinnss=[]
+        for n in range(0,len(ins)):
+            if ins[n][1]=="True":
+                iinnss.append(ins[n])
+        outvalues=(str(nodeshapestyle),str(upperlabel),str(Previewlabel),str(Note),str(topcolor),str(midcolor),str(botcolor),iinnss,outs)
         VarInitReturn.append(outvalues)
         self.PutNode(VarInitReturn)
 
@@ -228,7 +255,7 @@ class _Application(Frame,CanvasInitSliderBar,NodeListCategoriser,SliderBarDbaseS
         viewbutton=Button(settingswindow,text="View it !!!", padx=43,pady=5)
         viewbutton.grid(row=6,column=0,columnspan=2, sticky="w")
         try:
-            viewbutton.bind("<Button-1>",lambda event:self.shownode(canv,name.get(),sname.get(),shapetypes.selection_get(),topcolor.get(),midcolor.get(),bottcolor.get(),invars[7],invars[8]))
+            viewbutton.bind("<Button-1>",lambda event:self.shownode(canv,name.get(),sname.get(),shapetypes,topcolor.get(),midcolor.get(),bottcolor.get(),settings_tmp,output_tmp))
         except:
             pass
 
@@ -271,6 +298,7 @@ class _Application(Frame,CanvasInitSliderBar,NodeListCategoriser,SliderBarDbaseS
         #editout.grid(row=3,column=5,sticky="e")
         delout=Button(settingswindow,text="DEL",width=4,pady=2)
         delout.grid(row=3,column=5,sticky="se")
+        delout.bind("<Button-1>", lambda event:self.deloutput(output_tmp,outs))
 
         settings_tmp=[]
         Label(settingswindow,bg="gray35",width=10,text="Settings",anchor="c").grid(row=4,column=4)
@@ -292,9 +320,10 @@ class _Application(Frame,CanvasInitSliderBar,NodeListCategoriser,SliderBarDbaseS
         newset.grid(row=5,column=5,sticky="ne")
         #editset=Button(settingswindow,text="EDIT",width=4,pady=2)
         #editset.grid(row=5,column=5,sticky="e")
-        newset.bind("<Button-1>", lambda event:self.inputsettings(output_tmp,outs))
+        newset.bind("<Button-1>", lambda event:self.inputsettings(settings_tmp,sets))
         delset=Button(settingswindow,text="DEL",width=4,pady=2)
         delset.grid(row=5,column=5,sticky="se")
+        delset.bind("<Button-1>", lambda event:self.deloutput(settings_tmp,sets))
 
         scriptscroll=Scrollbar(settingswindow)
         scriptscroll.grid(row=9,column=5,sticky=N+S+W)
