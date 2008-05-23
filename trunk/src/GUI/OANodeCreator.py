@@ -8,11 +8,12 @@
 #
 #---------------------------------------------------------------------------------------------------------------------
 from Tkinter import *
+import os
 from WindowFrames.NodeSliderBar import CanvasInitSliderBar
 from GUI.Nodes.NodeList import NodeListCategoriser
 from Dbase.DBaseManagement import SliderBarDbaseSupport
 import tkFont
-
+import tkFileDialog
 
 class _Application(Frame,CanvasInitSliderBar,NodeListCategoriser,SliderBarDbaseSupport):
     def __init__(self, master=None):
@@ -104,6 +105,63 @@ class _Application(Frame,CanvasInitSliderBar,NodeListCategoriser,SliderBarDbaseS
                     listbox.delete(listbox.curselection()[0])
             except:
                 pass
+
+    def generatescript(self,textscript,snvar,name,settings_tmp,output_tmp):
+        textscript.delete(1.0,END)
+        textscript.insert(END,"###OpenAssembler Node python file###\n")
+        textscript.insert(END,"\n")
+
+        textscript.insert(END,str("class "+str(name.get())+"()\n"))
+        textscript.insert(END,"#This is the main class to be imported\n")
+        textscript.insert(END,"\n")
+        textscript.insert(END,str("   def "+str(name.get())+"_main("))
+        textscript.insert(END,str("output, "))
+        for n in range (0,len(settings_tmp)):
+            if n==(len(settings_tmp)-1):
+                textscript.insert(END,str(str(settings_tmp[n][0])))
+            else:
+                textscript.insert(END,str(str(settings_tmp[n][0])+", "))
+        textscript.insert(END,str(")\n"))
+        textscript.insert(END,"      #This is the main definition to be called\n")
+        textscript.insert(END,str("\n"))
+        textscript.insert(END,str("      #--------------------\n"))
+        textscript.insert(END,str("      #\n"))
+        textscript.insert(END,str("      #   Your program code will be here\n"))
+        textscript.insert(END,str("      #   If you keep the names, and the functions\n"))
+        textscript.insert(END,str("      #   than everything have to be allright!!\n"))
+        textscript.insert(END,str("      #\n"))
+        textscript.insert(END,str("      #--------------------\n"))
+        textscript.insert(END,str("\n"))
+
+        for n in range (0,len(output_tmp)):
+            textscript.insert(END,"      if "+"output==\""+str(output_tmp[n][0])+"\":\n")
+            textscript.insert(END,"         return \"[put a variable here]\"\n")
+            textscript.insert(END,str("\n"))
+        fback=tkFileDialog.SaveAs(filetypes=[('Python file','*.py')], title="Save python file::",defaultextension="py").show()
+        if os.path.exists(str(fback)):
+            snvar.set(str(fback))
+            outfilescript=open(fback,"w")
+            outfilescript.write(str(textscript.get(1.0,END)))
+            outfilescript.close()
+
+    def func_savescript(self,scryptent,textscript):
+        fback=tkFileDialog.SaveAs(filetypes=[('Python file','*.py')], title="Save python file::",defaultextension="py").show()
+        if os.path.exists(str(fback)):
+            snvar.set(str(fback))
+            outfilescript=open(fback,"w")
+            outfilescript.write(str(textscript.get(1.0,END)))
+            outfilescript.close()
+            scryptent.set(str(fback))
+
+    def func_openscript(self,scryptent,textscript):
+        fback=tkFileDialog.Open(filetypes=[('Python file','*.py')], title="Open python file::",defaultextension="py").show()
+        if os.path.exists(str(fback)):
+            textscript.delete(1.0,END)
+            file=open(fback)
+            rfile=file.read()
+            textscript.insert(1.0, rfile)
+            file.close()
+            scryptent.set(str(fback))
 
     def inputsettings(self,out_area,originallist):
         outputwindow = Toplevel(bg="gray35")
@@ -200,7 +258,7 @@ class _Application(Frame,CanvasInitSliderBar,NodeListCategoriser,SliderBarDbaseS
         VarInitReturn.append(outvalues)
         self.PutNode(VarInitReturn)
 
-    def Settingspanel(self, invars,posvars):
+    def Settingspanel(self, invars,posvars,state):
         if invars==[()]:
             return 1
         settingswindow = Toplevel(bg="gray35")
@@ -220,7 +278,7 @@ class _Application(Frame,CanvasInitSliderBar,NodeListCategoriser,SliderBarDbaseS
 
         name=StringVar()
         Label(settingswindow,bg="gray35",width=10,text="Name",anchor="w").grid(row=1,column=0)
-        nameentry = Entry(settingswindow,bg="gray35",width=10,textvariable=name)
+        nameentry = Entry(settingswindow,bg="gray35",width=10,textvariable=name,state="readonly")
         name.set(invars[1])
         nameentry.grid(row=1,column=1)
         def nameback():
@@ -294,8 +352,6 @@ class _Application(Frame,CanvasInitSliderBar,NodeListCategoriser,SliderBarDbaseS
         newout=Button(settingswindow,text="NEW",width=4,pady=2)
         newout.grid(row=3,column=5,sticky="ne")
         newout.bind("<Button-1>", lambda event:self.outputsettings(output_tmp,outs))
-        #editout=Button(settingswindow,text="EDIT",width=4,pady=2)
-        #editout.grid(row=3,column=5,sticky="e")
         delout=Button(settingswindow,text="DEL",width=4,pady=2)
         delout.grid(row=3,column=5,sticky="se")
         delout.bind("<Button-1>", lambda event:self.deloutput(output_tmp,outs))
@@ -318,8 +374,7 @@ class _Application(Frame,CanvasInitSliderBar,NodeListCategoriser,SliderBarDbaseS
         scrollset.config(command=sets.yview)
         newset=Button(settingswindow,text="NEW",width=4,pady=2)
         newset.grid(row=5,column=5,sticky="ne")
-        #editset=Button(settingswindow,text="EDIT",width=4,pady=2)
-        #editset.grid(row=5,column=5,sticky="e")
+
         newset.bind("<Button-1>", lambda event:self.inputsettings(settings_tmp,sets))
         delset=Button(settingswindow,text="DEL",width=4,pady=2)
         delset.grid(row=5,column=5,sticky="se")
@@ -336,16 +391,23 @@ class _Application(Frame,CanvasInitSliderBar,NodeListCategoriser,SliderBarDbaseS
         scrsvar.set(invars[9])
         scryptent.grid(row=9, column=5,columnspan=2,sticky=N+E)
 
-        if invars[9] != "" or invars[9] != "...":
-            pass
-
+        if os.path.exists(str(invars[9])):
+            textscript.delete(1.0,END)
+            file=open(invars[9])
+            textscript.insert(1.0, file)
+            file.close()
 
         genscr=Button(settingswindow,text="Generate",width=8,pady=2)
         genscr.grid(row=9,column=5,padx=25,pady=25,columnspan=2,rowspan=2,sticky="nw")
+        genscr.bind("<B1-ButtonRelease>", lambda event:self.generatescript(textscript,scrsvar,name,settings_tmp,output_tmp))
+
         openscr=Button(settingswindow,text="Open",width=8,pady=2)
         openscr.grid(row=9,column=5,padx=25,pady=50,columnspan=2,rowspan=2,sticky="nw")
+        openscr.bind("<B1-ButtonRelease>", lambda event:self.func_openscript(scrsvar, textscript))
+
         savescr=Button(settingswindow,text="Save",width=8,pady=2)
         savescr.grid(row=9,column=5,padx=25,columnspan=2,sticky="sw")
+        savescr.bind("<B1-ButtonRelease>", lambda event:self.func_savescript(scrsvar, textscript))
 
         mainsv=Button(settingswindow,text="SaveNode and Exit")
         mainsv.grid(row=10,columnspan=2,column=0)
@@ -359,7 +421,7 @@ class _Application(Frame,CanvasInitSliderBar,NodeListCategoriser,SliderBarDbaseS
         ccl.bind("<Button-1>", lambda event:canceller(settingswindow))
 
     def editbutt(self):
-        self.Settingspanel(self.getNodeSettings(self.nodeinline.get()), self.getRowAndPosition(self.nodeinline.get()))
+        self.Settingspanel(self.getNodeSettings(self.nodeinline.get()), self.getRowAndPosition(self.nodeinline.get()),"edit")
         #print self.getNodeSettings(self.nodeinline.get())
 
     def Menuline(self):
