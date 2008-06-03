@@ -46,6 +46,35 @@ class _Application(Frame,CanvasInitSliderBar,NodeListCategoriser,SliderBarDbaseS
     def midbutton(self):
         pass
 
+    def writethesettingsbacktofile(self,name,sname,nodeshape,topc,midc,botc,ins,outs,scrpath,state,notee):
+        collection=[]
+        collection.append(name)
+        collection.append(sname)
+        if nodeshape.selection_get()=="Normal":
+            collection.append("SHAPE02")
+        else:
+            print "You must select a node shape style!!!"
+            return 0
+        collection.append(topc)
+        collection.append(midc)
+        collection.append(botc)
+        collection.append(ins)
+        collection.append(outs)
+        collection.append(scrpath)
+        collection.append(notee)
+
+        print state
+
+        if state=="edit":
+            #delete reginode
+            #kiir ujnode
+            pass
+        else:
+            #kiir ujnode
+            #kiir rowlistbe
+            pass
+
+
     def outputsettings(self,out_area,originallist):
         outputwindow = Toplevel(bg="gray35")
         outputwindow.wm_resizable(width=False ,height=False)
@@ -281,9 +310,9 @@ class _Application(Frame,CanvasInitSliderBar,NodeListCategoriser,SliderBarDbaseS
         nameentry = Entry(settingswindow,bg="gray35",width=10,textvariable=name,state="readonly")
         name.set(invars[1])
         nameentry.grid(row=1,column=1)
-        def nameback():
-            pass
-        nameentry.bind("<Return>",lambda event: nameback())
+        #def nameback():
+           # pass
+        #nameentry.bind("<Return>",lambda event: nameback())
 
 
         sname=StringVar()
@@ -411,6 +440,7 @@ class _Application(Frame,CanvasInitSliderBar,NodeListCategoriser,SliderBarDbaseS
 
         mainsv=Button(settingswindow,text="SaveNode and Exit")
         mainsv.grid(row=10,columnspan=2,column=0)
+        mainsv.bind("<Button-1>", lambda event:self.writethesettingsbacktofile(name.get(),sname.get(),shapetypes,topcolor.get(),midcolor.get(),bottcolor.get(),settings_tmp,output_tmp,scrsvar.get(),state,notee.get(1.0,END)))
 
         def canceller(win):
             win.destroy()

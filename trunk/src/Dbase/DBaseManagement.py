@@ -962,6 +962,157 @@ def _createNodeTypeSettings():
         files.write(root.toxml())
         files.close()
 
+
+def AddNodeTypeSettings(ns):
+        rootdoc=minidom.parse(GUI_SETTINGS_FOLDER + "/NodeTypeSettings.xml")
+        root=rootdoc.documentElement
+
+        image=root.createElement(str(ns[0]))
+        root.firstChild.appendChild(image)
+        imattr=root.createAttribute("Type")
+        imattr.value="MainCategory"
+        image.setAttributeNode(imattr)
+
+        Generation_image=root.createElement("Generation")
+        Image.appendChild(Generation_image)
+        genattr=root.createAttribute("Type")
+        genattr.value="SubCategory"
+        Generation_image.setAttributeNode(genattr)
+        nss=root.createElement("NodeShapeStyle")
+        nssattr=root.createAttribute("Type")
+        nssattr.value="String"
+        nss.setAttributeNode(nssattr)
+        Generation_image.appendChild(nss)
+        nsstext=root.createTextNode(str(ns[2]))
+        nss.appendChild(nsstext)
+        colors=root.createElement("Colors")
+        Generation_image.appendChild(colors)
+        colattr=root.createAttribute("Type")
+        colattr.value="SubCategory"
+        colors.setAttributeNode(colattr)
+        topcol=root.createElement("TopColor")
+        colors.appendChild(topcol)
+        topcolattr=root.createAttribute("Type")
+        topcolattr.value="ColorHEX"
+        topcol.setAttributeNode(topcolattr)
+        topcolhex=root.createTextNode(str(ns[3]))
+        topcol.appendChild(topcolhex)
+        midcol=root.createElement("MiddleColor")
+        colors.appendChild(midcol)
+        midcolattr=root.createAttribute("Type")
+        midcolattr.value="ColorHEX"
+        midcol.setAttributeNode(midcolattr)
+        midcolhex=root.createTextNode(str(ns[4]))
+        midcol.appendChild(midcolhex)
+        botcol=root.createElement("BottomColor")
+        colors.appendChild(botcol)
+        botcolattr=root.createAttribute("Type")
+        botcolattr.value="ColorHEX"
+        botcol.setAttributeNode(botcolattr)
+        botcolhex=root.createTextNode(str(ns[5]))
+        botcol.appendChild(botcolhex)
+        labels=root.createElement("Labels")
+        Generation_image.appendChild(labels)
+        labattr=root.createAttribute("Type")
+        labattr.value="SubCategory"
+        labels.setAttributeNode(labattr)
+        uplabel=root.createElement("UpperLabel")
+        labels.appendChild(uplabel)
+        uplabelattr=root.createAttribute("Type")
+        uplabelattr.value="String"
+        uplabel.setAttributeNode(uplabelattr)
+        upperlabeltext=root.createTextNode(str(ns[0]))
+        uplabel.appendChild(upperlabeltext)
+        prlabel=root.createElement("PreviewLabel")
+        labels.appendChild(prlabel)
+        prlabelattr=root.createAttribute("Type")
+        prlabelattr.value="String"
+        prlabel.setAttributeNode(prlabelattr)
+        prlabeltext=root.createTextNode(str(ns[1]))
+        prlabel.appendChild(prlabeltext)
+        ntlabel=root.createElement("Note")
+        labels.appendChild(ntlabel)
+        ntlabelattr=root.createAttribute("Type")
+        ntlabelattr.value="MassText"
+        ntlabel.setAttributeNode(ntlabelattr)
+        ntlabeltext=root.createTextNode(str(ns[0]))
+        ntlabel.appendChild(ntlabeltext)
+        oups=root.createElement("Outputs")
+        Generation_image.appendChild(oups)
+        oupattr=root.createAttribute("Type")
+        oupattr.value="SubCategory"
+        oups.setAttributeNode(oupattr)
+
+        for n in range(0,len(ns[7])):
+            out1=root.createElement(str(ns[7][n][0]))
+            oups.appendChild(out1)
+            out1attr=root.createAttribute("Type")
+            out1attr.value=str(ns[7][n][1])
+            out1.setAttributeNode(out1attr)
+            out1txt=root.createTextNode("")
+            out1.appendChild(out1txt)
+
+        pos=root.createElement("Position")
+        Generation_image.appendChild(pos)
+        posattr=root.createAttribute("Type")
+        posattr.value="SubCategory"
+        pos.setAttributeNode(posattr)
+        xpos=root.createElement("X")
+        pos.appendChild(xpos)
+        xposattr=root.createAttribute("Type")
+        xposattr.value="Integer"
+        xpos.setAttributeNode(xposattr)
+        xpostxt=root.createTextNode("100")
+        xpos.appendChild(xpostxt)
+        ypos=root.createElement("Y")
+        pos.appendChild(ypos)
+        yposattr=root.createAttribute("Type")
+        yposattr.value="Integer"
+        ypos.setAttributeNode(yposattr)
+        ypostxt=root.createTextNode("100")
+        ypos.appendChild(ypostxt)
+
+        Data=root.createElement("Data")
+        Image.appendChild(Data)
+        datattr=root.createAttribute("Type")
+        datattr.value="SubCategory"
+        Data.setAttributeNode(datattr)
+
+        for m in range(0,len(ns[8])):
+            impath=root.createElement(str(ns[8][n][0]))
+            Data.appendChild(impath)
+            impathattr=root.createAttribute("Type")
+            impathattr.value=str(ns[8][n][1])
+            impath.setAttributeNode(impathattr)
+
+            impathattr2=root.createAttribute("Connection")
+            impathattr2.value=str(ns[8][n][2])
+            impath.setAttributeNode(impathattr2)
+
+            impathattr2=root.createAttribute("MultiConnection")
+            impathattr2.value=str(ns[8][n][3])
+            impath.setAttributeNode(impathattr2)
+
+            impathtext=root.createTextNode("...")
+            impath.appendChild(impathtext)
+
+        source=root.createElement("Source")
+        Image.appendChild(source)
+        sattr=root.createAttribute("Type")
+        sattr.value="SubCategory"
+        source.setAttributeNode(sattr)
+        sfile=root.createElement("Sourcecode")
+        source.appendChild(sfile)
+        sfa=root.createAttribute("Type")
+        sfa.value="py"
+        sfile.setAttributeNode(sfa)
+        tart=root.createTextNode(str(ns[9]))
+        sfile.appendChild(tart)
+
+        files.write(root.toxml())
+        files.close()
+
+
 #**************************************************************************************************************************************************************
 #    Fuction call handlers to direct run this file
 #
