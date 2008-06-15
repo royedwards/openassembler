@@ -127,6 +127,8 @@ class PreferencesManagement:
             attrtype = root.childNodes[FindNamedNode(root,("Node"+str(Node)))].childNodes[FindNamedNode(root.childNodes[FindNamedNode(root,("Node"+str(Node)))],"Data")].childNodes[n].getAttribute("Type")
             set=(str(nodename),str(attrname),str(attrvalu),str(attrtype))
             returnvalue.append(set)
+            #print attrname +" -- "+attrvalu+"  --  "+attrtype
+            #print root.toprettyxml()
         root.unlink
         return returnvalue
 
@@ -574,6 +576,22 @@ class RuntimeNodeRegister:
 
 class SliderBarDbaseSupport:
 
+    def CountRowMember(self,row):
+        rootdoc=minidom.parse(GUI_SETTINGS_FOLDER + "/SliderBarNodeList.xml")
+        root_final=rootdoc.documentElement
+
+        uprow=root_final.childNodes[0].childNodes.length
+        midrow=root_final.childNodes[1].childNodes.length
+        bottrow=root_final.childNodes[2].childNodes.length
+
+        if row==1:
+            return uprow
+        if row==2:
+            return midrow
+        if row==3:
+            return bottrow
+
+
     def DeleteSliderBarNode(self,nodeName):
         if nodeName=="":
             pass
@@ -588,7 +606,9 @@ class SliderBarDbaseSupport:
                         b=root.childNodes[n].childNodes[m]
                 try:
                     root.childNodes[n].removeChild(b)
-                    print root.toprettyxml()
+                    files=open((GUI_SETTINGS_FOLDER + "/SliderBarNodeList.xml"),"w")
+                    files.write(str(root.toxml()))
+                    files.close()
                 except:
                     pass
             root.unlink
@@ -600,7 +620,9 @@ class SliderBarDbaseSupport:
                         b=root.childNodes[n]
                 try:
                     root.removeChild(b)
-                    print root.toprettyxml()
+                    files=open((GUI_SETTINGS_FOLDER + "/NodeTypeSettings.xml"),"w")
+                    files.write(str(root.toxml()))
+                    files.close()
                 except:
                     pass
             root.unlink
@@ -622,48 +644,62 @@ class SliderBarDbaseSupport:
             return (row,slot)
 
 
-    def getNodeSettings(self,Functype):
-        if Functype=="":
-            return [()]
-        rootdoc=minidom.parse(GUI_SETTINGS_FOLDER + "/NodeTypeSettings.xml")
-        root=rootdoc.documentElement
-        generation_root=(root.childNodes[FindNamedNode(root,Functype)].childNodes[FindNamedNode(root.childNodes[FindNamedNode(root,Functype)],"Generation")])
-        data_root=(root.childNodes[FindNamedNode(root,Functype)].childNodes[FindNamedNode(root.childNodes[FindNamedNode(root,Functype)],"Data")])
-        source_root=(root.childNodes[FindNamedNode(root,Functype)].childNodes[FindNamedNode(root.childNodes[FindNamedNode(root,Functype)],"Source")])
+    def getNodeSettings(self,Functype,state):
 
-        nodeshapestyle = generation_root.childNodes[FindNamedNode(generation_root,"NodeShapeStyle")].firstChild.nodeValue
+        if state=="edit":
+            if Functype=="":
+                return [()]
+            rootdoc=minidom.parse(GUI_SETTINGS_FOLDER + "/NodeTypeSettings.xml")
+            root=rootdoc.documentElement
+            generation_root=(root.childNodes[FindNamedNode(root,Functype)].childNodes[FindNamedNode(root.childNodes[FindNamedNode(root,Functype)],"Generation")])
+            data_root=(root.childNodes[FindNamedNode(root,Functype)].childNodes[FindNamedNode(root.childNodes[FindNamedNode(root,Functype)],"Data")])
+            source_root=(root.childNodes[FindNamedNode(root,Functype)].childNodes[FindNamedNode(root.childNodes[FindNamedNode(root,Functype)],"Source")])
 
-        colors=generation_root.childNodes[FindNamedNode(generation_root,"Colors")]
-        topcolor=colors.childNodes[FindNamedNode(colors,"TopColor")].firstChild.nodeValue
-        midcolor=colors.childNodes[FindNamedNode(colors,"MiddleColor")].firstChild.nodeValue
-        botcolor=colors.childNodes[FindNamedNode(colors,"BottomColor")].firstChild.nodeValue
+            nodeshapestyle = generation_root.childNodes[FindNamedNode(generation_root,"NodeShapeStyle")].firstChild.nodeValue
 
-        labels=generation_root.childNodes[FindNamedNode(generation_root,"Labels")]
-        upperlabel=labels.childNodes[FindNamedNode(labels,"UpperLabel")].firstChild.nodeValue
-        Previewlabel=labels.childNodes[FindNamedNode(labels,"PreviewLabel")].firstChild.nodeValue
-        Note=labels.childNodes[FindNamedNode(labels,"Note")].firstChild.nodeValue
+            colors=generation_root.childNodes[FindNamedNode(generation_root,"Colors")]
+            topcolor=colors.childNodes[FindNamedNode(colors,"TopColor")].firstChild.nodeValue
+            midcolor=colors.childNodes[FindNamedNode(colors,"MiddleColor")].firstChild.nodeValue
+            botcolor=colors.childNodes[FindNamedNode(colors,"BottomColor")].firstChild.nodeValue
 
-        inpno=data_root.childNodes.length
-        inputs_out=[]
-        for n in range (0,inpno):
-                inpnname=str(data_root.childNodes[n].nodeName)
-                inpconn=str(data_root.childNodes[n].getAttribute("Connection"))
-                inpmulti=str(data_root.childNodes[n].getAttribute("MultiConnection"))
-                inptyp=str(data_root.childNodes[n].getAttribute("Type"))
-                inpp=(inpnname,inpconn,inpmulti,inptyp)
-                inputs_out.append((inpp))
+            labels=generation_root.childNodes[FindNamedNode(generation_root,"Labels")]
+            upperlabel=labels.childNodes[FindNamedNode(labels,"UpperLabel")].firstChild.nodeValue
+            Previewlabel=labels.childNodes[FindNamedNode(labels,"PreviewLabel")].firstChild.nodeValue
+            Note=labels.childNodes[FindNamedNode(labels,"Note")].firstChild.nodeValue
 
-        outputs=generation_root.childNodes[FindNamedNode(generation_root,"Outputs")]
-        outno=outputs.childNodes.length
-        outs_out=[]
-        for n in range (0,outno):
-            tmp=((str(outputs.childNodes[n].nodeName)),(str(outputs.childNodes[n].getAttribute("Type"))))
-            outs_out.append((tmp))
+            inpno=data_root.childNodes.length
+            inputs_out=[]
+            for n in range (0,inpno):
+                    inpnname=str(data_root.childNodes[n].nodeName)
+                    inpconn=str(data_root.childNodes[n].getAttribute("Connection"))
+                    inpmulti=str(data_root.childNodes[n].getAttribute("MultiConnection"))
+                    inptyp=str(data_root.childNodes[n].getAttribute("Type"))
+                    inpp=(inpnname,inpconn,inpmulti,inptyp)
+                    inputs_out.append((inpp))
 
-        sourcefile=str(source_root.firstChild.firstChild.nodeValue)
+            outputs=generation_root.childNodes[FindNamedNode(generation_root,"Outputs")]
+            outno=outputs.childNodes.length
+            outs_out=[]
+            for n in range (0,outno):
+                tmp=((str(outputs.childNodes[n].nodeName)),(str(outputs.childNodes[n].getAttribute("Type"))))
+                outs_out.append((tmp))
 
-        outvalues=(str(nodeshapestyle),str(upperlabel),str(Previewlabel),str(Note),str(topcolor),str(midcolor),str(botcolor),(inputs_out),(outs_out),sourcefile)
-        root.unlink
+            sourcefile=str(source_root.firstChild.firstChild.nodeValue)
+
+            outvalues=(str(nodeshapestyle),str(upperlabel),str(Previewlabel),str(Note),str(topcolor),str(midcolor),str(botcolor),(inputs_out),(outs_out),sourcefile)
+            root.unlink
+        if state!="edit":
+            inputs_out=[]
+            inpnname="InputToDefine"
+            inpconn="True"
+            inpmulti="True"
+            inptyp="Path"
+            inpp=(inpnname,inpconn,inpmulti,inptyp)
+            inputs_out.append((inpp))
+            outs_out=[]
+            outs_out.append(("SettingsToDefine","True"))
+            outvalues=("SHAPE02","NewNode","NN","Put some note here!","gray60","gray45","gray35",(inputs_out),(outs_out),"...")
+
         return outvalues
 
     def GetSliderBarNodeList(self):
@@ -962,155 +998,218 @@ def _createNodeTypeSettings():
         files.write(root.toxml())
         files.close()
 
+class NodeEditordbTools:
 
-def AddNodeTypeSettings(ns):
-        rootdoc=minidom.parse(GUI_SETTINGS_FOLDER + "/NodeTypeSettings.xml")
-        root=rootdoc.documentElement
+    def DeleteNodeTypeSettings(self,node):
+            rootdoc=minidom.parse(GUI_SETTINGS_FOLDER + "/NodeTypeSettings.xml")
+            root=rootdoc.documentElement
+            root.removeChild(root.childNodes[FindNamedNode(root,str(node))])
+            files=open((GUI_SETTINGS_FOLDER + "/NodeTypeSettings.xml"),"w")
+            files.write(str(root.toxml()))
+            files.close()
 
-        image=root.createElement(str(ns[0]))
-        root.firstChild.appendChild(image)
-        imattr=root.createAttribute("Type")
-        imattr.value="MainCategory"
-        image.setAttributeNode(imattr)
+    def AddToSliderBar(self,row,position,name):
 
-        Generation_image=root.createElement("Generation")
-        Image.appendChild(Generation_image)
-        genattr=root.createAttribute("Type")
-        genattr.value="SubCategory"
-        Generation_image.setAttributeNode(genattr)
-        nss=root.createElement("NodeShapeStyle")
-        nssattr=root.createAttribute("Type")
-        nssattr.value="String"
-        nss.setAttributeNode(nssattr)
-        Generation_image.appendChild(nss)
-        nsstext=root.createTextNode(str(ns[2]))
-        nss.appendChild(nsstext)
-        colors=root.createElement("Colors")
-        Generation_image.appendChild(colors)
-        colattr=root.createAttribute("Type")
-        colattr.value="SubCategory"
-        colors.setAttributeNode(colattr)
-        topcol=root.createElement("TopColor")
-        colors.appendChild(topcol)
-        topcolattr=root.createAttribute("Type")
-        topcolattr.value="ColorHEX"
-        topcol.setAttributeNode(topcolattr)
-        topcolhex=root.createTextNode(str(ns[3]))
-        topcol.appendChild(topcolhex)
-        midcol=root.createElement("MiddleColor")
-        colors.appendChild(midcol)
-        midcolattr=root.createAttribute("Type")
-        midcolattr.value="ColorHEX"
-        midcol.setAttributeNode(midcolattr)
-        midcolhex=root.createTextNode(str(ns[4]))
-        midcol.appendChild(midcolhex)
-        botcol=root.createElement("BottomColor")
-        colors.appendChild(botcol)
-        botcolattr=root.createAttribute("Type")
-        botcolattr.value="ColorHEX"
-        botcol.setAttributeNode(botcolattr)
-        botcolhex=root.createTextNode(str(ns[5]))
-        botcol.appendChild(botcolhex)
-        labels=root.createElement("Labels")
-        Generation_image.appendChild(labels)
-        labattr=root.createAttribute("Type")
-        labattr.value="SubCategory"
-        labels.setAttributeNode(labattr)
-        uplabel=root.createElement("UpperLabel")
-        labels.appendChild(uplabel)
-        uplabelattr=root.createAttribute("Type")
-        uplabelattr.value="String"
-        uplabel.setAttributeNode(uplabelattr)
-        upperlabeltext=root.createTextNode(str(ns[0]))
-        uplabel.appendChild(upperlabeltext)
-        prlabel=root.createElement("PreviewLabel")
-        labels.appendChild(prlabel)
-        prlabelattr=root.createAttribute("Type")
-        prlabelattr.value="String"
-        prlabel.setAttributeNode(prlabelattr)
-        prlabeltext=root.createTextNode(str(ns[1]))
-        prlabel.appendChild(prlabeltext)
-        ntlabel=root.createElement("Note")
-        labels.appendChild(ntlabel)
-        ntlabelattr=root.createAttribute("Type")
-        ntlabelattr.value="MassText"
-        ntlabel.setAttributeNode(ntlabelattr)
-        ntlabeltext=root.createTextNode(str(ns[0]))
-        ntlabel.appendChild(ntlabeltext)
-        oups=root.createElement("Outputs")
-        Generation_image.appendChild(oups)
-        oupattr=root.createAttribute("Type")
-        oupattr.value="SubCategory"
-        oups.setAttributeNode(oupattr)
+        rootdoc=minidom.parse(GUI_SETTINGS_FOLDER + "/SliderBarNodeList.xml")
+        root_final=rootdoc.documentElement
 
-        for n in range(0,len(ns[7])):
-            out1=root.createElement(str(ns[7][n][0]))
-            oups.appendChild(out1)
-            out1attr=root.createAttribute("Type")
-            out1attr.value=str(ns[7][n][1])
-            out1.setAttributeNode(out1attr)
-            out1txt=root.createTextNode("")
-            out1.appendChild(out1txt)
+        uprow=root_final.childNodes[0].cloneNode(1)
+        midrow=root_final.childNodes[1].cloneNode(1)
+        bottrow=root_final.childNodes[2].cloneNode(1)
 
-        pos=root.createElement("Position")
-        Generation_image.appendChild(pos)
-        posattr=root.createAttribute("Type")
-        posattr.value="SubCategory"
-        pos.setAttributeNode(posattr)
-        xpos=root.createElement("X")
-        pos.appendChild(xpos)
-        xposattr=root.createAttribute("Type")
-        xposattr.value="Integer"
-        xpos.setAttributeNode(xposattr)
-        xpostxt=root.createTextNode("100")
-        xpos.appendChild(xpostxt)
-        ypos=root.createElement("Y")
-        pos.appendChild(ypos)
-        yposattr=root.createAttribute("Type")
-        yposattr.value="Integer"
-        ypos.setAttributeNode(yposattr)
-        ypostxt=root.createTextNode("100")
-        ypos.appendChild(ypostxt)
+        nodeListDoc=minidom.getDOMImplementation()
+        root=nodeListDoc.createDocument("", "SliderBarNodes", "")
+        if row=="Upper_row":
+            slotname= (str(position))
+            slo=root.createElement(slotname)
+            uprow.appendChild(slo)
+            nat=root.createTextNode(str(name))
+            slo.appendChild(nat)
+        if row=="Middle_row":
+            slotname= (str(position))
+            slo=root.createElement(slotname)
+            midrow.appendChild(slo)
+            nat=root.createTextNode(str(name))
+            slo.appendChild(nat)
+        if row=="Bottom_row":
+            slotname= (str(position))
+            slo=root.createElement(slotname)
+            bottrow.appendChild(slo)
+            nat=root.createTextNode(str(name))
+            slo.appendChild(nat)
 
-        Data=root.createElement("Data")
-        Image.appendChild(Data)
-        datattr=root.createAttribute("Type")
-        datattr.value="SubCategory"
-        Data.setAttributeNode(datattr)
+        root.firstChild.appendChild(uprow)
+        root.firstChild.appendChild(midrow)
+        root.firstChild.appendChild(bottrow)
 
-        for m in range(0,len(ns[8])):
-            impath=root.createElement(str(ns[8][n][0]))
-            Data.appendChild(impath)
-            impathattr=root.createAttribute("Type")
-            impathattr.value=str(ns[8][n][1])
-            impath.setAttributeNode(impathattr)
+        files=open((GUI_SETTINGS_FOLDER + "/SliderBarNodeList.xml"),"w")
 
-            impathattr2=root.createAttribute("Connection")
-            impathattr2.value=str(ns[8][n][2])
-            impath.setAttributeNode(impathattr2)
-
-            impathattr2=root.createAttribute("MultiConnection")
-            impathattr2.value=str(ns[8][n][3])
-            impath.setAttributeNode(impathattr2)
-
-            impathtext=root.createTextNode("...")
-            impath.appendChild(impathtext)
-
-        source=root.createElement("Source")
-        Image.appendChild(source)
-        sattr=root.createAttribute("Type")
-        sattr.value="SubCategory"
-        source.setAttributeNode(sattr)
-        sfile=root.createElement("Sourcecode")
-        source.appendChild(sfile)
-        sfa=root.createAttribute("Type")
-        sfa.value="py"
-        sfile.setAttributeNode(sfa)
-        tart=root.createTextNode(str(ns[9]))
-        sfile.appendChild(tart)
-
-        files.write(root.toxml())
+        files.write(str(root.toxml()))
         files.close()
+
+
+    def AddNodeTypeSettings(self, ns):
+            rootdoc=minidom.parse(GUI_SETTINGS_FOLDER + "/NodeTypeSettings.xml")
+            root_final=rootdoc.documentElement
+            try:
+                if root_final.childNodes[FindNamedNode(root_final,str(ns[0]))].nodeName==ns[0]:
+                    print "This node already exist!!!!!"
+                    return 1
+            except:
+                print "Ignore the error, every software need to drop some error, so here we go..."
+                print "Sorry Dude :) "
+            runtimeNodeList_trick=minidom.getDOMImplementation()
+            root=runtimeNodeList_trick.createDocument("", "NodeTypeSettings", "")
+
+            image=root.createElement(str(ns[0]))
+            root.firstChild.appendChild(image)
+            imattr=root.createAttribute("Type")
+            imattr.value="MainCategory"
+            image.setAttributeNode(imattr)
+
+            Generation_image=root.createElement("Generation")
+            image.appendChild(Generation_image)
+            genattr=root.createAttribute("Type")
+            genattr.value="SubCategory"
+            Generation_image.setAttributeNode(genattr)
+            nss=root.createElement("NodeShapeStyle")
+            nssattr=root.createAttribute("Type")
+            nssattr.value="String"
+            nss.setAttributeNode(nssattr)
+            Generation_image.appendChild(nss)
+            nsstext=root.createTextNode(str(ns[2]))
+            nss.appendChild(nsstext)
+            colors=root.createElement("Colors")
+            Generation_image.appendChild(colors)
+            colattr=root.createAttribute("Type")
+            colattr.value="SubCategory"
+            colors.setAttributeNode(colattr)
+            topcol=root.createElement("TopColor")
+            colors.appendChild(topcol)
+            topcolattr=root.createAttribute("Type")
+            topcolattr.value="ColorHEX"
+            topcol.setAttributeNode(topcolattr)
+            topcolhex=root.createTextNode(str(ns[3]))
+            topcol.appendChild(topcolhex)
+            midcol=root.createElement("MiddleColor")
+            colors.appendChild(midcol)
+            midcolattr=root.createAttribute("Type")
+            midcolattr.value="ColorHEX"
+            midcol.setAttributeNode(midcolattr)
+            midcolhex=root.createTextNode(str(ns[4]))
+            midcol.appendChild(midcolhex)
+            botcol=root.createElement("BottomColor")
+            colors.appendChild(botcol)
+            botcolattr=root.createAttribute("Type")
+            botcolattr.value="ColorHEX"
+            botcol.setAttributeNode(botcolattr)
+            botcolhex=root.createTextNode(str(ns[5]))
+            botcol.appendChild(botcolhex)
+            labels=root.createElement("Labels")
+            Generation_image.appendChild(labels)
+            labattr=root.createAttribute("Type")
+            labattr.value="SubCategory"
+            labels.setAttributeNode(labattr)
+            uplabel=root.createElement("UpperLabel")
+            labels.appendChild(uplabel)
+            uplabelattr=root.createAttribute("Type")
+            uplabelattr.value="String"
+            uplabel.setAttributeNode(uplabelattr)
+            upperlabeltext=root.createTextNode(str(ns[0]))
+            uplabel.appendChild(upperlabeltext)
+            prlabel=root.createElement("PreviewLabel")
+            labels.appendChild(prlabel)
+            prlabelattr=root.createAttribute("Type")
+            prlabelattr.value="String"
+            prlabel.setAttributeNode(prlabelattr)
+            prlabeltext=root.createTextNode(str(ns[1]))
+            prlabel.appendChild(prlabeltext)
+            ntlabel=root.createElement("Note")
+            labels.appendChild(ntlabel)
+            ntlabelattr=root.createAttribute("Type")
+            ntlabelattr.value="MassText"
+            ntlabel.setAttributeNode(ntlabelattr)
+            ntlabeltext=root.createTextNode(str(ns[9]))
+            ntlabel.appendChild(ntlabeltext)
+            oups=root.createElement("Outputs")
+            Generation_image.appendChild(oups)
+            oupattr=root.createAttribute("Type")
+            oupattr.value="SubCategory"
+            oups.setAttributeNode(oupattr)
+
+            for n in range(0,len(ns[7])):
+                out1=root.createElement(str(ns[7][n][0]))
+                oups.appendChild(out1)
+                out1attr=root.createAttribute("Type")
+                out1attr.value=str(ns[7][n][1])
+                out1.setAttributeNode(out1attr)
+                out1txt=root.createTextNode("")
+                out1.appendChild(out1txt)
+
+            pos=root.createElement("Position")
+            Generation_image.appendChild(pos)
+            posattr=root.createAttribute("Type")
+            posattr.value="SubCategory"
+            pos.setAttributeNode(posattr)
+            xpos=root.createElement("X")
+            pos.appendChild(xpos)
+            xposattr=root.createAttribute("Type")
+            xposattr.value="Integer"
+            xpos.setAttributeNode(xposattr)
+            xpostxt=root.createTextNode("100")
+            xpos.appendChild(xpostxt)
+            ypos=root.createElement("Y")
+            pos.appendChild(ypos)
+            yposattr=root.createAttribute("Type")
+            yposattr.value="Integer"
+            ypos.setAttributeNode(yposattr)
+            ypostxt=root.createTextNode("100")
+            ypos.appendChild(ypostxt)
+
+            Data=root.createElement("Data")
+            image.appendChild(Data)
+            datattr=root.createAttribute("Type")
+            datattr.value="SubCategory"
+            Data.setAttributeNode(datattr)
+
+            for m in range(0,len(ns[6])):
+                impath=root.createElement(str(ns[6][m][0]))
+                Data.appendChild(impath)
+                impathattr=root.createAttribute("Type")
+                impathattr.value=str(ns[6][m][3])
+                impath.setAttributeNode(impathattr)
+
+                impathattr2=root.createAttribute("Connection")
+                impathattr2.value=str(ns[6][m][1])
+                impath.setAttributeNode(impathattr2)
+
+                impathattr2=root.createAttribute("MultiConnection")
+                impathattr2.value=str(ns[6][m][2])
+                impath.setAttributeNode(impathattr2)
+
+                impathtext=root.createTextNode("...")
+                impath.appendChild(impathtext)
+
+            source=root.createElement("Source")
+            image.appendChild(source)
+            sattr=root.createAttribute("Type")
+            sattr.value="SubCategory"
+            source.setAttributeNode(sattr)
+            sfile=root.createElement("Sourcecode")
+            source.appendChild(sfile)
+            sfa=root.createAttribute("Type")
+            sfa.value="py"
+            sfile.setAttributeNode(sfa)
+            tart=root.createTextNode(str(ns[8]))
+            sfile.appendChild(tart)
+
+            x=root.firstChild.firstChild.cloneNode(1)
+            root_final.appendChild(x)
+            files=open((GUI_SETTINGS_FOLDER + "/NodeTypeSettings.xml"),"w")
+
+            files.write(str(root_final.toxml()))
+            files.close()
+
 
 
 #**************************************************************************************************************************************************************

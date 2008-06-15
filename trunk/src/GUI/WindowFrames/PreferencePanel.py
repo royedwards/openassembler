@@ -50,6 +50,7 @@ class LoadPreferences(PreferencesManagement):
         Label(fr,text=parametername+":",anchor="nw",width=28,font=iofont,bg="gray35").grid(row=0,column=0,pady=2)
         e=Text(fr,font=iofont,width=28,height=16,bg="gray55",relief="sunken",wrap="word",bd=2,highlightbackground="gray35")
         e.grid(row=1,column=0,sticky=N)
+        print defaultvalue
         e.insert(CURRENT, defaultvalue)
         b=Button (fr,width=28,highlightcolor="gray35",bd=1,height=0,padx=0,pady=0,highlightbackground="gray35",text="Save",font=iofont)
         b.grid(row=2,column=0)
@@ -58,8 +59,10 @@ class LoadPreferences(PreferencesManagement):
         return pos+35
 
     def _masTextSave(self,Node,textzone):
+        print Node
         a=str(textzone.get(1.0,END))[:-1]
-        self.ChangeNote(Node, str(a))
+        print a
+        self.ChangeNote(Node, a)
 
     def numval(self,event,v):
             if event.char in "1234567890":
@@ -204,7 +207,7 @@ class LoadPreferences(PreferencesManagement):
             if datas[n][3]=="TextLine":
                 string.append(StringVar())
                 m=len(string)
-                height=self.controllerNumberSimple(TargetCanvas,Node,height,string[m-1],datas[n][1],datas[n][2])
+                height=self.controllerTextLine(TargetCanvas,Node,height,string[m-1],datas[n][1],datas[n][2])
 
             if datas[n][3]=="MassText":
                 string.append(StringVar())

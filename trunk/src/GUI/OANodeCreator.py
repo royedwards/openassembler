@@ -14,8 +14,10 @@ from GUI.Nodes.NodeList import NodeListCategoriser
 from Dbase.DBaseManagement import SliderBarDbaseSupport
 import tkFont
 import tkFileDialog
+from Dbase.DBaseManagement import NodeEditordbTools
 
-class _Application(Frame,CanvasInitSliderBar,NodeListCategoriser,SliderBarDbaseSupport):
+
+class _Application(Frame,CanvasInitSliderBar,NodeListCategoriser,SliderBarDbaseSupport,NodeEditordbTools):
     def __init__(self, master=None):
         Frame.__init__(self, master)
         self.pack(fill=BOTH, expand=1)
@@ -36,44 +38,54 @@ class _Application(Frame,CanvasInitSliderBar,NodeListCategoriser,SliderBarDbaseS
         mid.bind('<Button-1>',lambda event:self.midbutton())
         butt= Button(buttadd,width=1,highlightcolor="gray35",bd=1,padx=10,pady=7,highlightbackground="gray35",text="+")
         butt.grid(row=3,column=0)
-        #o.bind('<Button-1>',lambda event:(self.currentFrame.set(self.currentFrame.get()-1)))
+        butt.bind('<Button-1>',lambda event:self.buttbutton())
         TargetCanvas.create_window(5,5,window=buttadd,anchor='nw')
         return TargetCanvas
 
     def upbutton(self):
-        self.Settingspanel("",("up","new"))
+        self.Settingspanel(self.getNodeSettings(self.nodeinline.get(),"new"), ("Upper_row",("slot"+str(int(self.CountRowMember(1))+1))),"new")
 
     def midbutton(self):
-        pass
+        self.Settingspanel(self.getNodeSettings(self.nodeinline.get(),"new"), ("Middle_row",("slot"+str(int(self.CountRowMember(2))+1))),"new")
 
-    def writethesettingsbacktofile(self,name,sname,nodeshape,topc,midc,botc,ins,outs,scrpath,state,notee):
+    def buttbutton(self):
+        self.Settingspanel(self.getNodeSettings(self.nodeinline.get(),"new"), ("Bottom_row",("slot"+str(int(self.CountRowMember(3))+1))),"new")
+
+    def writethesettingsbacktofile(self,name,sname,nodeshape,topc,midc,botc,ins,outs,scrpath,state,notee,settingswindow,row,slot):
         collection=[]
         collection.append(name)
         collection.append(sname)
-        if nodeshape.selection_get()=="Normal":
-            collection.append("SHAPE02")
-        else:
-            print "You must select a node shape style!!!"
-            return 0
-        collection.append(topc)
-        collection.append(midc)
-        collection.append(botc)
-        collection.append(ins)
-        collection.append(outs)
-        collection.append(scrpath)
-        collection.append(notee)
-
-        print state
-
-        if state=="edit":
-            #delete reginode
-            #kiir ujnode
+        try:
+            if nodeshape.selection_get()=="Normal":
+                collection.append("SHAPE02")
+            elif nodeshape.selection_get()=="No-Input and No-Output":
+                collection.append("SHAPE01")
+            elif nodeshape.selection_get()=="No-Output":
+                collection.append("SHAPE03")
+            elif nodeshape.selection_get()=="No-Input":
+                collection.append("SHAPE04")
+            else:
+                print "You must select a node shape style!!!"
+                return 0
+            collection.append(topc)
+            collection.append(midc)
+            collection.append(botc)
+            collection.append(ins)
+            collection.append(outs)
+            collection.append(scrpath)
+            collection.append(notee)
+            if state=="edit":
+                self.DeleteNodeTypeSettings(name)
+                self.AddNodeTypeSettings(collection)
+                settingswindow.destroy()
+                print "Node saved..."
+            else:
+                self.AddNodeTypeSettings(collection)
+                self.AddToSliderBar(row, slot, name)
+                settingswindow.destroy()
+                print "New node saved..."
+        except:
             pass
-        else:
-            #kiir ujnode
-            #kiir rowlistbe
-            pass
-
 
     def outputsettings(self,out_area,originallist):
         outputwindow = Toplevel(bg="gray35")
@@ -135,7 +147,7 @@ class _Application(Frame,CanvasInitSliderBar,NodeListCategoriser,SliderBarDbaseS
             except:
                 pass
 
-    def generatescript(self,textscript,snvar,name,settings_tmp,output_tmp):
+    def generatescript(self,textscript,snvar,name,settings_tmp,output_tmp,scryptent):
         textscript.delete(1.0,END)
         textscript.insert(END,"###OpenAssembler Node python file###\n")
         textscript.insert(END,"\n")
@@ -167,14 +179,14 @@ class _Application(Frame,CanvasInitSliderBar,NodeListCategoriser,SliderBarDbaseS
             textscript.insert(END,"         return \"[put a variable here]\"\n")
             textscript.insert(END,str("\n"))
         fback=tkFileDialog.SaveAs(filetypes=[('Python file','*.py')], title="Save python file::",defaultextension="py").show()
-        if os.path.exists(str(fback)):
-            snvar.set(str(fback))
-            outfilescript=open(fback,"w")
-            outfilescript.write(str(textscript.get(1.0,END)))
-            outfilescript.close()
+        snvar.set(str(fback))
+        outfilescript=open(fback,"w")
+        outfilescript.write(str(textscript.get(1.0,END)))
+        outfilescript.close()
+        scryptent.set(str(fback))
 
     def func_savescript(self,scryptent,textscript):
-        fback=tkFileDialog.SaveAs(filetypes=[('Python file','*.py')], title="Save python file::",defaultextension="py").show()
+        fback=tkFileDialog.SaveAs(filetypes=[('Python file','*.py')], title="Save python file:",defaultextension="py").show()
         if os.path.exists(str(fback)):
             snvar.set(str(fback))
             outfilescript=open(fback,"w")
@@ -183,7 +195,7 @@ class _Application(Frame,CanvasInitSliderBar,NodeListCategoriser,SliderBarDbaseS
             scryptent.set(str(fback))
 
     def func_openscript(self,scryptent,textscript):
-        fback=tkFileDialog.Open(filetypes=[('Python file','*.py')], title="Open python file::",defaultextension="py").show()
+        fback=tkFileDialog.Open(filetypes=[('Python file','*.py')], title="Open python file:",defaultextension="py").show()
         if os.path.exists(str(fback)):
             textscript.delete(1.0,END)
             file=open(fback)
@@ -270,9 +282,12 @@ class _Application(Frame,CanvasInitSliderBar,NodeListCategoriser,SliderBarDbaseS
             tmmp="Normal"
         if tmmp=="Normal":
             nodeshapestyle = "SHAPE02"
-        else:
-            nodeshapestyle = "SHAPE02"
-            print "You must select a node shape to view it!!! Normal node shape is used in this case..."
+        if tmmp=="No-Input and No-Output":
+            nodeshapestyle = "SHAPE01"
+        if tmmp=="No-Output":
+            nodeshapestyle = "SHAPE03"
+        if tmmp=="No-Input":
+            nodeshapestyle = "SHAPE04"
         topcolor=topc
         midcolor=midc
         botcolor=botc
@@ -299,7 +314,7 @@ class _Application(Frame,CanvasInitSliderBar,NodeListCategoriser,SliderBarDbaseS
         placerowvar.set(posvars[0])
         placerow.grid(row=0,column=1)
 
-        placecolumnvar=IntVar()
+        placecolumnvar=StringVar()
         Label(settingswindow,bg="gray35",width=10,text="Slot",anchor="w").grid(row=0,column=2)
         placecolumn = Entry(settingswindow,bg="gray35",width=10,textvariable=placecolumnvar,state="readonly")
         placecolumnvar.set(posvars[1])
@@ -307,7 +322,11 @@ class _Application(Frame,CanvasInitSliderBar,NodeListCategoriser,SliderBarDbaseS
 
         name=StringVar()
         Label(settingswindow,bg="gray35",width=10,text="Name",anchor="w").grid(row=1,column=0)
-        nameentry = Entry(settingswindow,bg="gray35",width=10,textvariable=name,state="readonly")
+        if state=="edit":
+            nameentry = Entry(settingswindow,bg="gray35",width=10,textvariable=name,state="readonly")
+        else:
+            name.set("NewNode")
+            nameentry = Entry(settingswindow,bg="gray35",width=10,textvariable=name)
         name.set(invars[1])
         nameentry.grid(row=1,column=1)
         #def nameback():
@@ -428,7 +447,7 @@ class _Application(Frame,CanvasInitSliderBar,NodeListCategoriser,SliderBarDbaseS
 
         genscr=Button(settingswindow,text="Generate",width=8,pady=2)
         genscr.grid(row=9,column=5,padx=25,pady=25,columnspan=2,rowspan=2,sticky="nw")
-        genscr.bind("<B1-ButtonRelease>", lambda event:self.generatescript(textscript,scrsvar,name,settings_tmp,output_tmp))
+        genscr.bind("<B1-ButtonRelease>", lambda event:self.generatescript(textscript,scrsvar,name,settings_tmp,output_tmp,scrsvar))
 
         openscr=Button(settingswindow,text="Open",width=8,pady=2)
         openscr.grid(row=9,column=5,padx=25,pady=50,columnspan=2,rowspan=2,sticky="nw")
@@ -440,7 +459,7 @@ class _Application(Frame,CanvasInitSliderBar,NodeListCategoriser,SliderBarDbaseS
 
         mainsv=Button(settingswindow,text="SaveNode and Exit")
         mainsv.grid(row=10,columnspan=2,column=0)
-        mainsv.bind("<Button-1>", lambda event:self.writethesettingsbacktofile(name.get(),sname.get(),shapetypes,topcolor.get(),midcolor.get(),bottcolor.get(),settings_tmp,output_tmp,scrsvar.get(),state,notee.get(1.0,END)))
+        mainsv.bind("<Button-1>", lambda event:self.writethesettingsbacktofile(name.get(),sname.get(),shapetypes,topcolor.get(),midcolor.get(),bottcolor.get(),settings_tmp,output_tmp,scrsvar.get(),state,notee.get(1.0,END),settingswindow,placerowvar.get(),placecolumnvar.get()))
 
         def canceller(win):
             win.destroy()
@@ -451,8 +470,7 @@ class _Application(Frame,CanvasInitSliderBar,NodeListCategoriser,SliderBarDbaseS
         ccl.bind("<Button-1>", lambda event:canceller(settingswindow))
 
     def editbutt(self):
-        self.Settingspanel(self.getNodeSettings(self.nodeinline.get()), self.getRowAndPosition(self.nodeinline.get()),"edit")
-        #print self.getNodeSettings(self.nodeinline.get())
+        self.Settingspanel(self.getNodeSettings(self.nodeinline.get(),"edit"), self.getRowAndPosition(self.nodeinline.get()),"edit")
 
     def Menuline(self):
         TargetCanvas = Canvas (self, width=585, height=20,relief=GROOVE, cursor="sb_up_arrow", confine="false",bg="gray35",bd=2, scrollregion=(0,0,800,205))
