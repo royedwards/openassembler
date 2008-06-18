@@ -1,1 +1,1 @@
-<?xml version="1.0" ?><SliderBarNodes><Upper_row><slot1>Image</slot1><slot3>Definition</slot3><slot4>NoOutput</slot4><slot4>NoInput</slot4></Upper_row><Middle_row><slot1>SecoundRow</slot1></Middle_row><Bottom_row><slot1>Thirdrow</slot1></Bottom_row></SliderBarNodes>
+<?xml version="1.0" ?><SliderBarNodes><Upper_row><slot1>TXT_FileIn</slot1><slot2>TXT_In</slot2></Upper_row><Middle_row><slot1>TXT_Combine</slot1><slot2>TXT_Replace</slot2></Middle_row><Bottom_row><slot1>TXT_FileOut</slot1><slot2>OutputCollector</slot2></Bottom_row></SliderBarNodes>

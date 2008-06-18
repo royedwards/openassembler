@@ -3,7 +3,7 @@ from GUI.Nodes.NodeList import NodeListCategoriser
 from GUI.Nodes.NodeElements import GUI_Elements_forNodes
 from GUI.Nodes.ConnectionLine import ConnectLine
 from GUI.WindowFrames.PreferencePanel import LoadPreferences
-from Dbase.DBaseManagement import RuntimeNodeRegister
+from Dbase.DBaseManagement import RuntimeNodeRegister, PreferencesManagement
 
 
 class SliderBarEvents(NodeListCategoriser):
@@ -46,7 +46,7 @@ class SliderBarEvents(NodeListCategoriser):
 
 
 
-class NodeEditorCanvasEvents(GUI_Elements_forNodes,ConnectLine,LoadPreferences,RuntimeNodeRegister):
+class NodeEditorCanvasEvents(GUI_Elements_forNodes,ConnectLine,LoadPreferences,PreferencesManagement,RuntimeNodeRegister):
 
     def B1ClickNodeEditor(self,event,TargetCanvas,lasx,lasty,Eventtag,preferencespanel):
         try:
@@ -77,6 +77,17 @@ class NodeEditorCanvasEvents(GUI_Elements_forNodes,ConnectLine,LoadPreferences,R
         except:
             pass
 
+        if str(TargetCanvas.cget('cursor'))=="cross":
+            EventTags=TargetCanvas.gettags(CURRENT)
+            if len(EventTags)>0:
+                self.eott.set(str(self.getNodeName(EventTags[0])))
+                self.ChangeSettings("0000000", "Data","EndOfTheTree", str(self.getNodeName(EventTags[0])))
+            TargetCanvas.configure(cursor="draft_large")
+        try:
+            TargetCanvas.tag_raise(Eventtag[4])
+        except:
+            pass
+
     def ReleaseNodeEditor(self,event,TargetCanvas,lasx,lasty,preferencespanel):
         EventTags=TargetCanvas.gettags(CURRENT)
         if len(EventTags)>0:
@@ -88,9 +99,14 @@ class NodeEditorCanvasEvents(GUI_Elements_forNodes,ConnectLine,LoadPreferences,R
                 try:
                     if EventTags[3]=="IN":
                         if self.checkMultipleSelfConnection(self.origin_node, self.origin_out, EventTags[0], EventTags[2])==0:
-                            self.DrawNewLine(TargetCanvas, self.origin_node,self.origin_out,self.origin_uni, EventTags[0],EventTags[2],EventTags[1])
-                            if self.getNodeName(EventTags[0]) == self.nodeInPreferences.get():
-                                self.loadPreferences(preferencespanel, EventTags[0])
+                            tst1=TargetCanvas.itemcget(EventTags[1],"fill")
+                            tst2=TargetCanvas.itemcget(self.origin_uni,"fill")
+                            if tst1==tst2:
+                                self.DrawNewLine(TargetCanvas, self.origin_node,self.origin_out,self.origin_uni, EventTags[0],EventTags[2],EventTags[1])
+                                if self.getNodeName(EventTags[0]) == self.nodeInPreferences.get():
+                                    self.loadPreferences(preferencespanel, EventTags[0])
+                            else:
+                                print "The connection types does not match!!!"
                 except:
                     pass
         else:

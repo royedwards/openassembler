@@ -8,8 +8,11 @@ class CanvasInitTimeLine(NodeEditorCanvasEvents):
     def delItemPress(self,editorcanvas):
         editorcanvas.configure(cursor="pirate")
 
+    def endTreePress(self,editorcanvas):
+        editorcanvas.configure(cursor="cross")
+
     def timeLine_init(self,TargetCanvas,editorcanvas):
-        timelineFrame=Frame(TargetCanvas,height=11,width=277,bg="gray35")
+        timelineFrame=Frame(TargetCanvas,height=11,width=538,bg="gray35")
         timelineFrame.grid_propagate(0)
 
         iofont = tkFont.Font ( family="mincho", size=6 )
@@ -46,6 +49,16 @@ class CanvasInitTimeLine(NodeEditorCanvasEvents):
         instance=Button(timelineFrame,width=5,bd=1,padx=5,pady=1,text="Inst.",font=iofont)
         instance.grid(row=1,column=10)
         #dulicate.bind('<Button-1>', lambda event: self.delItemPress(editorcanvas))
+
+        endtree=Button(timelineFrame,width=7,bd=1,padx=5,pady=1,text="EndNode",font=iofont,activeforeground="darkgreen",fg="lightgreen")
+        endtree.grid(row=1,column=11,padx=15)
+        endtree.bind('<Button-1>', lambda event: self.endTreePress(editorcanvas))
+
+        etente=Entry(timelineFrame,width=30,bd=1,state="readonly",font=iofont,textvariable=self.eott,fg="gray15",justify=LEFT,relief=GROOVE)
+        etente.grid(row=1,column=12)
+
+        rururun=Button(timelineFrame,width=12,bd=1,padx=5,pady=1,text="- - - RUN - - -",font=iofont,bg="darkgreen",activebackground="darkgreen",activeforeground="gray75")
+        rururun.grid(row=1,column=13)
 
         TargetCanvas.create_window(5,10,window=timelineFrame,anchor='w')
 

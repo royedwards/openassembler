@@ -48,20 +48,35 @@ class LoadPreferences(PreferencesManagement):
         fr.grid
         iofont = tkFont.Font ( family="mincho", size=8 )
         Label(fr,text=parametername+":",anchor="nw",width=28,font=iofont,bg="gray35").grid(row=0,column=0,pady=2)
-        e=Text(fr,font=iofont,width=28,height=16,bg="gray55",relief="sunken",wrap="word",bd=2,highlightbackground="gray35")
+        e=Text(fr,font=iofont,width=28,height=8,bg="gray55",relief="sunken",wrap="word",bd=2,highlightbackground="gray35")
         e.grid(row=1,column=0,sticky=N)
-        print defaultvalue
         e.insert(CURRENT, defaultvalue)
         b=Button (fr,width=28,highlightcolor="gray35",bd=1,height=0,padx=0,pady=0,highlightbackground="gray35",text="Save",font=iofont)
         b.grid(row=2,column=0)
-        b.bind('<B1-ButtonRelease>', lambda event: self._masTextSave(Node,e))
+        b.bind('<B1-ButtonRelease>', lambda event: self._masTextSave(Node,e,parametername))
+        TargetCanvas.create_window(5,pos,window=fr,anchor="nw")
+        return pos+125
+
+    def _masTextSave(self,Node,textzone,parametername):
+        a=str(textzone.get(1.0,END))[:-1]
+        self.ChangeSettings(Node, "Data",parametername, a)
+
+    def controllerSceneNote(self,TargetCanvas,Node,pos,variable,parametername,defaultvalue):
+        fr=Frame(TargetCanvas,height=30,width=145,bg="gray35",bd=0)
+        fr.grid
+        iofont = tkFont.Font ( family="mincho", size=8 )
+        Label(fr,text=parametername+":",anchor="nw",width=28,font=iofont,bg="gray35").grid(row=0,column=0,pady=2)
+        e=Text(fr,font=iofont,width=28,height=16,bg="gray55",relief="sunken",wrap="word",bd=2,highlightbackground="gray35")
+        e.grid(row=1,column=0,sticky=N)
+        e.insert(CURRENT, defaultvalue)
+        b=Button (fr,width=28,highlightcolor="gray35",bd=1,height=0,padx=0,pady=0,highlightbackground="gray35",text="Save",font=iofont)
+        b.grid(row=2,column=0)
+        b.bind('<B1-ButtonRelease>', lambda event: self._sceneNoteSave(Node,e))
         TargetCanvas.create_window(5,pos,window=fr,anchor="nw")
         return pos+35
 
-    def _masTextSave(self,Node,textzone):
-        print Node
+    def _sceneNoteSave(self,Node,textzone):
         a=str(textzone.get(1.0,END))[:-1]
-        print a
         self.ChangeNote(Node, a)
 
     def numval(self,event,v):
@@ -118,6 +133,22 @@ class LoadPreferences(PreferencesManagement):
             self.ChangeSettings(Node, "Data",parametername, (self.startFrame.get()+1))
             self.endFrame.set((self.startFrame.get()+1))
             variable.set((self.startFrame.get()+1))
+
+    def EOTTGlobalnter(self,variable,Node,parametername):
+        self.ChangeSettings(Node, "Data",parametername, variable.get())
+        self.eott.set(variable.get())
+
+    def EOTTGlobal(self,TargetCanvas,Node,pos,variable,parametername,defaultvalue):
+        fr=Frame(TargetCanvas,height=10,width=145,bg="gray35",bd=0)
+        fr.grid
+        iofont = tkFont.Font ( family="mincho", size=8 )
+        Label(fr,text=parametername+":",anchor="nw",width=20,font=iofont,bg="gray35").grid(row=0,column=0,pady=2)
+        e=Entry(fr,font=iofont,width=7,bg="gray55",relief="groove",bd=1,textvariable=variable,highlightbackground="gray35",justify=LEFT)
+        e.grid(row=0,column=1,sticky=SW)
+        variable.set(defaultvalue)
+        e.bind('<Return>',lambda event:self.EOTTGlobalnter(variable,Node,parametername))
+        TargetCanvas.create_window(5,pos,window=fr,anchor="nw")
+        return pos+17
 
     def EFGlobal(self,TargetCanvas,Node,pos,variable,parametername,defaultvalue):
         fr=Frame(TargetCanvas,height=10,width=145,bg="gray35",bd=0)
@@ -209,6 +240,11 @@ class LoadPreferences(PreferencesManagement):
                 m=len(string)
                 height=self.controllerTextLine(TargetCanvas,Node,height,string[m-1],datas[n][1],datas[n][2])
 
+            if datas[n][3]=="sceneNote":
+                string.append(StringVar())
+                m=len(string)
+                height=self.controllerSceneNote(TargetCanvas,Node,height,string[m-1],datas[n][1],datas[n][2])
+
             if datas[n][3]=="MassText":
                 string.append(StringVar())
                 m=len(string)
@@ -233,6 +269,11 @@ class LoadPreferences(PreferencesManagement):
                 string.append(StringVar())
                 m=len(string)
                 height=self.EFGlobal(TargetCanvas,Node,height,string[m-1],datas[n][1],datas[n][2])
+
+            if datas[n][3]=="endTree":
+                string.append(StringVar())
+                m=len(string)
+                height=self.EOTTGlobal(TargetCanvas,Node,height,string[m-1],datas[n][1],datas[n][2])
 
             if datas[n][3]=="Boolean":
                 inter.append(StringVar())

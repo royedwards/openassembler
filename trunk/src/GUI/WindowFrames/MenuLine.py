@@ -19,11 +19,12 @@ class CanvasInitMenuLine(LoadPreferences,CanvasInitPreferencePanel,RuntimeNodeRe
         self.origin_out=""
         self.origin_uni=""
         self.Create_RuntimeDBase()
-        self.CreateGlobalPreferences(1, 100, "Basic scene setup...")
+        self.CreateGlobalPreferences(1, 100, "Basic scene setup...","...")
         self.RuntimeLines=[]
         self.startFrame.set(self.getFrameRange()[0])
         self.endFrame.set(self.getFrameRange()[1])
         self.currentFrame.set(self.startFrame.get())
+        self.eott.set("...")
         self.nodeInPreferences.set("OpenAssembler")
         ppanel.delete(ALL)
         self.controllerNodeHeader(ppanel)
@@ -88,11 +89,14 @@ class CanvasInitMenuLine(LoadPreferences,CanvasInitPreferencePanel,RuntimeNodeRe
                     ndfrm= mainprefs[n][2]
                 if mainprefs[n][1]=="Note":
                     nt= mainprefs[n][2]
-            self.CreateGlobalPreferences(strtfrm, ndfrm, nt)
+                if mainprefs[n][1]=="EndOfTheTree":
+                    eo= mainprefs[n][2]
+            self.CreateGlobalPreferences(strtfrm, ndfrm, nt, eo)
             self.RuntimeLines=[]
             self.startFrame.set(self.getFrameRange()[0])
             self.endFrame.set(self.getFrameRange()[1])
             self.currentFrame.set(self.startFrame.get())
+            self.eott.set(str(eo))
             self.nodeInPreferences.set("OpenAssembler")
             ppanel.delete(ALL)
             self.controllerNodeHeader(ppanel)

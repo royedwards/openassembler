@@ -51,7 +51,19 @@ class NodeType04:
 
         n=1
         while n<=len(Output):
-                    TargetCanvas.create_rectangle(x+sizex-7,y+n*30,x+sizex,y+n*30+20,fill=BaseColorBottom,width=1,outline="black",tag=(str(ID),str(ID)+Output[n-1][0],Output[n-1][0],"OUT",NodeUpperLabel+"select"))
+                    if Output[n-1][1]=="Path":
+                        kockacolor="salmon3"
+                    elif Output[n-1][1]=="MassText":
+                        kockacolor="aquamarine1"
+                    elif Output[n-1][1]=="TextLine":
+                        kockacolor="aquamarine1"
+                    elif Output[n-1][1]=="simpleNumber":
+                        kockacolor="LightYellow3"
+                    elif Output[n-1][1]=="Boolean":
+                        kockacolor="MediumOrchid3"
+                    else:
+                        kockacolor="gray50"
+                    TargetCanvas.create_rectangle(x+sizex-7,y+n*30,x+sizex,y+n*30+20,fill=kockacolor,width=1,outline="black",tag=(str(ID),str(ID)+Output[n-1][0],Output[n-1][0],"OUT",NodeUpperLabel+"select"))
                     TargetCanvas.create_text(x+sizex-10,y+n*30+10,anchor="e",justify="center",font=iofont,text=Output[n-1][0],tag=(str(ID),"OUTPUTTEXT"+str(n),str(FuctionType),NodeUpperLabel+"out",NodeUpperLabel+"select"))
                     n=n+1
 

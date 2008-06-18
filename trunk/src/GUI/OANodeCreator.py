@@ -152,7 +152,7 @@ class _Application(Frame,CanvasInitSliderBar,NodeListCategoriser,SliderBarDbaseS
         textscript.insert(END,"###OpenAssembler Node python file###\n")
         textscript.insert(END,"\n")
 
-        textscript.insert(END,str("class "+str(name.get())+"()\n"))
+        textscript.insert(END,str("class "+str(name.get())+":\n"))
         textscript.insert(END,"#This is the main class to be imported\n")
         textscript.insert(END,"\n")
         textscript.insert(END,str("   def "+str(name.get())+"_main("))
@@ -162,7 +162,7 @@ class _Application(Frame,CanvasInitSliderBar,NodeListCategoriser,SliderBarDbaseS
                 textscript.insert(END,str(str(settings_tmp[n][0])))
             else:
                 textscript.insert(END,str(str(settings_tmp[n][0])+", "))
-        textscript.insert(END,str(")\n"))
+        textscript.insert(END,str("):\n"))
         textscript.insert(END,"      #This is the main definition to be called\n")
         textscript.insert(END,str("\n"))
         textscript.insert(END,str("      #--------------------\n"))

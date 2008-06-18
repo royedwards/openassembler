@@ -40,7 +40,7 @@ class _Application(Frame,CanvasInitSliderBar,CanvasInitNodeEditor,CanvasInitTime
         self.origin_uni=""
         self.sceneFileName=""
         self.Create_RuntimeDBase()
-        self.CreateGlobalPreferences(1, 100, "Basic scene setup...")
+        self.CreateGlobalPreferences(1, 100, "Basic scene setup...","...")
         self.RuntimeLines=[]
         self.startFrame=IntVar()
         self.startFrame.set(self.getFrameRange()[0])
@@ -50,7 +50,8 @@ class _Application(Frame,CanvasInitSliderBar,CanvasInitNodeEditor,CanvasInitTime
         self.currentFrame.set(self.startFrame.get())
         self.nodeInPreferences=StringVar()
         self.nodeInPreferences.set("OpenAssembler")
-
+        self.eott=StringVar()
+        self.eott.set("...")
 
         mview=self.StartUpMicroViewerCanvas("MicroViewer", "right")
 

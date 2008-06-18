@@ -194,7 +194,7 @@ class RuntimeNodeRegister:
         return x
 
 
-    def CreateGlobalPreferences(self,startframe,endframe,note):
+    def CreateGlobalPreferences(self,startframe,endframe,note,etr):
         ID="Node0000000"
 
         rootruntimedoc=minidom.parse((RUNTIME_NODELIST_FOLDER + "/RuntimeNodeList.xml"))
@@ -214,6 +214,15 @@ class RuntimeNodeRegister:
 
         data=root_trick.createElement("Data")
         mdn.appendChild(data)
+
+        sf=root_trick.createElement("EndOfTheTree")
+        sfx=root_trick.createTextNode(str(etr))
+        sf.appendChild(sfx)
+        data.appendChild(sf)
+        attr3=root_trick.createAttribute("Type")
+        attr3.value="endTree"
+        sf.setAttributeNode(attr3)
+
 
         sf=root_trick.createElement("Timing")
         sfx=root_trick.createTextNode("...")
@@ -252,7 +261,7 @@ class RuntimeNodeRegister:
         sf.appendChild(sfx)
         data.appendChild(sf)
         attr3=root_trick.createAttribute("Type")
-        attr3.value="MassText"
+        attr3.value="sceneNote"
         sf.setAttributeNode(attr3)
 
         mroot=root_trick.firstChild.firstChild.cloneNode(1)
@@ -758,14 +767,14 @@ class VarDefs:
             if ((str(data_root.childNodes[n].getAttribute("Connection"))))=="False":
                 pass
             else:
-                inputs_out.append([(str(data_root.childNodes[n].nodeName)),"othercomehere"])
+                inputs_out.append([(str(data_root.childNodes[n].nodeName)),str(data_root.childNodes[n].getAttribute("Type"))])
 
         outputs=generation_root.childNodes[FindNamedNode(generation_root,"Outputs")]
         outno=outputs.childNodes.length
         outs_out=[]
         for n in range (0,outno):
             tmp=((str(outputs.childNodes[n].nodeName)),(str(outputs.childNodes[n].getAttribute("Type"))))
-            outs_out.append([(str(outputs.childNodes[n].nodeName)),"others"])
+            outs_out.append([(str(outputs.childNodes[n].nodeName)),(str(outputs.childNodes[n].getAttribute("Type")))])
 
         outvalues=(str(nodeshapestyle),str(upperlabel),str(Previewlabel),str(Note),str(topcolor),str(midcolor),str(botcolor),(inputs_out),(outs_out))
 
