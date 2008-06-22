@@ -3,7 +3,7 @@
 class TXT_In:
 #This is the main class to be imported
 
-   def TXT_In_main(output, Text):
+   def TXT_In_main(self,output, Text):
       #This is the main definition to be called
 
       #--------------------

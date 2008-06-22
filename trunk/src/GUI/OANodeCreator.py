@@ -155,7 +155,7 @@ class _Application(Frame,CanvasInitSliderBar,NodeListCategoriser,SliderBarDbaseS
         textscript.insert(END,str("class "+str(name.get())+":\n"))
         textscript.insert(END,"#This is the main class to be imported\n")
         textscript.insert(END,"\n")
-        textscript.insert(END,str("   def "+str(name.get())+"_main("))
+        textscript.insert(END,str("   def "+str(name.get())+"_main(self,"))
         textscript.insert(END,str("output, "))
         for n in range (0,len(settings_tmp)):
             if n==(len(settings_tmp)-1):

@@ -3,7 +3,7 @@
 class TXT_Replace:
 #This is the main class to be imported
 
-   def TXT_Replace_main(output, Original, InputA, InputB):
+   def TXT_Replace_main(self,output, Original, InputA, InputB):
       #This is the main definition to be called
 
       #--------------------

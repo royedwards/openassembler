@@ -1,9 +1,9 @@
 ###OpenAssembler Node python file###
 
-class OutputCollector()
+class OutputCollector:
 #This is the main class to be imported
 
-   def OutputCollector_main(output, List)
+   def OutputCollector_main(self,output, List):
       #This is the main definition to be called
 
       #--------------------
@@ -13,5 +13,4 @@ class OutputCollector()
       #   than everything have to be allright!!
       #
       #--------------------
-
-
+      pass

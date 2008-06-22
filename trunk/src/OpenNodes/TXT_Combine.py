@@ -3,7 +3,7 @@
 class TXT_Combine:
 #This is the main class to be imported
 
-   def TXT_Combine_main(output, TXT_01, TXT_02):
+   def TXT_Combine_main(self,output, TXT_01, TXT_02):
       #This is the main definition to be called
 
       #--------------------

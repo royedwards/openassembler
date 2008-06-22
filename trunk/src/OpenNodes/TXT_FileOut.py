@@ -3,7 +3,7 @@
 class TXT_FileOut:
 #This is the main class to be imported
 
-   def TXT_FileOut_main(output, Filename, TXT):
+   def TXT_FileOut_main(self, output, Filename, TXT):
       #This is the main definition to be called
 
       #--------------------
