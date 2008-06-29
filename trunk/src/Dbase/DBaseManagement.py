@@ -33,6 +33,72 @@ def FindNamedNode(inBranch,nameToFind):
                 exit()
             return outro
 
+class OARun_dB_tools:
+    def ifThereIs(self,variable,text):
+        out=0
+        for n in range(0,len(variable)):
+            if str(variable[n][0])==text:
+                out=1
+        return out
+
+    def collectFunctionList(self,inFile):
+        rootdoc=minidom.parse(inFile)
+        root=rootdoc.documentElement
+        output=[]
+        for n in range(0,root.childNodes.length):
+            ft=root.childNodes[n].getAttribute("FuncType")
+            if ft!="NodeConnectionLine":
+                if ft!="GlobalScenePreferences":
+                    if self.ifThereIs(output,str(ft))==0:
+                        output.append((str(ft),str(root.childNodes[n].childNodes[FindNamedNode(root.childNodes[n],"Source")].childNodes[FindNamedNode(root.childNodes[n].childNodes[FindNamedNode(root.childNodes[n],"Source")],"Sourcecode")].firstChild.nodeValue)))
+        return output
+
+
+    def collectNodeList_with_settings(self,infile):
+        rootdoc=minidom.parse(infile)
+        root=rootdoc.documentElement
+        IDList=[]
+        runno=root.childNodes.length
+        for n in range (0,runno):
+            Node=str(root.childNodes[n].nodeName)
+            if str(Node)=="Node0000000":
+                pass
+            else:
+                ft=root.childNodes[n].getAttribute("FuncType")
+                if ft=="NodeConnectionLine":
+                    pass
+                else:
+                    nn=root.childNodes[n].getAttribute("Name")
+                    Node=Node[4:]
+
+                    counter=root.childNodes[FindNamedNode(root,("Node"+str(Node)))].childNodes[FindNamedNode(root.childNodes[FindNamedNode(root,("Node"+str(Node)))],"Data")].childNodes.length
+                    for m in range (0,counter):
+                        attrname = root.childNodes[FindNamedNode(root,("Node"+str(Node)))].childNodes[FindNamedNode(root.childNodes[FindNamedNode(root,("Node"+str(Node)))],"Data")].childNodes[m].nodeName
+                        attrvalu = root.childNodes[FindNamedNode(root,("Node"+str(Node)))].childNodes[FindNamedNode(root.childNodes[FindNamedNode(root,("Node"+str(Node)))],"Data")].childNodes[m].firstChild.nodeValue
+                        attrtype = root.childNodes[FindNamedNode(root,("Node"+str(Node)))].childNodes[FindNamedNode(root.childNodes[FindNamedNode(root,("Node"+str(Node)))],"Data")].childNodes[m].getAttribute("Type")
+                        set=(str(attrname),str(attrvalu),str(attrtype))
+
+                    generation_root=(root.childNodes[n].childNodes[FindNamedNode(root.childNodes[n],"Generation")])
+                    outputs=generation_root.childNodes[FindNamedNode(generation_root,"Outputs")]
+                    outno=outputs.childNodes.length
+                    outs_out=[]
+                    for m in range (0,outno):
+                        tmpname=((str(outputs.childNodes[m].nodeName)))
+                        tmp=((str(outputs.childNodes[m].getAttribute("Type"))))
+                        outs_out.append((tmpname,tmp))
+                    IDList.append((str(Node),str(nn),str(ft),set,outs_out))
+        return IDList
+
+    def convertLine_ID_to_ready(self,inFile,ID):
+        rootdoc=minidom.parse(inFile)
+        root=rootdoc.documentElement
+        fromnode=root.childNodes[FindNamedNode(root,("Node"+str(ID)))].getAttribute("FromNode")
+        fromnodeout=root.childNodes[FindNamedNode(root,("Node"+str(ID)))].getAttribute("FromNode-Output")
+        outputvariable=str(fromnode+"_"+fromnodeout+"_variable")
+        return outputvariable
+
+
+
 #------------------------------------------------------------------------------------------------------------------------------------
 #    Class to handle runtime data management
 #------------------------------------------------------------------------------------------------------------------------------------
