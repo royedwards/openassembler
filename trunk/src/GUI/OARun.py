@@ -75,32 +75,53 @@ class OARun_main(OARun_dB_tools):
 
     def compute_priorityorder(self,collectedNodeList):
 
+        fin_node=self.final_node()
+        level=[]
+        level_number=0
+        while next_level_counter==0:
+            if level_number==0:
+                level.append(fin_node)
+            else:
+                level.append(self.get_back_inputs(level[level_number]))
+            level_number+=1
+            next_level_counter=len(level[level_number])
 
-        # check the inputs in a cycle if it is written than: none ,and copy it to the priority list the change the input collection to the string: done
-        # in the same cycle, change all the inputs with the copied node before to none
+        check_list=[]
+        ll=len(level)-1
+        for i in range(0,ll):
+            for m in range(0,(len(level[ll-i])-1)):
+                er=0
+                for k in range(0,(len(check_list)-1)):
+                                if check_list[k]==level[(ll-i)][m]:
+                                   er=1
+                                else:
+                                    er=0
+                if er==1:
+                    level[(ll-i)][m]="*"+str(level[(ll-i)][m])
+                else:
+                    check_list.append(str(level[(ll-i)][m]))
 
-         # get the collection of nodes
-         #filter booth list  if they are used at all
 
-         #filter: minden nodre vegig kell futtatni
-         # lepes 1: ez maga a kimeneti node? ha igen hozza kell adni a listahoz, es a ciklus lep ha nem:
-         # lepes 2:??????????
+        for z in range(0,ll):
+            for x in range(0,(len(level[ll-z])-1)):
+                if level[ll-z][x][:1]=="*":
+                    pass
+                else:
+                    nou=0
+                    for f in range(0,(len(collectedNodeList)-1)):
+                        if collectedNodeList[f]==level[ll-z][x]:
+                            nou=f
+                        else:
+                            pass
+                #     1, kikeresni a kigyujtott tombbol hogy melyikaz (ha csillaggal kezdodik nem foglalkozni vele)
+                #2, atvenni az ertekeket, hogyha :243535 akkor kikeresni a konnekciot, es rekonstrualni a valtozonevet
+                #3, mrgnezni milyen kimeneti kotesek vannak a nodbol, es letrehozni annyi valtozot, ahany csak van
+                #4, kiirni a jobscriptbe
+                #5, megnezni hogy az egyel magasabb szamu levelen torolhetok e a valtozok... (van e csillagozott felljebb)
 
-         #el kell indulni a kiindulasi ponttol viszafele: leveleket kell epiteni, level0 kiindulasi node, level 1 ennek a bemenetei, level 2 a level 1 bemenetei
-         #es igy tovabb....
-         #talan ugy, hogy csinalunk egy ideiglenes tombot, ami mindig a bemenet a kovetkezo ciklusnak, ebben regisztraljuk a bemeneteekt, es van egy kulon lista, ahol regisztraljuk az oszeset... nem torodve a duplikacioval...
-         #utanna az eredeti node-gyujtemeny minden tagjara meg kell vizsgalni, hogy szerepele a "nagy tombben, ha igen, akkor maradhat, ha nem akkormennie kell.
 
-         #legelegansabb megoldas, hogyha kulon layer tomboket hozunk letre, mindig eget lepunk a ciklus bemenetenel, es igy kapjuk meg a hasznalt nodokat, es egyben a prioritasi listat is...
 
-        #WE NEED TO HANLE THAT WHICH NODE IS CONNECTED TO THE TREE
-        #get end of the tree node settings separetly or atleast we have to be sure it is not dropped by the nonuseable notconnected filter
-
-        # after the priority list is done, a next cycle can make an extended list with the necessary memory freeing up deletion
-
-        collectedFinalList=[]
-
-        #generate the job-script depending on the final list like the followings: variable_node_output=Function(output,input1,input2.....)
+        #generate the job-script: variable_node_output=Function(output,input1,input2.....)
 
 
         # run the job-script
