@@ -119,7 +119,9 @@ class OARun_main(OARun_dB_tools):
                 #4, kiirni a jobscriptbe
                 #5, megnezni hogy az egyel magasabb szamu levelen torolhetok e a valtozok... (van e csillagozott felljebb)
 
-
+                #megjegyzes, hogyha szamolnanak, hogy hanyszor szerepel mindenegyes node, mikor csinaljuk a piramist,
+                #marmint a leveleket, akkor konyen szurni lehetne, hogyha az elofordulasa nagyonn, mint az oszes kimeno kapcsolatanak a szama
+                #akkor az mar egy loop, es akkor megall a feldolgozas
 
         #generate the job-script: variable_node_output=Function(output,input1,input2.....)
 

@@ -143,7 +143,7 @@ class CanvasInitMenuLine(LoadPreferences,CanvasInitPreferencePanel,RuntimeNodeRe
         timelineFrame=Frame(TargetCanvas,height=11,width=220,bg="gray35")
         timelineFrame.grid_propagate(0)
 
-        iofont = tkFont.Font ( family="mincho", size=6 )
+        iofont = tkFont.Font ( family="system" , size=4 )
 
         newb= Button (timelineFrame,width=3,highlightcolor="gray35",bd=1,padx=5,pady=1,highlightbackground="gray35",text="New",font=iofont)
         newb.grid(row=1,column=1)
