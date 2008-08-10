@@ -235,6 +235,11 @@ class LoadPreferences(PreferencesManagement):
                 m=len(string)
                 height=self.controllerPath(TargetCanvas,Node,height,string[m-1],datas[n][1],datas[n][2])
 
+            if datas[n][3]=="file":
+                string.append(StringVar())
+                m=len(string)
+                height=self.controllerPath(TargetCanvas,Node,height,string[m-1],datas[n][1],datas[n][2])
+
             if datas[n][3]=="TextLine":
                 string.append(StringVar())
                 m=len(string)
@@ -244,6 +249,12 @@ class LoadPreferences(PreferencesManagement):
                 string.append(StringVar())
                 m=len(string)
                 height=self.controllerSceneNote(TargetCanvas,Node,height,string[m-1],datas[n][1],datas[n][2])
+
+            if datas[n][3]=="string":
+                string.append(StringVar())
+                m=len(string)
+                height=self.controllerMassText(TargetCanvas,Node,height,string[m-1],datas[n][1],datas[n][2])
+
 
             if datas[n][3]=="MassText":
                 string.append(StringVar())
@@ -256,6 +267,11 @@ class LoadPreferences(PreferencesManagement):
                 height=self.controllerSeparator(TargetCanvas,Node,height,string[m-1],datas[n][1],datas[n][2])
 
             if datas[n][3]=="SimpleNumber":
+                string.append(StringVar())
+                m=len(string)
+                height=self.controllerNumberSimple(TargetCanvas,Node,height,string[m-1],datas[n][1],datas[n][2])
+
+            if datas[n][3]=="int":
                 string.append(StringVar())
                 m=len(string)
                 height=self.controllerNumberSimple(TargetCanvas,Node,height,string[m-1],datas[n][1],datas[n][2])
@@ -285,6 +301,18 @@ class LoadPreferences(PreferencesManagement):
                     inter[z-1].set("False")
             else:
                 pass
+
+            if datas[n][3]=="bool":
+                inter.append(StringVar())
+                z=len(inter)
+                height=self.controllerBoolean(TargetCanvas,Node,height,inter[z-1],datas[n][1],None)
+                if str(datas[n][2])=="True":
+                    inter[z-1].set("True")
+                else:
+                    inter[z-1].set("False")
+            else:
+                pass
+
 
 
 class CanvasInitPreferencePanel:

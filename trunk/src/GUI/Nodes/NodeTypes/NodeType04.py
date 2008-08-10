@@ -26,7 +26,7 @@ class NodeType04:
         x=InputParameters[2][0]
         y=InputParameters[2][1]
         FuctionType=InputParameters[4]
-        iofont = tkFont.Font ( family="mincho", size=6 )
+        iofont = tkFont.Font ( family="system", size=4 )
         sizex=150
         if len(Input)>len(Output):
             sizey=40+len(Input)*30+20
@@ -61,6 +61,16 @@ class NodeType04:
                         kockacolor="LightYellow3"
                     elif Output[n-1][1]=="Boolean":
                         kockacolor="MediumOrchid3"
+
+                    elif Output[n-1][1]=="string":
+                        kockacolor="aquamarine1"
+                    elif Output[n-1][1]=="int":
+                        kockacolor="LightYellow3"
+                    elif Output[n-1][1]=="float":
+                        kockacolor="LightYellow3"
+                    elif Output[n-1][1]=="bool":
+                        kockacolor="MediumOrchid3"
+
                     else:
                         kockacolor="gray50"
                     TargetCanvas.create_rectangle(x+sizex-7,y+n*30,x+sizex,y+n*30+20,fill=kockacolor,width=1,outline="black",tag=(str(ID),str(ID)+Output[n-1][0],Output[n-1][0],"OUT",NodeUpperLabel+"select"))

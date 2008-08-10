@@ -151,6 +151,3 @@ for x in range(0,len(fileslist)):
     collection.append(scrpath)
     collection.append(notee)
 
-
-
-
