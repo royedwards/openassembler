@@ -52,26 +52,26 @@ class NodeType02:
 
         n=1
         while n<=len(Input):
-                    if Input[n-1][1]=="Path":
+                    if Input[n-1][1]=="Path" or Input[n-1][1]=="file":
                         kockacolor="salmon3"
-                    elif Input[n-1][1]=="MassText":
+                    elif Input[n-1][1]=="MassText" or Input[n-1][1]=="TextLine" or Input[n-1][1]=="string":
                         kockacolor="aquamarine1"
-                    elif Input[n-1][1]=="TextLine":
-                        kockacolor="aquamarine1"
-                    elif Input[n-1][1]=="simpleNumber":
+                    elif Input[n-1][1]=="simpleNumber" or Input[n-1][1]=="vfloat" or Input[n-1][1]=="aint" or Input[n-1][1]=="afloat" or Input[n-1][1]=="avfloat" or Input[n-1][1]=="vint" or Input[n-1][1]=="int" or Input[n-1][1]=="float":
                         kockacolor="LightYellow3"
-                    elif Input[n-1][1]=="Boolean":
+                    elif Input[n-1][1]=="Boolean" or Input[n-1][1]=="bool":
                         kockacolor="MediumOrchid3"
-
-                    elif Input[n-1][1]=="string":
-                        kockacolor="aquamarine1"
-                    elif Input[n-1][1]=="int":
-                        kockacolor="LightYellow3"
-                    elif Input[n-1][1]=="float":
-                        kockacolor="LightYellow3"
-                    elif Input[n-1][1]=="bool":
-                        kockacolor="MediumOrchid3"
-
+                    elif Input[n-1][1]=="vector" or Input[n-1][1]=="point" or Input[n-1][1]=="vvector" or Input[n-1][1]=="color" or Input[n-1][1]=="avector" or Input[n-1][1]=="vpoint" or Input[n-1][1]=="avvector" or Input[n-1][1]=="apoint":
+                        kockacolor="red"
+                    elif Input[n-1][1]=="mesh" or Input[n-1][1]=="amesh":
+                        kockacolor="gray0"
+                    elif Input[n-1][1]=="matrix" or Input[n-1][1]=="amatrix":
+                        kockacolor="green"
+                    elif Input[n-1][1]=="geo":
+                        kockacolor="grey25"
+                    elif Input[n-1][1]=="surface":
+                        kockacolor="grey75"
+                    elif Input[n-1][1]=="curve":
+                        kockacolor="grey99"
                     else:
                         kockacolor="gray50"
                     TargetCanvas.create_rectangle(x,y+n*30,x+7,y+n*30+20,fill=kockacolor,width=1,outline="black",tag=(str(ID),str(ID)+Input[n-1][0],Input[n-1][0],"IN",NodeUpperLabel+"select"))
@@ -80,27 +80,26 @@ class NodeType02:
 
         n=1
         while n<=len(Output):
-                    if Output[n-1][1]=="Path":
+                    if Output[n-1][1]=="Path" or Output[n-1][1]=="file":
                         kockacolor="salmon3"
-                    elif Output[n-1][1]=="MassText":
+                    elif Output[n-1][1]=="MassText" or Output[n-1][1]=="TextLine" or Output[n-1][1]=="string":
                         kockacolor="aquamarine1"
-                    elif Output[n-1][1]=="TextLine":
-                        kockacolor="aquamarine1"
-                    elif Output[n-1][1]=="simpleNumber":
+                    elif Output[n-1][1]=="simpleNumber" or Output[n-1][1]=="vfloat" or Output[n-1][1]=="aint" or Output[n-1][1]=="afloat" or Output[n-1][1]=="avfloat" or Output[n-1][1]=="vint" or Output[n-1][1]=="int" or Output[n-1][1]=="float":
                         kockacolor="LightYellow3"
-                    elif Output[n-1][1]=="Boolean":
+                    elif Output[n-1][1]=="Boolean" or Output[n-1][1]=="bool":
                         kockacolor="MediumOrchid3"
-
-                    elif Output[n-1][1]=="string":
-                        kockacolor="aquamarine1"
-                    elif Output[n-1][1]=="int":
-                        kockacolor="LightYellow3"
-                    elif Output[n-1][1]=="float":
-                        kockacolor="LightYellow3"
-                    elif Output[n-1][1]=="bool":
-                        kockacolor="MediumOrchid3"
-
-
+                    elif Output[n-1][1]=="vector" or Output[n-1][1]=="point" or Output[n-1][1]=="vvector" or Output[n-1][1]=="color" or Output[n-1][1]=="avector" or Output[n-1][1]=="vpoint" or Output[n-1][1]=="avvector" or Output[n-1][1]=="apoint":
+                        kockacolor="red"
+                    elif Output[n-1][1]=="mesh" or Output[n-1][1]=="amesh":
+                        kockacolor="gray0"
+                    elif Output[n-1][1]=="matrix" or Output[n-1][1]=="amatrix":
+                        kockacolor="green"
+                    elif Output[n-1][1]=="geo":
+                        kockacolor="grey25"
+                    elif Output[n-1][1]=="surface":
+                        kockacolor="grey75"
+                    elif Output[n-1][1]=="curve":
+                        kockacolor="grey99"
                     else:
                         kockacolor="gray50"
                     TargetCanvas.create_rectangle(x+sizex-7,y+n*30,x+sizex,y+n*30+20,fill=kockacolor,width=1,outline="black",tag=(str(ID),str(ID)+Output[n-1][0],Output[n-1][0],"OUT",NodeUpperLabel+"select"))

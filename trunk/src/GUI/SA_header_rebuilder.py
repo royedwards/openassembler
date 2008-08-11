@@ -13,8 +13,8 @@ import sys
 import os
 import shutil
 
-enddir="/home/user/trysax"
-startfile="/home/user/sacs/collection.txt"
+enddir="/home/user/Munka/SwissArmy/scripts"
+startfile="/home/user/Munka/SwissArmy/collection.txt"
 
 file=open(startfile,"r")
 content=file.read()

@@ -31,6 +31,33 @@ class LoadPreferences(PreferencesManagement):
         TargetCanvas.create_window(5,pos,window=fr,anchor="nw")
         return pos+15
 
+    def controllerPassThrou(self,pos):
+        return pos
+
+    def controllerColor(self,TargetCanvas,Node,pos,variable,parametername,defaultvalue):
+        fr=Frame(TargetCanvas,height=30,width=145,bg="gray35",bd=0)
+        fr.grid
+        iofont = tkFont.Font ( family="mincho", size=8 )
+        Label(fr,text=parametername+":",anchor="nw",width=28,font=iofont,bg="gray35").grid(row=0,column=0,pady=2)
+        e=Entry(fr,font=iofont,width=28,bg="gray55",relief="groove",bd=1,textvariable=variable,highlightbackground="gray35",justify=LEFT)
+        e.grid(row=1,column=0,sticky=N,pady=0)
+        variable.set(defaultvalue)
+        e.bind('<Return>',lambda event:self.ChangeSettings(Node, "Data",parametername, variable.get()))
+        TargetCanvas.create_window(5,pos,window=fr,anchor="nw")
+        return pos+35
+
+    def controllerVectorPoint(self,TargetCanvas,Node,pos,variable,parametername,defaultvalue):
+        fr=Frame(TargetCanvas,height=30,width=145,bg="gray35",bd=0)
+        fr.grid
+        iofont = tkFont.Font ( family="mincho", size=8 )
+        Label(fr,text=parametername+":",anchor="nw",width=28,font=iofont,bg="gray35").grid(row=0,column=0,pady=2)
+        e=Entry(fr,font=iofont,width=28,bg="gray55",relief="groove",bd=1,textvariable=variable,highlightbackground="gray35",justify=LEFT)
+        e.grid(row=1,column=0,sticky=N,pady=0)
+        variable.set(defaultvalue)
+        e.bind('<Return>',lambda event:self.ChangeSettings(Node, "Data",parametername, variable.get()))
+        TargetCanvas.create_window(5,pos,window=fr,anchor="nw")
+        return pos+35
+
     def controllerTextLine(self,TargetCanvas,Node,pos,variable,parametername,defaultvalue):
         fr=Frame(TargetCanvas,height=30,width=145,bg="gray35",bd=0)
         fr.grid
@@ -42,6 +69,20 @@ class LoadPreferences(PreferencesManagement):
         e.bind('<Return>',lambda event:self.ChangeSettings(Node, "Data",parametername, variable.get()))
         TargetCanvas.create_window(5,pos,window=fr,anchor="nw")
         return pos+35
+
+    def controllerMatrix(self,TargetCanvas,Node,pos,variable,parametername,defaultvalue):
+        fr=Frame(TargetCanvas,height=30,width=145,bg="gray35",bd=0)
+        fr.grid
+        iofont = tkFont.Font ( family="mincho", size=8 )
+        Label(fr,text=parametername+":",anchor="nw",width=28,font=iofont,bg="gray35").grid(row=0,column=0,pady=2)
+        e=Text(fr,font=iofont,width=28,height=8,bg="gray55",relief="sunken",wrap="word",bd=2,highlightbackground="gray35")
+        e.grid(row=1,column=0,sticky=N)
+        e.insert(CURRENT, defaultvalue)
+        b=Button (fr,width=28,highlightcolor="gray35",bd=1,height=0,padx=0,pady=0,highlightbackground="gray35",text="Save",font=iofont)
+        b.grid(row=2,column=0)
+        b.bind('<B1-ButtonRelease>', lambda event: self._masTextSave(Node,e,parametername))
+        TargetCanvas.create_window(5,pos,window=fr,anchor="nw")
+        return pos+125
 
     def controllerMassText(self,TargetCanvas,Node,pos,variable,parametername,defaultvalue):
         fr=Frame(TargetCanvas,height=30,width=145,bg="gray35",bd=0)
@@ -230,68 +271,73 @@ class LoadPreferences(PreferencesManagement):
         inter=[]
         db=[]
         for n in range(0,len(datas)):
-            if datas[n][3]=="Path":
+
+            if datas[n][3]=="Path" or datas[n][3]=="file":
                 string.append(StringVar())
                 m=len(string)
                 height=self.controllerPath(TargetCanvas,Node,height,string[m-1],datas[n][1],datas[n][2])
 
-            if datas[n][3]=="file":
+            elif datas[n][3]=="color":
                 string.append(StringVar())
                 m=len(string)
-                height=self.controllerPath(TargetCanvas,Node,height,string[m-1],datas[n][1],datas[n][2])
+                height=self.controllerColor(TargetCanvas,Node,height,string[m-1],datas[n][1],datas[n][2])
 
-            if datas[n][3]=="TextLine":
+            elif datas[n][3]=="vector" or datas[n][3]=="point" or datas[n][3]=="vvector" or datas[n][3]=="avector" or datas[n][3]=="vpoint" or datas[n][3]=="apoint" or datas[n][3]=="avvector":
+                string.append(StringVar())
+                m=len(string)
+                height=self.controllerVectorPoint(TargetCanvas,Node,height,string[m-1],datas[n][1],datas[n][2])
+
+            elif datas[n][3]=="TextLine":
                 string.append(StringVar())
                 m=len(string)
                 height=self.controllerTextLine(TargetCanvas,Node,height,string[m-1],datas[n][1],datas[n][2])
 
-            if datas[n][3]=="sceneNote":
+            elif datas[n][3]=="sceneNote":
                 string.append(StringVar())
                 m=len(string)
                 height=self.controllerSceneNote(TargetCanvas,Node,height,string[m-1],datas[n][1],datas[n][2])
 
-            if datas[n][3]=="string":
+            elif datas[n][3]=="matrix" or datas[n][3]=="amatrix":
+                string.append(StringVar())
+                m=len(string)
+                height=self.controllerMatrix(TargetCanvas,Node,height,string[m-1],datas[n][1],datas[n][2])
+
+            elif datas[n][3]=="MassText" or datas[n][3]=="string":
                 string.append(StringVar())
                 m=len(string)
                 height=self.controllerMassText(TargetCanvas,Node,height,string[m-1],datas[n][1],datas[n][2])
 
-
-            if datas[n][3]=="MassText":
-                string.append(StringVar())
-                m=len(string)
-                height=self.controllerMassText(TargetCanvas,Node,height,string[m-1],datas[n][1],datas[n][2])
-
-            if datas[n][3]=="Separator":
+            elif datas[n][3]=="Separator":
                 string.append(StringVar())
                 m=len(string)
                 height=self.controllerSeparator(TargetCanvas,Node,height,string[m-1],datas[n][1],datas[n][2])
 
-            if datas[n][3]=="SimpleNumber":
+            elif (datas[n][3]=="SimpleNumber") or (datas[n][3]=="int") or (datas[n][3]=="vfloat") or (datas[n][3]=="aint") or (datas[n][3]=="afloat") or (datas[n][3]=="avfloat") or (datas[n][3]=="vint") or (datas[n][3]=="float"):
                 string.append(StringVar())
                 m=len(string)
                 height=self.controllerNumberSimple(TargetCanvas,Node,height,string[m-1],datas[n][1],datas[n][2])
 
-            if datas[n][3]=="int":
-                string.append(StringVar())
-                m=len(string)
-                height=self.controllerNumberSimple(TargetCanvas,Node,height,string[m-1],datas[n][1],datas[n][2])
-
-            if datas[n][3]=="SFGlobal":
+            elif datas[n][3]=="SFGlobal":
                 string.append(StringVar())
                 m=len(string)
                 height=self.SFGlobal(TargetCanvas,Node,height,string[m-1],datas[n][1],datas[n][2])
 
-            if datas[n][3]=="EFGlobal":
+            elif datas[n][3]=="EFGlobal":
                 string.append(StringVar())
                 m=len(string)
                 height=self.EFGlobal(TargetCanvas,Node,height,string[m-1],datas[n][1],datas[n][2])
 
-            if datas[n][3]=="endTree":
+            elif datas[n][3]=="endTree":
                 string.append(StringVar())
                 m=len(string)
                 height=self.EOTTGlobal(TargetCanvas,Node,height,string[m-1],datas[n][1],datas[n][2])
 
-            if datas[n][3]=="Boolean":
+            elif datas[n][3]=="geo" or datas[n][3]=="curve" or datas[n][3]=="surface" or datas[n][3]=="mesh" or datas[n][3]=="amesh":
+                string.append(StringVar())
+                m=len(string)
+                height=self.controllerPassThrou(height)
+
+            elif datas[n][3]=="Boolean" or datas[n][3]=="bool":
                 inter.append(StringVar())
                 z=len(inter)
                 height=self.controllerBoolean(TargetCanvas,Node,height,inter[z-1],datas[n][1],None)
@@ -300,19 +346,7 @@ class LoadPreferences(PreferencesManagement):
                 else:
                     inter[z-1].set("False")
             else:
-                pass
-
-            if datas[n][3]=="bool":
-                inter.append(StringVar())
-                z=len(inter)
-                height=self.controllerBoolean(TargetCanvas,Node,height,inter[z-1],datas[n][1],None)
-                if str(datas[n][2])=="True":
-                    inter[z-1].set("True")
-                else:
-                    inter[z-1].set("False")
-            else:
-                pass
-
+                print "This type controller handler not available: "+str(datas[n][3])
 
 
 class CanvasInitPreferencePanel:

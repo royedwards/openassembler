@@ -23,13 +23,13 @@ class SliderBarEvents(NodeListCategoriser):
     def mouseMove_SliderBar(self, event,TargetCanvas):
         try:
             Targettags = TargetCanvas.gettags(CURRENT)
-            if event.y < 77:
+            if event.y < 38:
                 if (0 > (self.SliderBar_First_RowEnd+event.x - self.sliderlastx) > -((self.PreviewNodeNoumber[0]*90*.75)-(TargetCanvas.winfo_width()-20))):
                     TargetCanvas.move ("UP",event.x - self.sliderlastx,0)
                     self.SliderBar_First_RowEnd=self.SliderBar_First_RowEnd+(event.x - self.sliderlastx)
                 else:
                     pass
-            elif (77 < event.y < 143):
+            elif (38 < event.y < 71):
                 if (0 > (self.SliderBar_Secound_RowEnd+event.x - self.sliderlastx) > -((self.PreviewNodeNoumber[1]*90*.75)-(TargetCanvas.winfo_width()-20))):
                     TargetCanvas.move ("MID",event.x - self.sliderlastx,0)
                     self.SliderBar_Secound_RowEnd=self.SliderBar_Secound_RowEnd+(event.x - self.sliderlastx)
