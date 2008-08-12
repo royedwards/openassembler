@@ -14,7 +14,7 @@ class CanvasInitMenuLine(LoadPreferences,CanvasInitPreferencePanel,RuntimeNodeRe
     def NewScene(self,ppanel,editor):
         self.lastx=30
         self.lasty=30
-        self.GlobalScale=.5
+        self.GlobalScale=.75
         self.origin_node=""
         self.origin_out=""
         self.origin_uni=""
@@ -31,40 +31,33 @@ class CanvasInitMenuLine(LoadPreferences,CanvasInitPreferencePanel,RuntimeNodeRe
         editor.delete(ALL)
         self.sceneFileName=""
 
-    def SaveAsScene(self):
+    def SaveAsScene(self,editor):
             fdiagback=tkFileDialog.SaveAs(filetypes=[('OpenAsembler Scene','*.oas')],title="Save OpenAssembler scene file as:").show()
             if fdiagback==():
                 print "Save canceled..."
             else:
-                patth=str(self.runtimeDBasePath())
-                xmlfileoutput=open(patth,"r")
+		self.writeBackNodePositions(editor)
                 savefileoutput=open(fdiagback,"w")
-                savefileoutput.write(xmlfileoutput.read())
-                xmlfileoutput.close()
+                savefileoutput.write(self.rt)
                 savefileoutput.close()
                 self.sceneFileName=str(fdiagback)
                 print "OpenAssembler scene saved at: "+str(fdiagback)
 
-    def SaveScene(self):
+    def SaveScene(self,editor):
         if self.sceneFileName=="":
             fdiagback=tkFileDialog.SaveAs(filetypes=[('OpenAsembler Scene','*.oas')],defaultextension="oas",title="Save OpenAssembler scene file as:").show()
             if fdiagback==():
                 print "Save canceled..."
             else:
-                patth=str(self.runtimeDBasePath())
-                xmlfileoutput=open(patth,"r")
+		self.writeBackNodePositions(editor)
                 savefileoutput=open(fdiagback,"w")
-                savefileoutput.write(xmlfileoutput.read())
-                xmlfileoutput.close()
+                savefileoutput.write(self.rt)
                 savefileoutput.close()
                 self.sceneFileName=str(fdiagback)
                 print "OpenAssembler scene saved at: "+str(fdiagback)
         else:
-            patth=str(self.runtimeDBasePath())
-            xmlfileoutput=open(patth,"r")
             savefileoutput=open(self.sceneFileName,"w")
-            savefileoutput.write(xmlfileoutput.read())
-            xmlfileoutput.close()
+            savefileoutput.write(self.rt)
             savefileoutput.close()
             print "OpenAssembler scene saved at: "+str(self.sceneFileName)
 
@@ -77,7 +70,7 @@ class CanvasInitMenuLine(LoadPreferences,CanvasInitPreferencePanel,RuntimeNodeRe
             mainprefs=self.OpenexamineSettings(fdiagback, "0000000")
             self.lastx=30
             self.lasty=30
-            self.GlobalScale=.5
+            self.GlobalScale=.75
             self.origin_node=""
             self.origin_out=""
             self.origin_uni=""
@@ -140,10 +133,10 @@ class CanvasInitMenuLine(LoadPreferences,CanvasInitPreferencePanel,RuntimeNodeRe
 
 
     def menuLine_init(self,TargetCanvas,preferencescanvas,editor):
-        timelineFrame=Frame(TargetCanvas,height=11,width=220,bg="gray35")
+        timelineFrame=Frame(TargetCanvas,height=22,width=340,bg="gray35")
         timelineFrame.grid_propagate(0)
 
-        iofont = tkFont.Font ( family="system" , size=4 )
+        iofont = tkFont.Font ( family="Helvetica" , size=10 )
 
         newb= Button (timelineFrame,width=3,highlightcolor="gray35",bd=1,padx=5,pady=1,highlightbackground="gray35",text="New",font=iofont)
         newb.grid(row=1,column=1)
@@ -155,11 +148,11 @@ class CanvasInitMenuLine(LoadPreferences,CanvasInitPreferencePanel,RuntimeNodeRe
 
         savb=backfor=Button(timelineFrame,width=4,highlightcolor="gray35",bd=1,padx=5,pady=1,highlightbackground="gray35",text="Save",font=iofont)
         savb.grid(row=1,column=3)
-        savb.bind('<B1-ButtonRelease>',lambda event:self.SaveScene())
+        savb.bind('<B1-ButtonRelease>',lambda event:self.SaveScene(editor))
 
         sas=onefor=Button(timelineFrame,width=10,highlightcolor="gray35",bd=1,padx=5,pady=1,highlightbackground="gray35",text="Save as...",font=iofont)
         sas.grid(row=1,column=4)
-        sas.bind('<B1-ButtonRelease>',lambda event:self.SaveAsScene())
+        sas.bind('<B1-ButtonRelease>',lambda event:self.SaveAsScene(editor))
 
 
         pref=Button(timelineFrame,width=11,bd=1,padx=5,pady=1,text="Preferences",font=iofont)
@@ -167,13 +160,13 @@ class CanvasInitMenuLine(LoadPreferences,CanvasInitPreferencePanel,RuntimeNodeRe
         pref.bind('<Button-1>',lambda event:self.loadPreferences(preferencescanvas, "0000000"))
 
 
-        TargetCanvas.create_window(5,10,window=timelineFrame,anchor='w')
+        TargetCanvas.create_window(8,18,window=timelineFrame,anchor='w')
 
     def _initMenuLineCanvas(self,TargetCanvas,TargetSide,preferencescanvas,editor):
-        TargetCanvas = Canvas (self, width=540, height=15,relief=GROOVE, cursor="draft_large", confine="false",bg="gray35",bd=2)
+        TargetCanvas = Canvas (self, width=700, height=30,relief=GROOVE, cursor="draft_large", confine="false",bg="gray35",bd=2)
         TargetCanvas.grid(row=1,column=1,rowspan=6,sticky=N)
         self.menuLine_init(TargetCanvas, preferencescanvas,editor)
-        print "MenuLine Initialised."
+        print "MenuLine Initialized."
         return TargetCanvas
 
     def _ForgetMenuLineCanvas(self,TargetCanvas):

@@ -12,10 +12,10 @@ class CanvasInitTimeLine(NodeEditorCanvasEvents):
         editorcanvas.configure(cursor="cross")
 
     def timeLine_init(self,TargetCanvas,editorcanvas):
-        timelineFrame=Frame(TargetCanvas,height=11,width=538,bg="gray35")
+        timelineFrame=Frame(TargetCanvas,height=22,width=865,bg="gray35")
         timelineFrame.grid_propagate(0)
 
-        iofont = tkFont.Font ( family="system", size=4 )
+        iofont = tkFont.Font ( family="Helvetica", size=10 )
         e=Entry(timelineFrame,width=4,bd=1,state="readonly",font=iofont,textvariable=self.startFrame,fg="gray15",justify=RIGHT,relief=GROOVE)
         e.grid(row=1,column=1)
 
@@ -60,10 +60,10 @@ class CanvasInitTimeLine(NodeEditorCanvasEvents):
         rururun=Button(timelineFrame,width=12,bd=1,padx=5,pady=1,text="- - - RUN - - -",font=iofont,bg="darkgreen",activebackground="darkgreen",activeforeground="gray75")
         rururun.grid(row=1,column=13)
 
-        TargetCanvas.create_window(5,10,window=timelineFrame,anchor='w')
+        TargetCanvas.create_window(8,18,window=timelineFrame,anchor='w')
 
     def _initTimeLineCanvas(self,TargetCanvas,TargetSide,editorcanvas):
-        TargetCanvas = Canvas (self, width=540, height=15,relief=GROOVE, cursor="draft_large",bg="gray35",bd=2)
+        TargetCanvas = Canvas (self, width=700, height=30,relief=GROOVE, cursor="draft_large",bg="gray35",bd=2)
         TargetCanvas.grid(row=124,column=1,rowspan=6)
         self.timeLine_init(TargetCanvas,editorcanvas)
 

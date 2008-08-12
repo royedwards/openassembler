@@ -76,10 +76,10 @@ class Conversion(SA_NodeConverter):
         txt=""
         for s in range(0,len(nodelist)):
             txt+=str(nodelist[s])+" "+str(nodelist[s][:3])+"\n"
-        ftx=open(nodelistdir+"/nodelist.txt","w")
-        ftx.write(txt)
-        ftx.close()
-        raw_input("Please correct the short names in de nodelist.txt file and than press any key!").strip()
+        #ftx=open(nodelistdir+"/nodelist.txt","w")
+        #ftx.write(txt)
+        #ftx.close()
+        #raw_input("Please correct the short names in de nodelist.txt file and than press any key!").strip()
         fin=open(nodelistdir+"/nodelist.txt","r")
         co=fin.read()
         arrayofshorts=co.split("\n")
@@ -138,9 +138,9 @@ class Conversion(SA_NodeConverter):
                 if cleanpart[w][0]=="tags":
                     firsttag=cleanpart[w][1].split(":")[0]
                 if cleanpart[w][0]=="input":
-                    inputs.append((cleanpart[w][2],"True","False",cleanpart[w][1]))
+                    inputs.append((cleanpart[w][2].split("\n")[0],"True","False",cleanpart[w][1].split("\n")[0]))
                 if cleanpart[w][0]=="output":
-                    outputs.append((cleanpart[w][2],cleanpart[w][1]))
+                    outputs.append((cleanpart[w][2].split("\n")[0],cleanpart[w][1].split("\n")[0]))
 
             if inputs==[] and outputs==[]:
                 shape="SHAPE01"
@@ -226,8 +226,79 @@ class Conversion(SA_NodeConverter):
                 else:
                     self.AddToSliderBarToFile("Bottom_row", "SA"+str(x+1), name, nodelistdir)
 
+            #inputs=[]
+            for h in range (0,len(cleanpart)):
+                if cleanpart[h][0]=="input":
+                    if cleanpart[h][1]=="int" or cleanpart[h][1]=="float" or cleanpart[h][1]=="aint" or cleanpart[h][1]=="afloat" or cleanpart[h][1]=="vint" or cleanpart[h][1]=="vfloat" or cleanpart[h][1]=="avint" or cleanpart[h][1]=="avfloat":
+                        try:
+                            a=cleanpart[h][3].split("\n")[0]
+                        except:
+                            a=""
+                        if a=="" or a=="\"\"":
+                            self.defaultSettings(nodelistdir, name, str(cleanpart[h][2]).split("\n")[0], "0")
+                        else:
+                            self.defaultSettings(nodelistdir, name, str(cleanpart[h][2]).split("\n")[0], a.split("\n")[0])
+
+                    elif cleanpart[h][1]=="string" or cleanpart[h][1]=="file":
+                        try:
+                            a=cleanpart[h][3].split("\n")[0]
+                        except:
+                            a=""
+                        if a=="" or a=="\"\"":
+                            self.defaultSettings(nodelistdir, name, str(cleanpart[h][2]).split("\n")[0], "...")
+                        else:
+                            if len(cleanpart[h])>3:
+                                a=""
+                                for q in range(3,len(cleanpart[h])):
+                                    a+=str(cleanpart[h][q])+" "
+                            self.defaultSettings(nodelistdir, name, str(cleanpart[h][2]).split("\n")[0], a.split("\n")[0])
+
+                    elif cleanpart[h][1]=="bool":
+                        try:
+                            a=cleanpart[h][3].split("\n")[0]
+                        except:
+                            a=""
+                        if a=="" or a=="\"\"":
+                            self.defaultSettings(nodelistdir, name, str(cleanpart[h][2]).split("\n")[0], "False")
+                        else:
+                            if a.split("\n")[0]=="0":
+                                a="False"
+                            else:
+                                a="True"
+                            self.defaultSettings(nodelistdir, name, str(cleanpart[h][2]).split("\n")[0], a)
+
+                    elif cleanpart[h][1]=="vector" or cleanpart[h][1]=="point" or cleanpart[h][1]=="vvector" or cleanpart[h][1]=="color" or cleanpart[h][1]=="avector" or cleanpart[h][1]=="vpoint" or cleanpart[h][1]=="avvector" or cleanpart[h][1]=="apoint":
+                        try:
+                            a=cleanpart[h][3].split("\n")[0]
+                        except:
+                            a=""
+                        if a=="" or a=="\"\"":
+                            a=";0;0;0;"
+                            self.defaultSettings(nodelistdir, name, str(cleanpart[h][2]).split("\n")[0], a)
+                        else:
+                            if len(cleanpart[h])>3:
+                                a=""
+                                for q in range(3,len(cleanpart[h])):
+                                    a+=str(cleanpart[h][q])+" "
+                            a=str(a.strip(" "))
+                            if a[:1]=="\"":
+                                a=a.split("\"")[1]
+                            if len(a.split(" "))>1:
+                                a=a.split(" ")
+                            elif len(a.split(","))>1:
+                                a=a.split(",")
+                            b=""
+                            for qrt in range (0,len(a)):
+                                b+=";"+a[qrt]
+                            b+=";"
+                            self.defaultSettings(nodelistdir, name, str(cleanpart[h][2]).split("\n")[0], b)
+
+                    elif cleanpart[h][1]=="matrix" or cleanpart[h][1]=="amatrix":
+                            self.defaultSettings(nodelistdir, name, str(cleanpart[h][2]).split("\n")[0], ";1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;")
 
 
+                    else:
+                            self.defaultSettings(nodelistdir, name, str(cleanpart[h][2]).split("\n")[0], "...")
 
 
 #if '-h' in sys.argv or '--help' in sys.argv or '--help' in sys.argv:

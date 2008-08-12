@@ -109,7 +109,6 @@ class NodeListCategoriser(Nodes,NodeVarInit):
         return "NodeListCantegoriser"
 
     def CreateNodefromList(self,TargetCanvas,x,y,Type,Ident):
-
             Generated=self.GenerateVars(TargetCanvas,x,y,Ident,Type)
             self.PutNode(Generated)
             if Ident =="MAIN":

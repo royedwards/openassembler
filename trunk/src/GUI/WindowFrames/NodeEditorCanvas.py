@@ -5,9 +5,10 @@ from MouseEvents import NodeEditorCanvasEvents
 class CanvasInitNodeEditor(NodeEditorCanvasEvents):
 
     def _initNodeEditorCanvas(self,TargetCanvas,TargetSide,preferencespanel):
-        TargetCanvas = Canvas (self, width=540, height=275,relief=GROOVE, cursor="draft_large", confine="false",bg="gray45",bd=2, scrollregion=(0,0,2048,1536))
-        TargetCanvas.grid(row=7,column=1,rowspan=116,sticky=N)
-
+        TargetCanvas = Canvas (self, width=700, height=320,relief=GROOVE, cursor="draft_large", confine="false",bg="gray45",bd=2, scrollregion=(0,0,2048,1536))
+        TargetCanvas.grid(row=7,column=1,rowspan=116, sticky=N)
+	TargetCanvas.grid_columnconfigure(1,weight=1)
+	TargetCanvas.grid_rowconfigure(7,weight=1)
         def handlerB1Click(event, self=self, TargetCanvas=TargetCanvas,preferencespanel=preferencespanel):
             EventTags=TargetCanvas.gettags(CURRENT)
             self.lastx=event.x

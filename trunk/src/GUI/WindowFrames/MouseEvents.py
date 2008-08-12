@@ -23,13 +23,13 @@ class SliderBarEvents(NodeListCategoriser):
     def mouseMove_SliderBar(self, event,TargetCanvas):
         try:
             Targettags = TargetCanvas.gettags(CURRENT)
-            if event.y < 38:
+            if event.y < 52:
                 if (0 > (self.SliderBar_First_RowEnd+event.x - self.sliderlastx) > -((self.PreviewNodeNoumber[0]*90*.75)-(TargetCanvas.winfo_width()-20))):
                     TargetCanvas.move ("UP",event.x - self.sliderlastx,0)
                     self.SliderBar_First_RowEnd=self.SliderBar_First_RowEnd+(event.x - self.sliderlastx)
                 else:
                     pass
-            elif (38 < event.y < 71):
+            elif (52 < event.y < 98):
                 if (0 > (self.SliderBar_Secound_RowEnd+event.x - self.sliderlastx) > -((self.PreviewNodeNoumber[1]*90*.75)-(TargetCanvas.winfo_width()-20))):
                     TargetCanvas.move ("MID",event.x - self.sliderlastx,0)
                     self.SliderBar_Secound_RowEnd=self.SliderBar_Secound_RowEnd+(event.x - self.sliderlastx)
@@ -115,7 +115,7 @@ class NodeEditorCanvasEvents(GUI_Elements_forNodes,ConnectLine,LoadPreferences,P
             TargetCanvas.delete("LineUnderCreateTMP")
         except:
             pass
-        self.writeBackNodePositions(TargetCanvas)
+        #self.writeBackNodePositions(TargetCanvas)
         self.origin_node=""
 
 
@@ -145,6 +145,8 @@ class NodeEditorCanvasEvents(GUI_Elements_forNodes,ConnectLine,LoadPreferences,P
             self.origin_out=Eventtag[2]
             self.origin_uni=Eventtag[1]
             self.DrawTMPLine(TargetCanvas, Eventtag,lastx,lasty)
+	elif Eventtag[3]=="line":
+	    TargetCanvas.tag_lower(Eventtag[4])
         else:
             if len(Eventtag)==8:
                 TargetCanvas.tag_lower((str(Eventtag[0])+"select"))
@@ -153,7 +155,9 @@ class NodeEditorCanvasEvents(GUI_Elements_forNodes,ConnectLine,LoadPreferences,P
                 self.RedrawLines(TargetCanvas, Eventtag[0])
 
     def NodeEditorZoom(self, event,TargetCanvas):
-        try:
+        BoundingBoxAllCenter_X=600
+	BoundingBoxAllCenter_Y=360
+	try:
             BoundingBoxAll= TargetCanvas.bbox(ALL)
             BoundingBoxAllCenter_X= ((BoundingBoxAll[2]-BoundingBoxAll[0])/2)+BoundingBoxAll[0]
             BoundingBoxAllCenter_Y= ((BoundingBoxAll[3]-BoundingBoxAll[1])/2)+BoundingBoxAll[1]

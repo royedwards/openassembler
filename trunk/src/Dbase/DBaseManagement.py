@@ -8,15 +8,16 @@
 #------------------------------------------------------------------------------------------------------------------------------------
 
 from xml.dom import minidom
-
+import os
 
 #------------------------------------------------------------------------------------------------------------------------------------
 #    Global file structure variables
 #------------------------------------------------------------------------------------------------------------------------------------
 
-RUNTIME_NODELIST_FOLDER="/home/user/temp"
-GUI_SETTINGS_FOLDER="/home/user/workspace/OpenAssembler/DBase/GUI"
+RUNTIME_NODELIST_FOLDER=str(os.environ.get("HOME"))+"/temp"
+GUI_SETTINGS_FOLDER="/net/homes/lmates/OpenAssembler/DBase/GUI"
 
+GLOBALIS=1
 
 #------------------------------------------------------------------------------------------------------------------------------------
 #    General script to find a specific node in an XML file
@@ -108,12 +109,10 @@ class openScene:
         rootdoc=minidom.parse(openfile)
         root=rootdoc.documentElement
         tocopy = (root.childNodes[FindNamedNode(root,("Node"+str(Node)))].cloneNode(1))
-        rootdoc2=minidom.parse(RUNTIME_NODELIST_FOLDER + "/RuntimeNodeList.xml")
+        rootdoc2=minidom.parseString(self.rt)
         root_runtime=rootdoc2.documentElement
         root_runtime.appendChild(tocopy)
-        xmlfileoutput=open((RUNTIME_NODELIST_FOLDER + "/RuntimeNodeList.xml"),"w")
-        xmlfileoutput.write(root_runtime.toxml())
-        xmlfileoutput.close()
+        self.rt=root_runtime.toxml()
         root.unlink
         root_runtime.unlink
 
@@ -183,7 +182,7 @@ class PreferencesManagement:
 
     def examineSettings(self,Node):
         returnvalue=[]
-        rootdoc=minidom.parse(RUNTIME_NODELIST_FOLDER + "/RuntimeNodeList.xml")
+        rootdoc=minidom.parseString(self.rt)
         root=rootdoc.documentElement
         nodename = (root.childNodes[FindNamedNode(root,("Node"+str(Node)))].getAttribute("Name"))
         counter=root.childNodes[FindNamedNode(root,("Node"+str(Node)))].childNodes[FindNamedNode(root.childNodes[FindNamedNode(root,("Node"+str(Node)))],"Data")].childNodes.length
@@ -199,7 +198,7 @@ class PreferencesManagement:
         return returnvalue
 
     def getNodeNote(self,Node):
-        rootdoc=minidom.parse(RUNTIME_NODELIST_FOLDER + "/RuntimeNodeList.xml")
+        rootdoc=minidom.parseString(self.rt)
         root=rootdoc.documentElement
         nodename = (root.childNodes[FindNamedNode(root,("Node"+str(Node)))].getAttribute("Name"))
         actuellenode=root.childNodes[FindNamedNode(root,("Node"+str(Node)))]
@@ -215,26 +214,22 @@ class PreferencesManagement:
             pass
         else:
             if Node=="0000000":
-                rootdoc=minidom.parse(RUNTIME_NODELIST_FOLDER + "/RuntimeNodeList.xml")
+                rootdoc=minidom.parseString(self.rt)
                 root=rootdoc.documentElement
                 actuellenode=root.childNodes[FindNamedNode(root,("Node"+str(Node)))]
                 actuelleGen=actuellenode.childNodes[FindNamedNode(actuellenode,("Data"))]
                 notevalue=actuelleGen.childNodes[FindNamedNode(actuelleGen,("Note"))].firstChild.nodeValue=str(newvalue)
-                xmlfileoutput=open((RUNTIME_NODELIST_FOLDER + "/RuntimeNodeList.xml"),"w")
-                xmlfileoutput.write(root.toxml())
-                xmlfileoutput.close()
+                self.rt=root.toxml()
                 root.unlink
             else:
-                rootdoc=minidom.parse(RUNTIME_NODELIST_FOLDER + "/RuntimeNodeList.xml")
+                rootdoc=minidom.parseString(self.rt)
                 root=rootdoc.documentElement
                 actuellenode=root.childNodes[FindNamedNode(root,("Node"+str(Node)))]
                 actuelleGen=actuellenode.childNodes[FindNamedNode(actuellenode,("Generation"))]
                 labels=actuelleGen.childNodes[FindNamedNode(actuelleGen,("Labels"))]
                 notevalue=labels.childNodes[FindNamedNode(labels,("Note"))].firstChild.nodeValue=str(newvalue)
                 print "Node"+str(Node)+"."+"Note"+" set to: "+labels.childNodes[FindNamedNode(labels,("Note"))].firstChild.nodeValue
-                xmlfileoutput=open((RUNTIME_NODELIST_FOLDER + "/RuntimeNodeList.xml"),"w")
-                xmlfileoutput.write(root.toxml())
-                xmlfileoutput.close()
+                self.rt=root.toxml()
                 root.unlink
 
 
@@ -242,28 +237,27 @@ class PreferencesManagement:
         if str(newvalue)=='':
             pass
         else:
-            rootdoc=minidom.parse(RUNTIME_NODELIST_FOLDER + "/RuntimeNodeList.xml")
+            rootdoc=minidom.parseString(self.rt)
             root=rootdoc.documentElement
             actuellenode=root.childNodes[FindNamedNode(root,("Node"+str(Node)))].childNodes[FindNamedNode(root.childNodes[FindNamedNode(root,("Node"+str(Node)))],container)]
             controllerlink=actuellenode.childNodes[FindNamedNode(actuellenode,str(controller))]
             controllerlink.firstChild.nodeValue=str(newvalue)
             print "Node"+str(Node)+"."+str(controller)+" set to: "+controllerlink.firstChild.nodeValue
-            xmlfileoutput=open((RUNTIME_NODELIST_FOLDER + "/RuntimeNodeList.xml"),"w")
-            xmlfileoutput.write(root.toxml())
-            xmlfileoutput.close()
+            self.rt=root.toxml()
             root.unlink
 
 class RuntimeNodeRegister:
 
     def runtimeDBasePath(self):
-        x=(RUNTIME_NODELIST_FOLDER + "/RuntimeNodeList.xml")
-        return x
+    	print "I am still using RuntimeDBasePath...!!!!!!!"
+        #x=(self.rt)
+        return None
 
 
     def CreateGlobalPreferences(self,startframe,endframe,note,etr):
         ID="Node0000000"
 
-        rootruntimedoc=minidom.parse((RUNTIME_NODELIST_FOLDER + "/RuntimeNodeList.xml"))
+        rootruntimedoc=minidom.parseString(self.rt)
         root_runtime=rootruntimedoc.documentElement
 
         runtimeNodeList_trick=minidom.getDOMImplementation()
@@ -332,22 +326,18 @@ class RuntimeNodeRegister:
 
         mroot=root_trick.firstChild.firstChild.cloneNode(1)
         root_runtime.appendChild(mroot)
-
-        xmlfileoutput=open((RUNTIME_NODELIST_FOLDER + "/RuntimeNodeList.xml"),"w")
-        xmlfileoutput.write(root_runtime.toxml())
-        xmlfileoutput.close()
-        root_trick.unlink
+        self.rt=root_runtime.toxml()
+	root_trick.unlink
         root_runtime.unlink
 
     def Create_RuntimeDBase(self):
         runtimeNodeList=minidom.getDOMImplementation()
         root=runtimeNodeList.createDocument("", "OpenAssemblerRuntimers", "")
-        xmlfileoutput=open((RUNTIME_NODELIST_FOLDER + "/RuntimeNodeList.xml"),"w")
-        xmlfileoutput.write(root.toxml())
-        xmlfileoutput.close()
+        self.rt=root.toxml()
 
     def GetIDList(self):
-        rootdoc=minidom.parse(RUNTIME_NODELIST_FOLDER + "/RuntimeNodeList.xml")
+        rootdoc=minidom.parseString(self.rt)
+
         root=rootdoc.documentElement
         IDList=[]
         runno=root.childNodes.length
@@ -360,7 +350,7 @@ class RuntimeNodeRegister:
         return IDList
 
     def IDChc(self,NewID):
-        rootdoc=minidom.parse(RUNTIME_NODELIST_FOLDER + "/RuntimeNodeList.xml")
+        rootdoc=minidom.parseString(self.rt)
         root=rootdoc.documentElement
         NewIDd=("Node"+str(NewID))
         checker=-1
@@ -374,18 +364,17 @@ class RuntimeNodeRegister:
             return "true"
 
     def writeBackOneNodePosition(self,TargetCanvas,ID):
-        functype=self.getNodeFuncType(ID)
+        pass
+	functype=self.getNodeFuncType(ID)
         bb=TargetCanvas.bbox((str(functype)+str(ID)+"select"))
-        rootdoc=minidom.parse(RUNTIME_NODELIST_FOLDER + "/RuntimeNodeList.xml")
+        rootdoc=minidom.parseString(self.rt)
         root=rootdoc.documentElement
         actuellenode=root.childNodes[FindNamedNode(root,("Node"+str(ID)))]
         actuelleGen=actuellenode.childNodes[FindNamedNode(actuellenode,("Generation"))]
         poss=actuelleGen.childNodes[FindNamedNode(actuelleGen,("Position"))]
-        posix=poss.childNodes[FindNamedNode(poss,("X"))].firstChild.nodeValue=str(bb[0]*2-25)
-        posiy=poss.childNodes[FindNamedNode(poss,("Y"))].firstChild.nodeValue=str(bb[1]*2-25)
-        xmlfileoutput=open((RUNTIME_NODELIST_FOLDER + "/RuntimeNodeList.xml"),"w")
-        xmlfileoutput.write(root.toxml())
-        xmlfileoutput.close()
+        posix=poss.childNodes[FindNamedNode(poss,("X"))].firstChild.nodeValue=str(int(bb[0]/self.GlobalScale-30))
+        posiy=poss.childNodes[FindNamedNode(poss,("Y"))].firstChild.nodeValue=str(int(bb[1]/self.GlobalScale-30))
+        self.rt=root.toxml()
         root.unlink
 
     def writeBackNodePositions(self,TargetCanvas):
@@ -406,7 +395,7 @@ class RuntimeNodeRegister:
         NodeUpperLabel=(str(InputParameters[5][1])+str(InputParameters[1]))
         FunctionType=Functype=InputParameters[4]
 
-        rootruntimedoc=minidom.parse((RUNTIME_NODELIST_FOLDER + "/RuntimeNodeList.xml"))
+        rootruntimedoc=minidom.parseString(self.rt)
         root_runtime=rootruntimedoc.documentElement
 
         runtimeNodeList_trick=minidom.getDOMImplementation()
@@ -423,7 +412,7 @@ class RuntimeNodeRegister:
         mroot=root_trick.firstChild.firstChild.cloneNode(1)
         root_runtime.appendChild(mroot)
 
-        rootsettingdoc=minidom.parse(GUI_SETTINGS_FOLDER + "/NodeTypeSettings.xml")
+        rootsettingdoc=minidom.parseString(self.GUI_definition)
         root=rootsettingdoc.documentElement
         generation_root=(root.childNodes[FindNamedNode(root,Functype)].childNodes[FindNamedNode(root.childNodes[FindNamedNode(root,Functype)],"Generation")].cloneNode(1))
         Data_root=(root.childNodes[FindNamedNode(root,Functype)].childNodes[FindNamedNode(root.childNodes[FindNamedNode(root,Functype)],"Data")].cloneNode(1))
@@ -431,16 +420,14 @@ class RuntimeNodeRegister:
         mroot.appendChild(generation_root)
         mroot.appendChild(Data_root)
         mroot.appendChild(source_root)
-        xmlfileoutput=open((RUNTIME_NODELIST_FOLDER + "/RuntimeNodeList.xml"),"w")
-        xmlfileoutput.write(root_runtime.toxml())
-        xmlfileoutput.close()
+        self.rt=root_runtime.toxml()
         root.unlink
         root_trick.unlink
         root_runtime.unlink
-        del root, root_trick, root_runtime, xmlfileoutput, mroot, source_root, Data_root, generation_root
+        del root, root_trick, root_runtime, mroot, source_root, Data_root, generation_root
 
     def getNodeName(self,Node):
-        rootdoc=minidom.parse(RUNTIME_NODELIST_FOLDER + "/RuntimeNodeList.xml")
+        rootdoc=minidom.parseString(self.rt)
         root=rootdoc.documentElement
         actuellenode=root.childNodes[FindNamedNode(root,("Node"+str(Node)))].getAttribute("Name")
         root.unlink
@@ -448,7 +435,7 @@ class RuntimeNodeRegister:
         return actuellenode
 
     def getNodeFuncType(self,Node):
-        rootdoc=minidom.parse(RUNTIME_NODELIST_FOLDER + "/RuntimeNodeList.xml")
+        rootdoc=minidom.parseString(self.rt)
         root=rootdoc.documentElement
         actuellenode=root.childNodes[FindNamedNode(root,("Node"+str(Node)))].getAttribute("FuncType")
         root.unlink
@@ -456,7 +443,7 @@ class RuntimeNodeRegister:
         return actuellenode
 
     def getFrameRange(self):
-        rootdoc=minidom.parse(RUNTIME_NODELIST_FOLDER + "/RuntimeNodeList.xml")
+        rootdoc=minidom.parseString(self.rt)
         root=rootdoc.documentElement
         actuellenode=root.childNodes[FindNamedNode(root,("Node0000000"))]
         dta=actuellenode.childNodes[FindNamedNode(actuellenode,("Data"))]
@@ -467,8 +454,8 @@ class RuntimeNodeRegister:
         return (sf,ef)
 
     def _CHCRuntimeNodeName(self,ID,NewName):
-        rootdoc=minidom.parse(RUNTIME_NODELIST_FOLDER + "/RuntimeNodeList.xml")
-        root=rootdoc.documentElement
+        root=minidom.parseString(self.rt)
+        #root=rootdoc.documentElement
         checker=-1
         runno=root.childNodes.length
         for n in range (0,runno):
@@ -481,7 +468,7 @@ class RuntimeNodeRegister:
 
     def DeleteLines(self,TargetCanvas,LineList):
         for n in range(0,len(LineList)):
-            rootruntimedoc=minidom.parse((RUNTIME_NODELIST_FOLDER + "/RuntimeNodeList.xml"))
+            rootruntimedoc=minidom.parseString(self.rt)
             root_runtime=rootruntimedoc.documentElement
             for m in range (0,len(self.RuntimeLines)):
                 if self.RuntimeLines[m][0]==LineList[n]:
@@ -500,9 +487,7 @@ class RuntimeNodeRegister:
                         pass
             print str(root_runtime.childNodes[FindNamedNode(root_runtime,("Node"+str(LineList[n])))].getAttribute('FuncType'))+ ' ('+ str(LineList[n]) + ') deleted...'
             root_runtime.removeChild(root_runtime.childNodes[FindNamedNode(root_runtime,("Node"+str(LineList[n])))])
-            xmlfileoutput=open((RUNTIME_NODELIST_FOLDER + "/RuntimeNodeList.xml"),"w")
-            xmlfileoutput.write(root_runtime.toxml())
-            xmlfileoutput.close()
+            self.rt=root_runtime.toxml()
             root_runtime.unlink
             TargetCanvas.delete((str(LineList[n])+"select"))
         temp=[]
@@ -520,7 +505,7 @@ class RuntimeNodeRegister:
 
     def DeleteItem(self,TargetCanvas,itemToDelete):
 
-        rootruntimedoc=minidom.parse((RUNTIME_NODELIST_FOLDER + "/RuntimeNodeList.xml"))
+        rootruntimedoc=minidom.parseString(self.rt)
         root_runtime=rootruntimedoc.documentElement
         tester=root_runtime.childNodes[FindNamedNode(root_runtime,("Node"+str(itemToDelete)))].getAttribute('FuncType')
         root_runtime.unlink
@@ -529,13 +514,11 @@ class RuntimeNodeRegister:
             list.append(int(itemToDelete))
             self.DeleteLines(TargetCanvas,list)
         else:
-            rootruntimedoc=minidom.parse((RUNTIME_NODELIST_FOLDER + "/RuntimeNodeList.xml"))
+            rootruntimedoc=minidom.parseString(self.rt)
             root_runtime=rootruntimedoc.documentElement
             print root_runtime.childNodes[FindNamedNode(root_runtime,("Node"+str(itemToDelete)))].getAttribute('FuncType')+ ' ('+ itemToDelete + ') deleted...'
             root_runtime.removeChild(root_runtime.childNodes[FindNamedNode(root_runtime,("Node"+str(itemToDelete)))])
-            xmlfileoutput=open((RUNTIME_NODELIST_FOLDER + "/RuntimeNodeList.xml"),"w")
-            xmlfileoutput.write(root_runtime.toxml())
-            xmlfileoutput.close()
+            self.rt=root_runtime.toxml()
             root_runtime.unlink
             theList=[]
             for n in range (0,(len(self.RuntimeLines))):
@@ -549,7 +532,7 @@ class RuntimeNodeRegister:
                 self.DeleteLines(TargetCanvas,theList)
 
     def checkIfMultiNode(self,Node,Input):
-        rootruntimedoc=minidom.parse((RUNTIME_NODELIST_FOLDER + "/RuntimeNodeList.xml"))
+        rootruntimedoc=minidom.parseString(self.rt)
         root=rootruntimedoc.documentElement
         actuellenode=root.childNodes[FindNamedNode(root,("Node"+str(Node)))]
         datapart=actuellenode.childNodes[FindNamedNode(actuellenode,"Data")]
@@ -558,7 +541,7 @@ class RuntimeNodeRegister:
         return inp
 
     def writeConnections(self,Node,input,newID):
-        rootruntimedoc=minidom.parse((RUNTIME_NODELIST_FOLDER + "/RuntimeNodeList.xml"))
+        rootruntimedoc=minidom.parseString(self.rt)
         root=rootruntimedoc.documentElement
         actuellenode=root.childNodes[FindNamedNode(root,("Node"+str(Node)))]
         datapart=actuellenode.childNodes[FindNamedNode(actuellenode,"Data")]
@@ -567,9 +550,7 @@ class RuntimeNodeRegister:
             datapart.childNodes[FindNamedNode(datapart,str(input))].firstChild.nodeValue=str(datapart.childNodes[FindNamedNode(datapart,str(input))].firstChild.nodeValue)+":"+str(newID)
         else:
             datapart.childNodes[FindNamedNode(datapart,str(input))].firstChild.nodeValue=":"+str(newID)
-        xmlfileoutput=open((RUNTIME_NODELIST_FOLDER + "/RuntimeNodeList.xml"),"w")
-        xmlfileoutput.write(root.toxml())
-        xmlfileoutput.close()
+        self.rt=root.toxml()
         root.unlink
 
     def checkMultipleSelfConnection(self,fromnode,output,tonode,input):
@@ -583,7 +564,7 @@ class RuntimeNodeRegister:
                     return 0
 
     def RegisterLine(self,lineID,Fromnode,output,uni_out,Tonode,input,uni_in):
-        rootruntimedoc=minidom.parse((RUNTIME_NODELIST_FOLDER + "/RuntimeNodeList.xml"))
+        rootruntimedoc=minidom.parseString(self.rt)
         root_runtime=rootruntimedoc.documentElement
 
         runtimeNodeList_trick=minidom.getDOMImplementation()
@@ -624,9 +605,7 @@ class RuntimeNodeRegister:
         mroot=root_trick.firstChild.firstChild.cloneNode(1)
         root_runtime.appendChild(mroot)
 
-        xmlfileoutput=open((RUNTIME_NODELIST_FOLDER + "/RuntimeNodeList.xml"),"w")
-        xmlfileoutput.write(root_runtime.toxml())
-        xmlfileoutput.close()
+        self.rt=root_runtime.toxml()
         self.RuntimeLines.append((lineID,Fromnode,output,uni_out,Tonode,input,uni_in))
         root_trick.unlink
         root_runtime.unlink
@@ -635,12 +614,10 @@ class RuntimeNodeRegister:
         x = self._CHCRuntimeNodeName(ID,NewName)
         IDd=("Node"+ID)
         if  x=="true":
-            rootdoc=minidom.parse(RUNTIME_NODELIST_FOLDER + "/RuntimeNodeList.xml")
+            rootdoc=minidom.parseString(self.rt)
             root=rootdoc.documentElement
             root.childNodes[FindNamedNode(root,IDd)].setAttribute("Name",NewName)
-            xmlfileoutput=open((RUNTIME_NODELIST_FOLDER + "/RuntimeNodeList.xml"),"w")
-            xmlfileoutput.write(root.toxml())
-            xmlfileoutput.close()
+            self.rt=root.toxml()
             return "true"
         else:
             return "false"
@@ -652,7 +629,7 @@ class RuntimeNodeRegister:
 class SliderBarDbaseSupport:
 
     def CountRowMember(self,row):
-        rootdoc=minidom.parse(GUI_SETTINGS_FOLDER + "/SliderBarNodeList.xml")
+        rootdoc=minidom.parseString(self.GUI_slider)
         root_final=rootdoc.documentElement
 
         uprow=root_final.childNodes[0].childNodes.length
@@ -671,7 +648,7 @@ class SliderBarDbaseSupport:
         if nodeName=="":
             pass
         else:
-            rootdoc=minidom.parse(GUI_SETTINGS_FOLDER + "/SliderBarNodeList.xml")
+            rootdoc=minidom.parseString(self.GUI_slider)
             root=rootdoc.documentElement
             b=None
             for n in range(0,root.childNodes.length):
@@ -687,7 +664,7 @@ class SliderBarDbaseSupport:
                 except:
                     pass
             root.unlink
-            rootdoc=minidom.parse(GUI_SETTINGS_FOLDER + "/NodeTypeSettings.xml")
+            rootdoc=minidom.parseString(self.GUI_definition)
             root=rootdoc.documentElement
             b=None
             for n in range(0,root.childNodes.length):
@@ -708,7 +685,7 @@ class SliderBarDbaseSupport:
         if nodeName=="":
             pass
         else:
-            rootdoc=minidom.parse(GUI_SETTINGS_FOLDER + "/SliderBarNodeList.xml")
+            rootdoc=minidom.parseString(self.GUI_slider)
             root=rootdoc.documentElement
             for n in range(0,root.childNodes.length):
                 for m in range(0,root.childNodes[n].childNodes.length):
@@ -724,7 +701,7 @@ class SliderBarDbaseSupport:
         if state=="edit":
             if Functype=="":
                 return [()]
-            rootdoc=minidom.parse(GUI_SETTINGS_FOLDER + "/NodeTypeSettings.xml")
+            rootdoc=minidom.parseString(self.GUI_definition)
             root=rootdoc.documentElement
             generation_root=(root.childNodes[FindNamedNode(root,Functype)].childNodes[FindNamedNode(root.childNodes[FindNamedNode(root,Functype)],"Generation")])
             data_root=(root.childNodes[FindNamedNode(root,Functype)].childNodes[FindNamedNode(root.childNodes[FindNamedNode(root,Functype)],"Data")])
@@ -778,7 +755,7 @@ class SliderBarDbaseSupport:
         return outvalues
 
     def GetSliderBarNodeList(self):
-       rootdoc=minidom.parse(GUI_SETTINGS_FOLDER + "/SliderBarNodeList.xml")
+       rootdoc=minidom.parseString(self.GUI_slider)
        root=rootdoc.documentElement
        up=[]
        mid=[]
@@ -810,22 +787,21 @@ class SliderBarDbaseSupport:
 class VarDefs:
 
     def GetVars(self,Functype):
-        rootdoc=minidom.parse(GUI_SETTINGS_FOLDER + "/NodeTypeSettings.xml")
-        root=rootdoc.documentElement
-        generation_root=(root.childNodes[FindNamedNode(root,Functype)].childNodes[FindNamedNode(root.childNodes[FindNamedNode(root,Functype)],"Generation")])
-        data_root=(root.childNodes[FindNamedNode(root,Functype)].childNodes[FindNamedNode(root.childNodes[FindNamedNode(root,Functype)],"Data")])
+        root=minidom.parseString(self.GUI_definition)
 
-        nodeshapestyle = generation_root.childNodes[FindNamedNode(generation_root,"NodeShapeStyle")].firstChild.nodeValue
+        generation_root=root.getElementsByTagName(Functype)[0].getElementsByTagName("Generation")[0]
+        data_root=root.getElementsByTagName(Functype)[0].getElementsByTagName("Data")[0]
+        nodeshapestyle = generation_root.getElementsByTagName("NodeShapeStyle")[0].firstChild.nodeValue
 
-        colors=generation_root.childNodes[FindNamedNode(generation_root,"Colors")]
-        topcolor=colors.childNodes[FindNamedNode(colors,"TopColor")].firstChild.nodeValue
-        midcolor=colors.childNodes[FindNamedNode(colors,"MiddleColor")].firstChild.nodeValue
-        botcolor=colors.childNodes[FindNamedNode(colors,"BottomColor")].firstChild.nodeValue
+        colors=generation_root.getElementsByTagName("Colors")[0]
+        topcolor=colors.getElementsByTagName("TopColor")[0].firstChild.nodeValue
+        midcolor=colors.getElementsByTagName("MiddleColor")[0].firstChild.nodeValue
+        botcolor=colors.getElementsByTagName("BottomColor")[0].firstChild.nodeValue
 
-        labels=generation_root.childNodes[FindNamedNode(generation_root,"Labels")]
-        upperlabel=labels.childNodes[FindNamedNode(labels,"UpperLabel")].firstChild.nodeValue
-        Previewlabel=labels.childNodes[FindNamedNode(labels,"PreviewLabel")].firstChild.nodeValue
-        Note=labels.childNodes[FindNamedNode(labels,"Note")].firstChild.nodeValue
+        labels=generation_root.getElementsByTagName("Labels")[0]
+        upperlabel=labels.getElementsByTagName("UpperLabel")[0].firstChild.nodeValue
+        Previewlabel=labels.getElementsByTagName("PreviewLabel")[0].firstChild.nodeValue
+        Note=labels.getElementsByTagName("Note")[0].firstChild.nodeValue
 
         inpno=data_root.childNodes.length
         inputs_out=[]
@@ -835,7 +811,7 @@ class VarDefs:
             else:
                 inputs_out.append([(str(data_root.childNodes[n].nodeName)),str(data_root.childNodes[n].getAttribute("Type"))])
 
-        outputs=generation_root.childNodes[FindNamedNode(generation_root,"Outputs")]
+        outputs=generation_root.getElementsByTagName("Outputs")[0]
         outno=outputs.childNodes.length
         outs_out=[]
         for n in range (0,outno):
@@ -1077,7 +1053,7 @@ def _createNodeTypeSettings():
 class NodeEditordbTools:
 
     def DeleteNodeTypeSettings(self,node):
-            rootdoc=minidom.parse(GUI_SETTINGS_FOLDER + "/NodeTypeSettings.xml")
+            rootdoc=minidom.parseString(self.GUI_slider)
             root=rootdoc.documentElement
             root.removeChild(root.childNodes[FindNamedNode(root,str(node))])
             files=open((GUI_SETTINGS_FOLDER + "/NodeTypeSettings.xml"),"w")
@@ -1086,7 +1062,7 @@ class NodeEditordbTools:
 
     def AddToSliderBar(self,row,position,name):
 
-        rootdoc=minidom.parse(GUI_SETTINGS_FOLDER + "/SliderBarNodeList.xml")
+        rootdoc=minidom.parseString(self.GUI_slider)
         root_final=rootdoc.documentElement
 
         uprow=root_final.childNodes[0].cloneNode(1)
@@ -1125,7 +1101,7 @@ class NodeEditordbTools:
 
 
     def AddNodeTypeSettings(self, ns):
-            rootdoc=minidom.parse(GUI_SETTINGS_FOLDER + "/NodeTypeSettings.xml")
+            rootdoc=minidom.parseString(self.GUI_definition)
             root_final=rootdoc.documentElement
             try:
                 if root_final.childNodes[FindNamedNode(root_final,str(ns[0]))].nodeName==ns[0]:
@@ -1288,6 +1264,22 @@ class NodeEditordbTools:
 
 
 class SA_NodeConverter:
+
+    def defaultSettings(self,path,Node,controller,newvalue):
+        if str(newvalue)=='':
+            pass
+        else:
+            rootdoc=minidom.parse(path + "/NodeTypeSettings.xml")
+            root=rootdoc.documentElement
+            actuellenode=root.childNodes[FindNamedNode(root,str(Node))].childNodes[FindNamedNode(root.childNodes[FindNamedNode(root,str(Node))],"Data")]
+            controllerlink=actuellenode.childNodes[FindNamedNode(actuellenode,str(controller))]
+            controllerlink.firstChild.nodeValue=str(newvalue)
+            files=open((path + "/NodeTypeSettings.xml"),"w")
+            files.write(str(root.toxml())  )
+	    files.close()
+            root.unlink
+
+
 
     def FindNamedNodeInFile(self,nameToFind,path):
                 rootdoc=minidom.parse(path + "/NodeTypeSettings.xml")

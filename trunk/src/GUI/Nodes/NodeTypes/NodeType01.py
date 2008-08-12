@@ -27,7 +27,7 @@ class NodeType01:
         x=InputParameters[2][0]
         y=InputParameters[2][1]
         FuctionType=InputParameters[4]
-        iofont = tkFont.Font ( family="system", size=4 )
+        iofont = tkFont.Font ( family="Helvetica", size=8 )
         sizex=180
         sizey=70
 

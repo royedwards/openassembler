@@ -26,7 +26,7 @@ class NodeType04:
         x=InputParameters[2][0]
         y=InputParameters[2][1]
         FuctionType=InputParameters[4]
-        iofont = tkFont.Font ( family="system", size=4 )
+        iofont = tkFont.Font ( family="Helvetica", size=8 )
         sizex=150
         if len(Input)>len(Output):
             sizey=40+len(Input)*30+20
@@ -58,9 +58,9 @@ class NodeType04:
                     elif Output[n-1][1]=="simpleNumber" or Output[n-1][1]=="vfloat" or Output[n-1][1]=="aint" or Output[n-1][1]=="afloat" or Output[n-1][1]=="avfloat" or Output[n-1][1]=="vint" or Output[n-1][1]=="int" or Output[n-1][1]=="float":
                         kockacolor="LightYellow3"
                     elif Output[n-1][1]=="Boolean" or Output[n-1][1]=="bool":
-                        kockacolor="MediumOrchid3"
+                        kockacolor="LightYellow3"
                     elif Output[n-1][1]=="vector" or Output[n-1][1]=="point" or Output[n-1][1]=="vvector" or Output[n-1][1]=="color" or Output[n-1][1]=="avector" or Output[n-1][1]=="vpoint" or Output[n-1][1]=="avvector" or Output[n-1][1]=="apoint":
-                        kockacolor="red"
+                        kockacolor="MediumOrchid3"
                     elif Output[n-1][1]=="mesh" or Output[n-1][1]=="amesh":
                         kockacolor="gray0"
                     elif Output[n-1][1]=="matrix" or Output[n-1][1]=="amatrix":

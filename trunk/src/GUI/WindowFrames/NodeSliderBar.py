@@ -10,7 +10,7 @@ class CanvasInitSliderBar(SliderBarDbaseSupport,NodeListCategoriser,SliderBarEve
         return "NodeSliderBarCanvasInit"
 
     def _initSliderbarCanvas(self,TargetCanvas,TargetSide,EditorCanvas):
-        TargetCanvas = Canvas (self, width=540, height=102,relief=GROOVE, cursor="sb_up_arrow", confine="false",bg="gray35",bd=2, scrollregion=(0,0,800,205))
+        TargetCanvas = Canvas (self, width=700, height=140,relief=GROOVE, cursor="sb_up_arrow", confine="false",bg="gray35",bd=2, scrollregion=(0,0,1080,204))
         TargetCanvas.grid(row=130,column=1,rowspan=41)
 
         def handlerB1Click(event, self=self, TargetCanvas=TargetCanvas):
@@ -74,7 +74,7 @@ class CanvasInitSliderBar(SliderBarDbaseSupport,NodeListCategoriser,SliderBarEve
             x=20
             y +=90
             tmpvar +=1
-        TargetCanvas.scale(ALL,0,0,.375,.375)
+        TargetCanvas.scale(ALL,0,0,.5,.5)
         print "SliderBar Filled width PreviewNodes"
 
     def StartUpSliderBarCanvas(self,Name,Side,EditorCanvas):
