@@ -10,7 +10,7 @@ class CanvasInitSliderBar(SliderBarDbaseSupport,NodeListCategoriser,SliderBarEve
         return "NodeSliderBarCanvasInit"
 
     def _initSliderbarCanvas(self,TargetCanvas,TargetSide,EditorCanvas):
-        TargetCanvas = Canvas (self, width=700, height=140,relief=GROOVE, cursor="sb_up_arrow", confine="false",bg="gray35",bd=2, scrollregion=(0,0,1080,204))
+        TargetCanvas = Canvas (self, width=1280, height=140,relief=GROOVE, cursor="sb_up_arrow", confine="false",bg="gray35",bd=2, scrollregion=(0,0,1080,204))
         TargetCanvas.grid(row=130,column=1,rowspan=41)
 
         def handlerB1Click(event, self=self, TargetCanvas=TargetCanvas):

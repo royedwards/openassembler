@@ -273,7 +273,7 @@ class LoadPreferences(PreferencesManagement):
         for n in range(0,len(datas)):
 	    if str(datas[n][2])[:1]==":":
 		pass
-	    else:
+	    else:		    
         	if datas[n][3]=="Path" or datas[n][3]=="file":
             	    string.append(StringVar())
             	    m=len(string)
@@ -362,7 +362,7 @@ class CanvasInitPreferencePanel:
         TargetCanvas.create_window(5,5,window=fr,anchor="nw",tag="header")
 
     def _initPreferencePanelCanvas(self,TargetSide):
-        TargetCanvas = Canvas (self, width=300, height=390,relief=GROOVE, cursor="draft_large", confine="false",bg="gray35",bd=2)
+        TargetCanvas = Canvas (self, width=300, height=790,relief=GROOVE, cursor="draft_large", confine="false",bg="gray35",bd=2)
         TargetCanvas.grid(row=1,column=2,rowspan=129,sticky=N)
         def handlerB1Click(event, self=self, TargetCanvas=TargetCanvas):
             self.lastx=event.x

@@ -88,6 +88,30 @@ class NodeEditorCanvasEvents(GUI_Elements_forNodes,ConnectLine,LoadPreferences,P
         except:
             pass
 
+    def hello(self):
+	print "hello"
+
+
+    def PopupMenuMain(self,TargetCanvas,event):
+	menu=Menu(TargetCanvas,tearoff=1,title="OpenAssembler Menu")
+	submenu=Menu(menu,tearoff=1,title="Submenu")
+	submenu.add_command(label="Sub1",command=self.hello)
+	submenu.add_command(label="Sub2",command=self.hello)
+	menu.add_command(label="Undo", command=self.hello)
+	menu.add_command(label="Redo", command=self.hello)
+	menu.add_separator()
+	menu.add_cascade(label="Nextmenu",menu=submenu)
+	menu.add_radiobutton(label="uff")
+	menu.add_radiobutton(label="puff")
+	menu.add_checkbutton(label="Somathing")
+	menu.add_checkbutton(label="Other")
+	menu.post(event.x_root, event.y_root)
+
+
+    def B3ClickNodeEditor(self,event,TargetCanvas,lasx,lasty,Eventtag):
+	self.PopupMenuMain(TargetCanvas,event)
+
+
     def ReleaseNodeEditor(self,event,TargetCanvas,lasx,lasty,preferencespanel):
         EventTags=TargetCanvas.gettags(CURRENT)
         if len(EventTags)>0:

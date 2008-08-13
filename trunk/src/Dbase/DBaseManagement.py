@@ -672,7 +672,7 @@ class SliderBarDbaseSupport:
                         b=root.childNodes[n]
                 try:
                     root.removeChild(b)
-                    files=open((GUI_SETTINGS_FOLDER + "/NodeTypeSettings.xml"),"w")
+                    files=open(self.nodeDescriptionFile,"w")
                     files.write(str(root.toxml()))
                     files.close()
                 except:
@@ -822,448 +822,21 @@ class VarDefs:
 
         return outvalues
 
-#------------------------------------------------------------------------------------------------------------------------------------
-#    Definitions for initial data strucutre creation
-#
-#    _createSliderBarNodeList()                 Generates the xml for the SliderBar node list
-#    _createNodeTypeSettings()                Generates the base node style description xml and the first data entry.
-#
-#------------------------------------------------------------------------------------------------------------------------------------
-
-
-
-
-
-def _createSliderBarNodeList():
-        nodeListDoc=minidom.getDOMImplementation()
-        root=nodeListDoc.createDocument("", "SliderBarNodes", "")
-        xmlfileoutput=open((GUI_SETTINGS_FOLDER + "/SliderBarNodeList.xml"),"w")
-        upp=root.createElement("Upper_row")
-        root.firstChild.appendChild(upp)
-
-        uslot1=root.createElement("slot1")
-        upp.appendChild(uslot1)
-        uslot1txt=root.createTextNode("Image")
-        uslot1.appendChild(uslot1txt)
-
-        uslot2=root.createElement("slot2")
-        upp.appendChild(uslot2)
-        uslot2txt=root.createTextNode("Image")
-        uslot2.appendChild(uslot2txt)
-
-        midd=root.createElement("Middle_row")
-        root.firstChild.appendChild(midd)
-
-        bott=root.createElement("Bottom_row")
-        root.firstChild.appendChild(bott)
-
-        print root.toprettyxml()
-        xmlfileoutput.write(root.toxml())
-        xmlfileoutput.close()
-
-def _createNodeTypeSettings():
-
-        testdoc=minidom.getDOMImplementation()
-        root=testdoc.createDocument("","NodeTypes","")
-        files=open((GUI_SETTINGS_FOLDER + "/NodeTypeSettings.xml"),"w")
-
-        Image=root.createElement("Image")
-        root.firstChild.appendChild(Image)
-        imattr=root.createAttribute("Type")
-        imattr.value="MainCategory"
-        Image.setAttributeNode(imattr)
-
-        Generation_image=root.createElement("Generation")
-        Image.appendChild(Generation_image)
-        genattr=root.createAttribute("Type")
-        genattr.value="SubCategory"
-        Generation_image.setAttributeNode(genattr)
-        nss=root.createElement("NodeShapeStyle")
-        nssattr=root.createAttribute("Type")
-        nssattr.value="String"
-        nss.setAttributeNode(nssattr)
-        Generation_image.appendChild(nss)
-        nsstext=root.createTextNode("SHAPE02")
-        nss.appendChild(nsstext)
-        colors=root.createElement("Colors")
-        Generation_image.appendChild(colors)
-        colattr=root.createAttribute("Type")
-        colattr.value="SubCategory"
-        colors.setAttributeNode(colattr)
-        topcol=root.createElement("TopColor")
-        colors.appendChild(topcol)
-        topcolattr=root.createAttribute("Type")
-        topcolattr.value="ColorHEX"
-        topcol.setAttributeNode(topcolattr)
-        topcolhex=root.createTextNode("gray60")
-        topcol.appendChild(topcolhex)
-        midcol=root.createElement("MiddleColor")
-        colors.appendChild(midcol)
-        midcolattr=root.createAttribute("Type")
-        midcolattr.value="ColorHEX"
-        midcol.setAttributeNode(midcolattr)
-        midcolhex=root.createTextNode("gray40")
-        midcol.appendChild(midcolhex)
-        botcol=root.createElement("BottomColor")
-        colors.appendChild(botcol)
-        botcolattr=root.createAttribute("Type")
-        botcolattr.value="ColorHEX"
-        botcol.setAttributeNode(botcolattr)
-        botcolhex=root.createTextNode("gray75")
-        botcol.appendChild(botcolhex)
-        labels=root.createElement("Labels")
-        Generation_image.appendChild(labels)
-        labattr=root.createAttribute("Type")
-        labattr.value="SubCategory"
-        labels.setAttributeNode(labattr)
-        uplabel=root.createElement("UpperLabel")
-        labels.appendChild(uplabel)
-        uplabelattr=root.createAttribute("Type")
-        uplabelattr.value="String"
-        uplabel.setAttributeNode(uplabelattr)
-        upperlabeltext=root.createTextNode("Image")
-        uplabel.appendChild(upperlabeltext)
-        prlabel=root.createElement("PreviewLabel")
-        labels.appendChild(prlabel)
-        prlabelattr=root.createAttribute("Type")
-        prlabelattr.value="String"
-        prlabel.setAttributeNode(prlabelattr)
-        prlabeltext=root.createTextNode("IMG")
-        prlabel.appendChild(prlabeltext)
-        ntlabel=root.createElement("Note")
-        labels.appendChild(ntlabel)
-        ntlabelattr=root.createAttribute("Type")
-        ntlabelattr.value="MassText"
-        ntlabel.setAttributeNode(ntlabelattr)
-        ntlabeltext=root.createTextNode("Note to Image node...")
-        ntlabel.appendChild(ntlabeltext)
-        oups=root.createElement("Outputs")
-        Generation_image.appendChild(oups)
-        oupattr=root.createAttribute("Type")
-        oupattr.value="SubCategory"
-        oups.setAttributeNode(oupattr)
-        out1=root.createElement("ImageOut")
-        oups.appendChild(out1)
-        out1attr=root.createAttribute("Type")
-        out1attr.value="Path"
-        out1.setAttributeNode(out1attr)
-        out1txt=root.createTextNode("")
-        out1.appendChild(out1txt)
-        out2=root.createElement("TexOut")
-        oups.appendChild(out2)
-        out2attr=root.createAttribute("Type")
-        out2attr.value="Path"
-        out2.setAttributeNode(out2attr)
-        out2txt=root.createTextNode("")
-        out2.appendChild(out2txt)
-        pos=root.createElement("Position")
-        Generation_image.appendChild(pos)
-        posattr=root.createAttribute("Type")
-        posattr.value="SubCategory"
-        pos.setAttributeNode(posattr)
-        xpos=root.createElement("X")
-        pos.appendChild(xpos)
-        xposattr=root.createAttribute("Type")
-        xposattr.value="Integer"
-        xpos.setAttributeNode(xposattr)
-        xpostxt=root.createTextNode("100")
-        xpos.appendChild(xpostxt)
-        ypos=root.createElement("Y")
-        pos.appendChild(ypos)
-        yposattr=root.createAttribute("Type")
-        yposattr.value="Integer"
-        ypos.setAttributeNode(yposattr)
-        ypostxt=root.createTextNode("100")
-        ypos.appendChild(ypostxt)
-
-        Data=root.createElement("Data")
-        Image.appendChild(Data)
-        datattr=root.createAttribute("Type")
-        datattr.value="SubCategory"
-        Data.setAttributeNode(datattr)
-        impath=root.createElement("ImageIn")
-        Data.appendChild(impath)
-        impathattr=root.createAttribute("Type")
-        impathattr.value="Path"
-        impath.setAttributeNode(impathattr)
-
-        impathattr2=root.createAttribute("Connection")
-        impathattr2.value="True"
-        impath.setAttributeNode(impathattr2)
-
-        impathattr2=root.createAttribute("MultiConnection")
-        impathattr2.value="True"
-        impath.setAttributeNode(impathattr2)
-
-        impathtext=root.createTextNode("...")
-        impath.appendChild(impathtext)
-
-        ctt=root.createElement("ConvertToTex")
-        Data.appendChild(ctt)
-        cttattr=root.createAttribute("Type")
-        cttattr.value="Boolean"
-        ctt.setAttributeNode(cttattr)
-
-        cttattr2=root.createAttribute("Connection")
-        cttattr2.value="False"
-        ctt.setAttributeNode(cttattr2)
-
-        cttattr2=root.createAttribute("MultiConnection")
-        cttattr2.value="False"
-        ctt.setAttributeNode(cttattr2)
-
-        ctttext=root.createTextNode("True")
-        ctt.appendChild(ctttext)
-
-        clt=root.createElement("CleanTex")
-        Data.appendChild(clt)
-        cltattr=root.createAttribute("Type")
-        cltattr.value="Boolean"
-        clt.setAttributeNode(cltattr)
-
-        cltattr2=root.createAttribute("Connection")
-        cltattr2.value="False"
-        clt.setAttributeNode(cltattr2)
-
-        cltattr2=root.createAttribute("MultiConnection")
-        cltattr2.value="False"
-        clt.setAttributeNode(cltattr2)
-
-        clttext=root.createTextNode("False")
-        clt.appendChild(clttext)
-
-
-        source=root.createElement("Source")
-        Image.appendChild(source)
-        sattr=root.createAttribute("Type")
-        sattr.value="SubCategory"
-        source.setAttributeNode(sattr)
-        sfile=root.createElement("Sourcecode")
-        source.appendChild(sfile)
-        sfa=root.createAttribute("Type")
-        sfa.value="pyc"
-        sfile.setAttributeNode(sfa)
-        tart=root.createTextNode("...")
-        sfile.appendChild(tart)
-
-        files.write(root.toxml())
-        files.close()
-
-
-class NodeEditordbTools:
-
-    def DeleteNodeTypeSettings(self,node):
-            rootdoc=minidom.parseString(self.GUI_slider)
-            root=rootdoc.documentElement
-            root.removeChild(root.childNodes[FindNamedNode(root,str(node))])
-            files=open((GUI_SETTINGS_FOLDER + "/NodeTypeSettings.xml"),"w")
-            files.write(str(root.toxml()))
-            files.close()
-
-    def AddToSliderBar(self,row,position,name):
-
-        rootdoc=minidom.parseString(self.GUI_slider)
-        root_final=rootdoc.documentElement
-
-        uprow=root_final.childNodes[0].cloneNode(1)
-        midrow=root_final.childNodes[1].cloneNode(1)
-        bottrow=root_final.childNodes[2].cloneNode(1)
-
-        nodeListDoc=minidom.getDOMImplementation()
-        root=nodeListDoc.createDocument("", "SliderBarNodes", "")
-        if row=="Upper_row":
-            slotname= (str(position))
-            slo=root.createElement(slotname)
-            uprow.appendChild(slo)
-            nat=root.createTextNode(str(name))
-            slo.appendChild(nat)
-        if row=="Middle_row":
-            slotname= (str(position))
-            slo=root.createElement(slotname)
-            midrow.appendChild(slo)
-            nat=root.createTextNode(str(name))
-            slo.appendChild(nat)
-        if row=="Bottom_row":
-            slotname= (str(position))
-            slo=root.createElement(slotname)
-            bottrow.appendChild(slo)
-            nat=root.createTextNode(str(name))
-            slo.appendChild(nat)
-
-        root.firstChild.appendChild(uprow)
-        root.firstChild.appendChild(midrow)
-        root.firstChild.appendChild(bottrow)
-
-        files=open((GUI_SETTINGS_FOLDER + "/SliderBarNodeList.xml"),"w")
-
-        files.write(str(root.toxml()))
-        files.close()
-
-
-    def AddNodeTypeSettings(self, ns):
-            rootdoc=minidom.parseString(self.GUI_definition)
-            root_final=rootdoc.documentElement
-            try:
-                if root_final.childNodes[FindNamedNode(root_final,str(ns[0]))].nodeName==ns[0]:
-                    print "This node already exist!!!!!"
-                    return 1
-            except:
-                print "Ignore the error, every software need to drop some error, so here we go..."
-                print "Sorry Dude :) "
-            runtimeNodeList_trick=minidom.getDOMImplementation()
-            root=runtimeNodeList_trick.createDocument("", "NodeTypeSettings", "")
-
-            image=root.createElement(str(ns[0]))
-            root.firstChild.appendChild(image)
-            imattr=root.createAttribute("Type")
-            imattr.value="MainCategory"
-            image.setAttributeNode(imattr)
-
-            Generation_image=root.createElement("Generation")
-            image.appendChild(Generation_image)
-            genattr=root.createAttribute("Type")
-            genattr.value="SubCategory"
-            Generation_image.setAttributeNode(genattr)
-            nss=root.createElement("NodeShapeStyle")
-            nssattr=root.createAttribute("Type")
-            nssattr.value="String"
-            nss.setAttributeNode(nssattr)
-            Generation_image.appendChild(nss)
-            nsstext=root.createTextNode(str(ns[2]))
-            nss.appendChild(nsstext)
-            colors=root.createElement("Colors")
-            Generation_image.appendChild(colors)
-            colattr=root.createAttribute("Type")
-            colattr.value="SubCategory"
-            colors.setAttributeNode(colattr)
-            topcol=root.createElement("TopColor")
-            colors.appendChild(topcol)
-            topcolattr=root.createAttribute("Type")
-            topcolattr.value="ColorHEX"
-            topcol.setAttributeNode(topcolattr)
-            topcolhex=root.createTextNode(str(ns[3]))
-            topcol.appendChild(topcolhex)
-            midcol=root.createElement("MiddleColor")
-            colors.appendChild(midcol)
-            midcolattr=root.createAttribute("Type")
-            midcolattr.value="ColorHEX"
-            midcol.setAttributeNode(midcolattr)
-            midcolhex=root.createTextNode(str(ns[4]))
-            midcol.appendChild(midcolhex)
-            botcol=root.createElement("BottomColor")
-            colors.appendChild(botcol)
-            botcolattr=root.createAttribute("Type")
-            botcolattr.value="ColorHEX"
-            botcol.setAttributeNode(botcolattr)
-            botcolhex=root.createTextNode(str(ns[5]))
-            botcol.appendChild(botcolhex)
-            labels=root.createElement("Labels")
-            Generation_image.appendChild(labels)
-            labattr=root.createAttribute("Type")
-            labattr.value="SubCategory"
-            labels.setAttributeNode(labattr)
-            uplabel=root.createElement("UpperLabel")
-            labels.appendChild(uplabel)
-            uplabelattr=root.createAttribute("Type")
-            uplabelattr.value="String"
-            uplabel.setAttributeNode(uplabelattr)
-            upperlabeltext=root.createTextNode(str(ns[0]))
-            uplabel.appendChild(upperlabeltext)
-            prlabel=root.createElement("PreviewLabel")
-            labels.appendChild(prlabel)
-            prlabelattr=root.createAttribute("Type")
-            prlabelattr.value="String"
-            prlabel.setAttributeNode(prlabelattr)
-            prlabeltext=root.createTextNode(str(ns[1]))
-            prlabel.appendChild(prlabeltext)
-            ntlabel=root.createElement("Note")
-            labels.appendChild(ntlabel)
-            ntlabelattr=root.createAttribute("Type")
-            ntlabelattr.value="MassText"
-            ntlabel.setAttributeNode(ntlabelattr)
-            ntlabeltext=root.createTextNode(str(ns[9]))
-            ntlabel.appendChild(ntlabeltext)
-            oups=root.createElement("Outputs")
-            Generation_image.appendChild(oups)
-            oupattr=root.createAttribute("Type")
-            oupattr.value="SubCategory"
-            oups.setAttributeNode(oupattr)
-
-            for n in range(0,len(ns[7])):
-                out1=root.createElement(str(ns[7][n][0]))
-                oups.appendChild(out1)
-                out1attr=root.createAttribute("Type")
-                out1attr.value=str(ns[7][n][1])
-                out1.setAttributeNode(out1attr)
-                out1txt=root.createTextNode("")
-                out1.appendChild(out1txt)
-
-            pos=root.createElement("Position")
-            Generation_image.appendChild(pos)
-            posattr=root.createAttribute("Type")
-            posattr.value="SubCategory"
-            pos.setAttributeNode(posattr)
-            xpos=root.createElement("X")
-            pos.appendChild(xpos)
-            xposattr=root.createAttribute("Type")
-            xposattr.value="Integer"
-            xpos.setAttributeNode(xposattr)
-            xpostxt=root.createTextNode("100")
-            xpos.appendChild(xpostxt)
-            ypos=root.createElement("Y")
-            pos.appendChild(ypos)
-            yposattr=root.createAttribute("Type")
-            yposattr.value="Integer"
-            ypos.setAttributeNode(yposattr)
-            ypostxt=root.createTextNode("100")
-            ypos.appendChild(ypostxt)
-
-            Data=root.createElement("Data")
-            image.appendChild(Data)
-            datattr=root.createAttribute("Type")
-            datattr.value="SubCategory"
-            Data.setAttributeNode(datattr)
-
-            for m in range(0,len(ns[6])):
-                impath=root.createElement(str(ns[6][m][0]))
-                Data.appendChild(impath)
-                impathattr=root.createAttribute("Type")
-                impathattr.value=str(ns[6][m][3])
-                impath.setAttributeNode(impathattr)
-
-                impathattr2=root.createAttribute("Connection")
-                impathattr2.value=str(ns[6][m][1])
-                impath.setAttributeNode(impathattr2)
-
-                impathattr2=root.createAttribute("MultiConnection")
-                impathattr2.value=str(ns[6][m][2])
-                impath.setAttributeNode(impathattr2)
-
-                impathtext=root.createTextNode("...")
-                impath.appendChild(impathtext)
-
-            source=root.createElement("Source")
-            image.appendChild(source)
-            sattr=root.createAttribute("Type")
-            sattr.value="SubCategory"
-            source.setAttributeNode(sattr)
-            sfile=root.createElement("Sourcecode")
-            source.appendChild(sfile)
-            sfa=root.createAttribute("Type")
-            sfa.value="py"
-            sfile.setAttributeNode(sfa)
-            tart=root.createTextNode(str(ns[8]))
-            sfile.appendChild(tart)
-
-            x=root.firstChild.firstChild.cloneNode(1)
-            root_final.appendChild(x)
-            files=open((GUI_SETTINGS_FOLDER + "/NodeTypeSettings.xml"),"w")
-
-            files.write(str(root_final.toxml()))
-            files.close()
 
 
 class SA_NodeConverter:
+		    
+		    
+    def GetNameList(self,path):
+        rootdoc=minidom.parse(path)
+        root=rootdoc.documentElement
+        IDList=[]
+        runno=root.childNodes.length
+        for n in range (0,runno):
+            idval=str(root.childNodes[n].nodeName)
+            IDList.append(idval)
+        return IDList
+	    
 
     def defaultSettings(self,path,Node,controller,newvalue):
         if str(newvalue)=='':
@@ -1279,6 +852,20 @@ class SA_NodeConverter:
 	    files.close()
             root.unlink
 
+    def defaultOutputs(self,path,Node,controller,newvalue):
+        if str(newvalue)=='':
+            pass
+        else:
+            rootdoc=minidom.parse(path + "/NodeTypeSettings.xml")
+            root=rootdoc.documentElement
+            genereal=root.childNodes[FindNamedNode(root,str(Node))].childNodes[FindNamedNode(root.childNodes[FindNamedNode(root,str(Node))],"Generation")]
+            actuellenode=genereal.childNodes[FindNamedNode(genereal,"Outputs")]
+	    controllerlink=actuellenode.childNodes[FindNamedNode(actuellenode,str(controller))]
+            controllerlink.firstChild.nodeValue=str(newvalue)
+            files=open((path + "/NodeTypeSettings.xml"),"w")
+            files.write(str(root.toxml())  )
+	    files.close()
+            root.unlink
 
 
     def FindNamedNodeInFile(self,nameToFind,path):
@@ -1311,6 +898,17 @@ class SA_NodeConverter:
 
         xmlfileoutput.write(root.toxml())
         xmlfileoutput.close()
+
+
+    def DeleteNodeTypeSettings(self,path,nodes):
+            rootdoc=minidom.parseString(path)
+            root=rootdoc.documentElement
+	    for node in nodes:
+            	root.removeChild(root.childNodes[FindNamedNode(root,str(node))])
+            files=open(path,"w")
+            files.write(str(root.toxml()))
+	    files.close()
+            root.unlink
 
 
 
@@ -1443,7 +1041,7 @@ class SA_NodeConverter:
                 out1attr=root.createAttribute("Type")
                 out1attr.value=str(ns[7][n][1])
                 out1.setAttributeNode(out1attr)
-                out1txt=root.createTextNode("")
+                out1txt=root.createTextNode("...")
                 out1.appendChild(out1txt)
 
             pos=root.createElement("Position")

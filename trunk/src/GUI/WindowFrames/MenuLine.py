@@ -163,10 +163,10 @@ class CanvasInitMenuLine(LoadPreferences,CanvasInitPreferencePanel,RuntimeNodeRe
         TargetCanvas.create_window(8,18,window=timelineFrame,anchor='w')
 
     def _initMenuLineCanvas(self,TargetCanvas,TargetSide,preferencescanvas,editor):
-        TargetCanvas = Canvas (self, width=700, height=30,relief=GROOVE, cursor="draft_large", confine="false",bg="gray35",bd=2)
+        TargetCanvas = Canvas (self, width=1280, height=30,relief=GROOVE, cursor="draft_large", confine="false",bg="gray35",bd=2)
         TargetCanvas.grid(row=1,column=1,rowspan=6,sticky=N)
         self.menuLine_init(TargetCanvas, preferencescanvas,editor)
-        print "MenuLine Initialized."
+        print "MenuLine Initialised."
         return TargetCanvas
 
     def _ForgetMenuLineCanvas(self,TargetCanvas):

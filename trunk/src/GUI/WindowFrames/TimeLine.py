@@ -63,7 +63,7 @@ class CanvasInitTimeLine(NodeEditorCanvasEvents):
         TargetCanvas.create_window(8,18,window=timelineFrame,anchor='w')
 
     def _initTimeLineCanvas(self,TargetCanvas,TargetSide,editorcanvas):
-        TargetCanvas = Canvas (self, width=700, height=30,relief=GROOVE, cursor="draft_large",bg="gray35",bd=2)
+        TargetCanvas = Canvas (self, width=1280, height=30,relief=GROOVE, cursor="draft_large",bg="gray35",bd=2)
         TargetCanvas.grid(row=124,column=1,rowspan=6)
         self.timeLine_init(TargetCanvas,editorcanvas)
 
