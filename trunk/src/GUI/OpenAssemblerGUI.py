@@ -255,7 +255,7 @@ class _Application(Frame,CanvasInitSliderBar,CanvasInitNodeEditor,CanvasInitTime
     	    self.GUI_definition=nodesettingsfile.read()
     	    nodesettingsfile.close()
 
-    	    sliderfile=open((GUI_SETTINGS_FOLDER + "/SliderBarNodeList.xml"),"r")
+    	    sliderfile=open(self.sliderbarDescriptionFile,"r")
     	    self.GUI_slider=sliderfile.read()
     	    sliderfile.close()
 

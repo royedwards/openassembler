@@ -658,7 +658,7 @@ class SliderBarDbaseSupport:
                         b=root.childNodes[n].childNodes[m]
                 try:
                     root.childNodes[n].removeChild(b)
-                    files=open((GUI_SETTINGS_FOLDER + "/SliderBarNodeList.xml"),"w")
+                    files=open(self.sliderbarDescriptionFile,"w")
                     files.write(str(root.toxml()))
                     files.close()
                 except:
