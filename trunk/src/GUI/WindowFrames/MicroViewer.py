@@ -19,7 +19,7 @@ class CanvasInitMicroViewer(NodeEditorCanvasEvents):
         return "MicroViewerCanvasInit"
 
     def _initMicroViewerCanvas(self,TargetCanvas,TargetSide):
-        iofont = tkFont.Font ( family="Helvetica", size=12 )
+        iofont = tkFont.Font ( family=self.font, size=self.fontsize )
         TargetCanvas = Canvas (self, width=300, height=int(140/3*int(self.sliderbarrows)),relief=GROOVE, cursor="draft_large", confine="false",bg="gray35",bd=2)
         TargetCanvas.grid(row=130,column=2,rowspan=60,sticky=S)
         TargetCanvas.create_text(150,30,text="OpenAssember v0.04beta \n Linux mode (full size)", fill="black",font=iofont)

@@ -8,7 +8,8 @@
 #---------------------------------------------------------------------------------------------------------------------
 
 import colorsys
-
+from Tkinter import *
+import sys
 
 class convertColors:
   def RGB2Hex(rgb_tuple):
@@ -24,3 +25,22 @@ class convertColors:
     r, g, b = [int(n, 16) for n in (r, g, b)]
     return (r, g, b)
 
+class OAssemblerColorPicker(Frame):
+	def OpenAssemblerColorPicker(self,inputcolor):
+		Frame.__init__(self,master=None)
+		self.grid()
+		b=Button(self,text="f",command=lambda :sys.exit(0))
+		b.grid()
+
+
+class _run(OAssemblerColorPicker):
+	def __init__(self):
+		self.OpenAssemblerColorPicker("")
+
+
+class Picker:
+	def __init__(self):
+		app=_run()
+		app.mainloop()
+
+Picker()

@@ -16,8 +16,6 @@ class GUI_Elements_forNodes(RuntimeNodeRegister):
 
     def AddNodeRenamer(self,event,TargetCanvas,Eventtag):
         startText=Eventtag[3]
-        print startText
-        print Eventtag
         ID=Eventtag[0]
         askwindow = Toplevel(bg="gray55")
         askwindow.title('Change '+startText+' to:')

@@ -25,7 +25,7 @@ class CanvasInitTimeLine(NodeEditorCanvasEvents):
         timelineFrame=Frame(TargetCanvas,height=22,width=865,bg="gray35")
         timelineFrame.grid_propagate(0)
 
-        iofont = tkFont.Font ( family="Helvetica", size=10 )
+        iofont = tkFont.Font ( family=self.font, size=int(self.fontsize)-2 )
         e=Entry(timelineFrame,width=4,bd=1,state="readonly",font=iofont,textvariable=self.startFrame,fg="gray15",justify=RIGHT,relief=GROOVE)
         e.grid(row=1,column=1)
 

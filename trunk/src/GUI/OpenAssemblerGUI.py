@@ -212,7 +212,8 @@ class _Application(Frame,CanvasInitSliderBar,CanvasInitNodeEditor,CanvasInitTime
             checkfolders=[]
 	    for envs in self.iniFileAnalizer(self.OASini,"environments"):
 		    folder=os.environ.get(str(envs))
-		    for dirs in self.collectNodesFromFolders(folder):
+		    if folder!=None:
+		       for dirs in self.collectNodesFromFolders(folder):
 			    if os.path.isdir(dirs)==True:
 			    	checkfolders.append(dirs)
 	    mpath=self.iniFileAnalizer(self.OASini,"manualpath")
