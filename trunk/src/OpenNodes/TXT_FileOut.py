@@ -1,5 +1,18 @@
 ###OpenAssembler Node python file###
 
+'''
+define
+{
+
+	name TXT_FileOut
+	tags oas:test
+	input file Filename "~"
+	input string TXT "out"
+
+}
+'''
+
+
 class TXT_FileOut:
 #This is the main class to be imported
 

@@ -1,5 +1,17 @@
 ###OpenAssembler Node python file###
 
+'''
+define
+{
+	name TXT_In
+	tags oas:test
+	input string Text "put some text here"
+	output string TXT "here we are"
+
+}
+'''
+
+
 class TXT_In:
 #This is the main class to be imported
 

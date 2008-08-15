@@ -1,4 +1,16 @@
 ###OpenAssembler Node python file###
+'''
+
+define
+{
+	name TXT_Combine
+	tags oas:test
+	input string TXT_01 "<input string>"
+	input string TXT_02 "<input string>"
+	output string TXT "<output string>"
+}
+
+'''
 
 class TXT_Combine:
 #This is the main class to be imported

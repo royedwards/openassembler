@@ -1,4 +1,17 @@
 ###OpenAssembler Node python file###
+'''
+
+
+define
+{
+
+	name OutputCollector
+	tags oas:test
+	input string OutputCollection
+
+}
+
+'''
 
 class OutputCollector:
 #This is the main class to be imported

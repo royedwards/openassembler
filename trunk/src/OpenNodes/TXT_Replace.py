@@ -1,5 +1,19 @@
 ###OpenAssembler Node python file###
 
+'''
+define
+{
+	name TXT_Replace
+	tags oas:test
+	input string Original "original text"
+	input string InputA "put inp.A here"
+	input string InputB "put some text ehre too"
+	output string TXT "here we come"
+
+}
+'''
+
+
 class TXT_Replace:
 #This is the main class to be imported
 
