@@ -23,9 +23,6 @@ import os
 from xml.dom import minidom
 
 
-GUI_SETTINGS_FOLDER="/net/homes/lmates/OpenAssembler/DBase/GUI"
-
-
 class _Application(Frame,CanvasInitSliderBar,CanvasInitNodeEditor,CanvasInitTimeLine,CanvasInitMenuLine,CanvasInitPreferencePanel,CanvasInitMicroViewer,SA_Conversion,SA_NodeConverter):
     def __init__(self, master=None):
         Frame.__init__(self, master)
@@ -35,7 +32,18 @@ class _Application(Frame,CanvasInitSliderBar,CanvasInitNodeEditor,CanvasInitTime
         self.Startup()
 	self._createWidgets()
 	
-	
+    def MenuVarBuilder(self,path):
+        nlsmenu=open(path,"r")
+        nlsmcontent=nlsmenu.read()
+        nlsmenu.close()
+        nlsmcontent=nlsmcontent.strip("\n").split("\n")
+        menulist=[]
+        for lies in nlsmcontent:
+                lies=lies.strip(" ")
+                x=lies.split(" ")
+                menulist.append(x)
+        return menulist    
+        
     def FileCreator(self,path, filetype):
 	    if filetype=="nodedescription":
 		   testdoc=minidom.getDOMImplementation()
@@ -66,7 +74,15 @@ class _Application(Frame,CanvasInitSliderBar,CanvasInitNodeEditor,CanvasInitTime
 		   initext="environments OASPATH\n"
 		   initext+="font Helvetica\n"
 		   initext+="fontsize 10\n"
-		   initext+="sliderbarrows 3\n"
+		   initext+="sliderbarrows 1\n"
+		   initext+="menucategory Math math\n"
+		   initext+="menucategory Mass mass\n"
+		   initext+="menucategory Dynamics dynamics:field:wind:flow\n"
+		   initext+="menucategory OpenAssembler oas\n"
+		   
+		   initext+="menucategory Massive massive\n"
+		   initext+="menucategory Mesh mesh:geo:surface:curve\n"
+		   initext+="manualpath /net/homes/lmates/OpenAssembler/src/OpenNodes\n"
 		   
         	   files.write(initext)
         	   files.close()
@@ -121,6 +137,22 @@ class _Application(Frame,CanvasInitSliderBar,CanvasInitNodeEditor,CanvasInitTime
 			   if in_ini[f][0]==type:
 				   x=in_ini[f][1]
         	   return x
+            if type=="menucategory":
+                   in_ini=self.iniFileMapper(path)
+                   filestoreturn=[]
+                   for f in range(0,len(in_ini)):
+                           if in_ini[f][0]==type:
+                                   filestoreturn.append([in_ini[f][1],in_ini[f][2].split(":")])
+                   return filestoreturn
+	    if type=="manualpath":
+        	   in_ini=self.iniFileMapper(path)
+		   filestoreturn=[]
+        	   for f in range(0,len(in_ini)):
+			   if in_ini[f][0]==type:
+				   filestoreturn=in_ini[f][1].split(":")
+        	   return filestoreturn                         
+                           
+                           
     def collectNodesFromFolders(self,folder):
 	    if str(folder)=="None":
 		    pass
@@ -137,6 +169,7 @@ class _Application(Frame,CanvasInitSliderBar,CanvasInitNodeEditor,CanvasInitTime
 	    self.sliderbarDescriptionFile=self.OAHome+"/SliderBarNodeList.xml"
 	    self.OASini=self.OAHome+"/OpenAssembler.ini"
 	    self.nodeListMenu=self.OAHome+"/NodeListMenu.ini"
+	    self.menulink=""
 
 
 	    if os.path.isdir(self.OAHome):
@@ -174,23 +207,25 @@ class _Application(Frame,CanvasInitSliderBar,CanvasInitNodeEditor,CanvasInitTime
     	    self.font=self.iniFileAnalizer(self.OASini,"font")
     	    self.fontsize=self.iniFileAnalizer(self.OASini,"fontsize")
 	    self.sliderbarrows=self.iniFileAnalizer(self.OASini,"sliderbarrows")
-	    
-	    checkfolders=[]
+	    self.menucats=self.iniFileAnalizer(self.OASini,"menucategory")
+            
+            checkfolders=[]
 	    for envs in self.iniFileAnalizer(self.OASini,"environments"):
-		    #folder=os.environ.get(str(envs))
-		    folder="/home/user/Munka/SwissArmy/scripts"
+		    folder=os.environ.get(str(envs))
 		    for dirs in self.collectNodesFromFolders(folder):
 			    if os.path.isdir(dirs)==True:
 			    	checkfolders.append(dirs)
-				
+	    mpath=self.iniFileAnalizer(self.OASini,"manualpath")
+	    for patcc in mpath:
+	    	checkfolders.append(str(patcc))	
 	    bigfilelist=[]
 	    for folds in checkfolders:
 		    for nds in self.CollectSAinFolder(folds):
 			    bigfilelist.append(nds)
 	
 	    existance=self.GetNameList(self.nodeDescriptionFile)
-	    #existance=self.GetNameList("/net/homes/lmates/OpenAssembler/DBase/GUI/NodeTypeSettings.xml")
-	    toADD=[]
+	    
+            toADD=[]
 	    toDELETE=[]	
 	    for nam in bigfilelist:
 		    checkerke=0
@@ -223,8 +258,8 @@ class _Application(Frame,CanvasInitSliderBar,CanvasInitNodeEditor,CanvasInitTime
 	    if len(toDELETE)>0:
 		    print "We will delete some nodes from your description, this may take a while...."
 		    self.DeleteNodeTypeSettings(self.nodeDescriptionFile,toDELETE)
-	    #print toDELETE
-
+	    
+            self.MenuNodeItems=self.MenuVarBuilder(self.nodeListMenu)
 	    
 	    self.rt=""
     	    self.lastx=30
@@ -249,8 +284,7 @@ class _Application(Frame,CanvasInitSliderBar,CanvasInitNodeEditor,CanvasInitTime
             self.eott.set("...")
     	    self.GUI_definition=""
     	    self.GUI_slider=""
-	    #sys.exit(0)
-
+            self.menuopen="0"
     	    nodesettingsfile=open(self.nodeDescriptionFile,"r")
     	    self.GUI_definition=nodesettingsfile.read()
     	    nodesettingsfile.close()
@@ -267,7 +301,9 @@ class _Application(Frame,CanvasInitSliderBar,CanvasInitNodeEditor,CanvasInitTime
             editorcanvas=self.StartUpNodeEditorCanvas("NodeEditorCanvas", "top",ppanel)
             menuline=self.StartUpMenuLineCanvas("MenuLineCanvas","top",ppanel,editorcanvas)
             tline=self.StartUpTimeLineCanvas("TimeLineCanvas", "bottom",editorcanvas)
-            slider=self.StartUpSliderBarCanvas("SliderBar", "bottom",editorcanvas)
+            slider=self.StartUpSliderBarCanvas("SliderBar", "bottom",editorcanvas)            
+            self.sldr=slider
+	    self.pplane=ppanel
 
             print "Application Started!"
 

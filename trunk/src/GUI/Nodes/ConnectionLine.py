@@ -1,6 +1,6 @@
-from GUI.Nodes.NodeTypes.NodeVarInit import NodeVarInit
+from Nodes.NodeTypes.NodeVarInit import NodeVarInit
 from Dbase.DBaseManagement import RuntimeNodeRegister
-from GUI.WindowFrames.PreferencePanel import LoadPreferences
+from WindowFrames.PreferencePanel import LoadPreferences
 
 
 
@@ -49,7 +49,7 @@ class ConnectLine(NodeVarInit,RuntimeNodeRegister,LoadPreferences):
                 else:
                     pass
             self.RegisterLine(lineID,Fromnode,output,uni_out,Tonode,input,uni_in)
-            self.writeConnections(Tonode, input, lineID)
+            self.writeConnections(Tonode, input,Fromnode,output ,lineID)
             self.DrawLine(TargetCanvas, tmp_out_center_x,tmp_out_center_y,tmp_in_center_x,tmp_in_center_y,(lineID,Fromnode,Tonode,"line",(str(lineID)+"select")))
             TargetCanvas.tag_lower((str(lineID)+"select"))
             print "Connect(" +str(lineID)+ "): " + uni_out + " ---> " + uni_in

@@ -1,3 +1,13 @@
+#------------------------------------------------------------------------------------------------------------------------------------
+#
+#    Main Node editor canvas for OpenAssembler
+#
+#    Created by: Laszlo Mates (laszlo.mates@gmail.com)
+#    2007
+#
+#------------------------------------------------------------------------------------------------------------------------------------
+
+
 from Tkinter import *
 from MouseEvents import NodeEditorCanvasEvents
 

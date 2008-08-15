@@ -1,6 +1,16 @@
+#------------------------------------------------------------------------------------------------------------------------------------
+#
+#    SliderBar for OpenAssembler.
+#
+#    Created by: Laszlo Mates (laszlo.mates@gmail.com)
+#    2007
+#
+#------------------------------------------------------------------------------------------------------------------------------------
+
+
 from Tkinter import *
 from Dbase.DBaseManagement import SliderBarDbaseSupport
-from GUI.Nodes.NodeList import NodeListCategoriser
+from Nodes.NodeList import NodeListCategoriser
 from MouseEvents import SliderBarEvents
 
 class CanvasInitSliderBar(SliderBarDbaseSupport,NodeListCategoriser,SliderBarEvents):
@@ -10,8 +20,8 @@ class CanvasInitSliderBar(SliderBarDbaseSupport,NodeListCategoriser,SliderBarEve
         return "NodeSliderBarCanvasInit"
 
     def _initSliderbarCanvas(self,TargetCanvas,TargetSide,EditorCanvas):
-        TargetCanvas = Canvas (self, width=1280, height=140,relief=GROOVE, cursor="sb_up_arrow", confine="false",bg="gray35",bd=2, scrollregion=(0,0,1080,204))
-        TargetCanvas.grid(row=130,column=1,rowspan=41)
+        TargetCanvas = Canvas (self, width=1280, height=int(140/3*int(self.sliderbarrows)),relief=GROOVE, cursor="sb_up_arrow", confine="false",bg="gray35",bd=2, scrollregion=(0,0,1280,204))
+        TargetCanvas.grid(row=130,column=1,rowspan=41, sticky=N)
 
         def handlerB1Click(event, self=self, TargetCanvas=TargetCanvas):
             self.sliderlastx=event.x
@@ -52,6 +62,13 @@ class CanvasInitSliderBar(SliderBarDbaseSupport,NodeListCategoriser,SliderBarEve
     def _ForgetSliderbarCanvas(self,TargetCanvas):
         TargetCanvas.forget()
         print "SliderBar Closed."
+
+    def restartSliderbarCanvas(self,TargetCanvas):
+        TargetCanvas.delete(ALL)
+        self._placePreviewNodes(TargetCanvas)
+        
+        #TargetCanvas.forget()
+        #self.StartUpSliderBarCanvas(Name,Side,EditorCanvas)
 
     def _placePreviewNodes(self,TargetCanvas):
         list=self.GetSliderBarNodeList()

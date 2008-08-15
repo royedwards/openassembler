@@ -1,8 +1,18 @@
+#------------------------------------------------------------------------------------------------------------------------------------
+#
+#    Menubar for OpenAssembler.
+#
+#    Created by: Laszlo Mates (laszlo.mates@gmail.com)
+#    2007
+#
+#------------------------------------------------------------------------------------------------------------------------------------
+
+
 from Tkinter import *
-from GUI.WindowFrames.PreferencePanel import LoadPreferences, CanvasInitPreferencePanel
+from WindowFrames.PreferencePanel import LoadPreferences, CanvasInitPreferencePanel
 from Dbase.DBaseManagement import RuntimeNodeRegister, openScene, PreferencesManagement
-from GUI.Nodes.NodeList import NodeListCategoriser
-from GUI.Nodes.ConnectionLine import ConnectLine
+from Nodes.NodeList import NodeListCategoriser
+from Nodes.ConnectionLine import ConnectLine
 
 
 import tkFont

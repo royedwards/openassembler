@@ -1,3 +1,13 @@
+#------------------------------------------------------------------------------------------------------------------------------------
+#
+#    Timeline for OpenAssembler. 
+#
+#    Created by: Laszlo Mates (laszlo.mates@gmail.com)
+#    2007
+#
+#------------------------------------------------------------------------------------------------------------------------------------
+
+
 from Tkinter import *
 from MouseEvents import NodeEditorCanvasEvents
 import tkFont
@@ -64,7 +74,7 @@ class CanvasInitTimeLine(NodeEditorCanvasEvents):
 
     def _initTimeLineCanvas(self,TargetCanvas,TargetSide,editorcanvas):
         TargetCanvas = Canvas (self, width=1280, height=30,relief=GROOVE, cursor="draft_large",bg="gray35",bd=2)
-        TargetCanvas.grid(row=124,column=1,rowspan=6)
+        TargetCanvas.grid(row=124,column=1,rowspan=6, sticky=N)
         self.timeLine_init(TargetCanvas,editorcanvas)
 
         print "TimeLine Initialised."

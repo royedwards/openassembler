@@ -1,18 +1,36 @@
+#------------------------------------------------------------------------------------------------------------------------------------
+#
+#    MouseActions for OpenAssembler
+#
+#    Created by: Laszlo Mates (laszlo.mates@gmail.com)
+#    2007
+#
+#------------------------------------------------------------------------------------------------------------------------------------
+
+
 from Tkinter import *
-from GUI.Nodes.NodeList import NodeListCategoriser
-from GUI.Nodes.NodeElements import GUI_Elements_forNodes
-from GUI.Nodes.ConnectionLine import ConnectLine
-from GUI.WindowFrames.PreferencePanel import LoadPreferences
-from Dbase.DBaseManagement import RuntimeNodeRegister, PreferencesManagement
+from Nodes.NodeList import NodeListCategoriser
+from Nodes.NodeElements import GUI_Elements_forNodes
+from Nodes.ConnectionLine import ConnectLine
+from WindowFrames.PreferencePanel import LoadPreferences
+from Dbase.DBaseManagement import RuntimeNodeRegister, PreferencesManagement,SA_NodeConverter
 
 
 class SliderBarEvents(NodeListCategoriser):
 
 
     def B1ClickEvent(self,event,TargetCanvas):
-        pass
-
+        try:
+		self.menulink.destroy()
+	except:
+		pass
+		
     def B1DoubleClickEvent(self,event,SourceCanvas,TargetCanvas):
+        try:
+		self.menulink.destroy()
+	except:
+		pass
+		
         EventTags=SourceCanvas.gettags(CURRENT)
         if len(EventTags)>0:
             NewNode=self.CreateNodefromList(TargetCanvas,self.lastx,self.lasty,EventTags[1],"MAIN")
@@ -21,6 +39,11 @@ class SliderBarEvents(NodeListCategoriser):
 
 
     def mouseMove_SliderBar(self, event,TargetCanvas):
+        try:
+		self.menulink.destroy()
+	except:
+		pass
+		
         try:
             Targettags = TargetCanvas.gettags(CURRENT)
             if event.y < 52:
@@ -46,9 +69,14 @@ class SliderBarEvents(NodeListCategoriser):
 
 
 
-class NodeEditorCanvasEvents(GUI_Elements_forNodes,ConnectLine,LoadPreferences,PreferencesManagement,RuntimeNodeRegister):
+class NodeEditorCanvasEvents(GUI_Elements_forNodes,ConnectLine,LoadPreferences,PreferencesManagement,RuntimeNodeRegister,SA_NodeConverter):
 
     def B1ClickNodeEditor(self,event,TargetCanvas,lasx,lasty,Eventtag,preferencespanel):
+        try:
+		self.menulink.destroy()
+	except:
+		pass
+		
         try:
             if str(Eventtag[1])=="CLOSEBUTTON":
                 if self.getNodeName(Eventtag[0])==self.nodeInPreferences.get():
@@ -88,29 +116,83 @@ class NodeEditorCanvasEvents(GUI_Elements_forNodes,ConnectLine,LoadPreferences,P
         except:
             pass
 
-    def hello(self):
-	print "hello"
+    def hello(self,a):
+	print a
 
 
     def PopupMenuMain(self,TargetCanvas,event):
-	menu=Menu(TargetCanvas,tearoff=1,title="OpenAssembler Menu")
-	submenu=Menu(menu,tearoff=1,title="Submenu")
-	submenu.add_command(label="Sub1",command=self.hello)
-	submenu.add_command(label="Sub2",command=self.hello)
-	menu.add_command(label="Undo", command=self.hello)
-	menu.add_command(label="Redo", command=self.hello)
-	menu.add_separator()
-	menu.add_cascade(label="Nextmenu",menu=submenu)
-	menu.add_radiobutton(label="uff")
-	menu.add_radiobutton(label="puff")
-	menu.add_checkbutton(label="Somathing")
-	menu.add_checkbutton(label="Other")
-	menu.post(event.x_root, event.y_root)
+    	try:
+		self.menulink.destroy()
+	except:
+		pass	
+        if self.menuopen=="0":
+	        self.menuopen="1"
+                self.menulink=menu=Menu(TargetCanvas,tearoff=0,title="NodeList")
+                for g in range(0,len(self.MenuNodeItems)):
+                  if self.MenuNodeItems[g][0]!="":
+                        submenu=Menu(menu,tearoff=0,title=self.MenuNodeItems[g][0])
+                        menu.add_cascade(label=self.MenuNodeItems[g][0],menu=submenu)
+                        for h in range(1,len(self.MenuNodeItems[g])):
+                                if self.MenuNodeItems[g][h]!="":
+                                        submenu.add_command(label=self.MenuNodeItems[g][h], command=lambda rty=self.MenuNodeItems[g][h]:self.CreateNodefromList(TargetCanvas,self.lastx,self.lasty,rty,"MAIN"))
+
+	        #menu.add_separator()
+                #menu.add_command(label="Cancel")
+	        menu.post(event.x_root, event.y_root)
+        else:
+          pass
+        self.menuopen="0"
+
+    def delNodeFromMenu(self,TargetCanvas,EventTags):
+    		self.resetPreferencePlane(self.pplane)
+                self.DeleteItem(TargetCanvas,EventTags[0])
+                TargetCanvas.delete(EventTags[4])
+
+    def markEndFromMenu(self,TargetCanvas,EventTags):
+                self.eott.set(str(self.getNodeName(EventTags[0])))
+                self.ChangeSettings("0000000", "Data","EndOfTheTree", str(self.getNodeName(EventTags[0])))
+
+    def addToSliderFromMenu(self,TargetCanvas,EventTags, row):
+                self.AddToSliderBarToFile(row,"noneimportant",EventTags[2],self.sliderbarDescriptionFile)
+                sliderfile=open(self.sliderbarDescriptionFile,"r")
+                self.GUI_slider=sliderfile.read()
+                sliderfile.close()
+                self.restartSliderbarCanvas(self.sldr)
+
+
+    def PopupMenuNode(self,TargetCanvas,event,Eventtag):
+
+    	try:
+		self.menulink.destroy()
+	except:
+		pass
+
+        self.menulink=menu=Menu(TargetCanvas,tearoff=0,title=Eventtag[3])
+	menu.add_command(label="Mark as EndNode", command=lambda :self.markEndFromMenu(TargetCanvas,Eventtag))
+        
+        subm=Menu(menu,tearoff=0)
+        menu.add_cascade(label="Add to the SliderBar",menu=subm)
+        subm.add_command(label="Row 1", command=lambda :self.addToSliderFromMenu(TargetCanvas,Eventtag,"Upper_row"))
+        subm.add_command(label="Row 2", command=lambda :self.addToSliderFromMenu(TargetCanvas,Eventtag,"Middle_row"))
+        subm.add_command(label="Row 3", command=lambda :self.addToSliderFromMenu(TargetCanvas,Eventtag,"Bottom_row"))
+        menu.add_command(label="Delete", command=lambda :self.delNodeFromMenu(TargetCanvas,Eventtag))
+        
+        #menu.add_separator()
+        #menu.add_command(label="Cancel")
+        menu.post(event.x_root, event.y_root)
 
 
     def B3ClickNodeEditor(self,event,TargetCanvas,lasx,lasty,Eventtag):
-	self.PopupMenuMain(TargetCanvas,event)
-
+        try:
+		self.menulink.destroy()
+	except:
+		pass
+		
+        if len(Eventtag)==0:
+	       self.PopupMenuMain(TargetCanvas,event)
+        else:
+               if Eventtag[3]!="line":
+	       	self.PopupMenuNode(TargetCanvas,event,Eventtag)
 
     def ReleaseNodeEditor(self,event,TargetCanvas,lasx,lasty,preferencespanel):
         EventTags=TargetCanvas.gettags(CURRENT)
@@ -139,11 +221,15 @@ class NodeEditorCanvasEvents(GUI_Elements_forNodes,ConnectLine,LoadPreferences,P
             TargetCanvas.delete("LineUnderCreateTMP")
         except:
             pass
-        #self.writeBackNodePositions(TargetCanvas)
         self.origin_node=""
 
 
     def B1DoubleClickNodeEditor(self,event,TargetCanvas,lastx,lasty,preferencespanel):
+        try:
+		self.menulink.destroy()
+	except:
+		pass
+		
         EventTags=TargetCanvas.gettags(CURRENT)
         try:
             if EventTags[1]=='UPPERLABEL':
@@ -158,6 +244,11 @@ class NodeEditorCanvasEvents(GUI_Elements_forNodes,ConnectLine,LoadPreferences,P
 
 
     def NodeEditorPan_Move(self, event,TargetCanvas,lastx,lasty,Eventtag):
+        try:
+		self.menulink.destroy()
+	except:
+		pass
+		
         try:
             TargetCanvas.tag_raise(Eventtag[4])
         except:
@@ -179,6 +270,11 @@ class NodeEditorCanvasEvents(GUI_Elements_forNodes,ConnectLine,LoadPreferences,P
                 self.RedrawLines(TargetCanvas, Eventtag[0])
 
     def NodeEditorZoom(self, event,TargetCanvas):
+        try:
+		self.menulink.destroy()
+	except:
+		pass
+		
         BoundingBoxAllCenter_X=600
 	BoundingBoxAllCenter_Y=360
 	try:
