@@ -9,7 +9,7 @@
 
 ######################################################################################################################################
 #
-# This file is to handle the setup file and to init the softvare, collect the nodes and so..
+# This file is to handle the setup file and to init the software, collect the nodes and so..
 #
 ######################################################################################################################################
 
@@ -40,9 +40,7 @@ manualpath /Users/simanlaci/munka/OpenAssembler/src/OpenNodes
 	def oas_load_setup(self,path):
 	
 ######################################################################################################################################
-#
 # Here we load and parse the setup file
-#
 ######################################################################################################################################
 	
 		file=open(path,"r")
@@ -61,9 +59,7 @@ manualpath /Users/simanlaci/munka/OpenAssembler/src/OpenNodes
 	def oas_collect_node_dirs(self,setupfilecontent):
 	
 ######################################################################################################################################
-#
 # This definition is checking the environment variable and the colecting the valid directories
-#
 ######################################################################################################################################
 	
 		folders=[]
@@ -95,15 +91,19 @@ manualpath /Users/simanlaci/munka/OpenAssembler/src/OpenNodes
 	def oas_collect_nodes_from_dirs(self,dirlist):
 	
 ######################################################################################################################################
-#
 # This definition is collecting all the nodes from the directiories and parse them for the parameters
-#
 ######################################################################################################################################
 
 		nodelist={}
 		for singledir in dirlist:
 			dir_content=os.listdir(singledir)
 			for desc_files in dir_content:
+				
+#####################################################################################################################################
+# This is bad, but I need to check if I have acces or not for an sa file. 
+# it is quite slow, so later maybe I need to change this with a more inteeligent one
+#####################################################################################################################################
+
 				checker_perm=False
 				try:
 					node_file=open(str(singledir+"/"+desc_files),"r")
@@ -111,6 +111,7 @@ manualpath /Users/simanlaci/munka/OpenAssembler/src/OpenNodes
 					checker_perm=True
 				except:
 					checker_perm=False
+				
 				if os.path.isfile(str(singledir+"/"+desc_files))==True and checker_perm:
 					if os.path.splitext(desc_files)[1][1:][:2]=="sa" or os.path.splitext(desc_files)[1][1:][:2]=="py":
 						node_file=open(str(singledir+"/"+desc_files),"r")
@@ -153,9 +154,7 @@ manualpath /Users/simanlaci/munka/OpenAssembler/src/OpenNodes
 									deff=deff.strip()
 					
 ######################################################################################################################################
-#
 # Recognize the optinos in the inputs values
-#
 ######################################################################################################################################
 									
 									if (deff.find("\"min"))>0:
@@ -181,11 +180,9 @@ manualpath /Users/simanlaci/munka/OpenAssembler/src/OpenNodes
 										default="0"
 										
 ######################################################################################################################################
-#
 # It will convert the different format of variables to the one we can understand
-#
 ######################################################################################################################################
-									#print cleanpart[w]
+
 									if str(cleanpart[w][1]).find("vector")>-1 or str(cleanpart[w][1]).find("point")>-1 or str(cleanpart[w][1]).find("color")>-1:
 										if len(default.split())>1:
 											default=str(default.split()[0])+";"+str(default.split()[1])+";"+str(default.split()[2])
@@ -205,9 +202,7 @@ manualpath /Users/simanlaci/munka/OpenAssembler/src/OpenNodes
 											default="0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0"
 																											
 ######################################################################################################################################
-#
 # Store the settings depending on if it is input or output
-#
 ######################################################################################################################################									
 										
 				

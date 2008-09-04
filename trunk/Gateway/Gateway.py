@@ -9,6 +9,13 @@
 
 from Dbase.Data_handler import oas_data_handler
 
+###################################################################################
+# this is a collection of our shared python definitions
+# most common syntax is : command(mode,input_list)
+# if mode is "1" then it will produce text outputs for the consol
+# if mode is "0", this is the "silent" mode no error, no confirmation outputed
+###################################################################################
+
 class oas_gateway(oas_data_handler):
 
 	def oas_list(self,mode,inputs):		

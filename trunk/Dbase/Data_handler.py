@@ -11,8 +11,17 @@ import os
 import sys
 from random import *
 from copy import deepcopy
+
+####################################################################################
+# this module is responsible for the runtime data management (and for all other data
+# which is stored in memory)
+###################################################################################
 	
 class oas_data_handler:
+
+############################################
+# random generator for the nodes
+############################################
 
 	def generate_random_with_check(self):
 		randomized=0
@@ -22,6 +31,12 @@ class oas_data_handler:
 			chk=self.oas_rt.has_key(str("Node"+str(randomized)))
 		return randomized
 		
+################################################
+# random generator for the connections
+# maybe this 2 ran generator can be solved 
+# in one function but for now, it is better
+################################################
+
 	def generate_random_with_check_for_connection(self):
 		randomized=0
 		chk=True
@@ -29,6 +44,12 @@ class oas_data_handler:
 			randomized=randrange(1000,1000000)
 			chk=self.oas_rt_connections.has_key(str("Connection"+str(randomized)))
 		return randomized
+
+###################################################
+# list the nodes or connections
+# if the modde is 0 it will give you back a list
+# of the sorted nodes/connections
+####################################################
 
 	def oas_data_list(self,mode,inputs):
 		if mode=="1":
@@ -92,6 +113,10 @@ class oas_data_handler:
 							returnvalue.append(cns)				
 			return returnvalue
 		
+####################################################################
+# this will show you the inputs and the outputs of the scene
+# if mode is 0 thna doing nothing at this time maybe later...
+####################################################################
 
 	def oas_data_show(self,mode,inputs):
 		if mode=="1":
@@ -139,31 +164,27 @@ class oas_data_handler:
 				print ""
 			else:
 				print "No node named: "+str(inputs[1])
-		else:
-			try:
-				return self.oas_node_list[str(inputs[1])]
-			except:
-				return
+
+#########################################################################################
+# counts a node or a connection in the scene or in the oas_node_list
+# if the mode is 0 it is doing nothing. (this ones are realy just for visualization)
+#########################################################################################
 
 	def oas_data_count(self,mode,inputs):
 		if mode=="1":
 			if inputs[1]=="nodetypes":
 				print "There is "+str(len(self.oas_node_list.keys()))+" node in memory."
 			elif inputs[1]=="scene":
-				pass
+				print "There is "+str(len(self.oas_rt.keys()))+" node in the scene."
 			elif inputs[1]=="connections":
 				print "There is "+str(len(self.oas_rt_connections.keys()))+" connection."
 			else: 
 				print "None-valid option given."
-		else:
-			if inputs[1]=="nodetypes":
-				return str(len(self.oas_node_list.keys()))
-			elif inputs[1]=="scene":
-				pass
-			elif inputs[1]=="connections":
-				pass
-			else: 
-				return
+				
+###########################################################################################
+# this function creates a node with a given type
+# if mode is 0 it will create the node, but in "silent" mode
+###########################################################################################			
 				
 	def oas_data_create(self,mode,inputs):
 		if mode=="1":
@@ -193,6 +214,11 @@ class oas_data_handler:
 					del self.oas_rt["Node"+generated_random]['tag']
 					del self.oas_rt["Node"+generated_random]['path']
 					return str("Node"+generated_random)
+
+########################################################################################
+# this is deleting a node or connection (disconnect)
+# mode 0 is silence
+########################################################################################
 
 	def oas_data_delete(self,mode,inputs):
 		if mode=="1":
@@ -237,8 +263,12 @@ class oas_data_handler:
 					nodename=str(inputs[2])
 			return nodename
 			
+###########################################################################
+# rename a node can be normal 1 or silent 0 mode
+###########################################################################
+	
 	def oas_data_rename(self,mode,inputs):
-		if mode=="1":
+		if mode=="1" or mode=="0":
 			if len(inputs)>2:
 				ref_string="qwertyuiopasdfghjklzxcvbnm1234567890"
 				numb="1234567890"
@@ -264,43 +294,21 @@ class oas_data_handler:
 							chk=False
 				if self.oas_rt.has_key(node) and chk:
 					self.oas_rt[node]['name']=str(inputs[2])
-					print "Node "+str(inputs[1])+" is known as "+str(inputs[2])+" now."
+					if mode =="1":
+						print "Node "+str(inputs[1])+" is known as "+str(inputs[2])+" now."
 				else:
-					print "Problem with the parameters!"
+					if mode=="1":
+						print "Problem with the parameters!"
 			else:
-				print "Not enough parameter!"
-		else:
-			if len(inputs)>2:
-				ref_string="qwertyuiopasdfghjklzxcvbnm1234567890"
-				numb="1234567890"
-				result_new_name=""
-				for char in str(inputs[2]):
-					if ref_string.find(char)>-1:
-						result_new_name+=char
-				try:
-					if numb.find(result_new_name[0])>-1:
-						result_new_name=""
-				except:
-					result_new_name=""		
-				inputs[2]=result_new_name
-				node=""
-				for nds in self.oas_rt.keys():
-					if str(self.oas_rt[nds]['name'])==str(inputs[1]):
-						node=str(nds)
-				chk=False
-				if inputs[2]!="":
-					chk=True
-					for nds in self.oas_rt.keys():
-						if str(self.oas_rt[nds]['name'])==str(inputs[2]):
-							chk=False		
-				if self.oas_rt.has_key(node) and chk:
-					self.oas_rt[node]['name']=str(inputs[2])
-					return str(inputs[2])
-				else:
-					return 
-
+				if mode =="1":
+					print "Not enough parameter!"
+				
+#####################################################################################
+# create a connection between the nodes
+#####################################################################################
+				
 	def oas_data_connect(self,mode,inputs):
-		if mode=="1":
+		if mode=="1" or mode=="0":
 			if len(inputs)>2:
 				node_out=""
 				value_out=""
@@ -327,16 +335,24 @@ class oas_data_handler:
 					pass
 				
 				if node_out=="" or node_in=="" or value_out=="" or value_in=="":
-					print "Wrong parameters!"
+					if mode =="1":
+						print "Wrong parameters!"
 				else:
+					# uncomment this if you want the: "input gets the output value on connection"
 					#self.oas_rt[node_in]['inputs'][value_in]['value']=self.oas_rt[node_out]['outputs'][value_out]['value']
+					
 					rnd=self.generate_random_with_check_for_connection()
 					self.oas_rt_connections[str("Connection"+str(rnd))]={'in_node':node_in,'out_node':node_out,'in_value':value_in,'out_value':value_out}
 			else:
-				print "Not enough parameter."
-		else:
-			return
+				if mode =="1":
+					print "Not enough parameter."
 
+
+#############################################################################################################
+#
+# this is an impoertant one. It is seting up a new scene (variables, etc...)
+#
+###########################################################################################################
 
 	def oas_Startup(self):
 		self.oas_userhome=os.environ.get("HOME")
@@ -344,6 +360,7 @@ class oas_data_handler:
 		self.oas_rt={}
 		self.oas_rt_connections={}
 		self.oas_scene_setup={'startframe': 100, 'endframe':200,'endnode':""}
+		self.save_filename=""
 		
 	    	if os.path.isdir(self.oas_home):
 			pass

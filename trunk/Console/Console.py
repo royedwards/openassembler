@@ -11,8 +11,18 @@ import sys
 from Gateway.Gateway import oas_gateway
 import readline
 
+
+######################################################################################
+# this file is for the console loop
+######################################################################################
+
 class oas_console(oas_gateway):
 	def oas_Console(self):
+		
+####################################################################################
+# we are starting a loop and then we are lsitening and sorting out the given commands
+####################################################################################
+		
 		x=1
 		while x==1:
 			input_command=raw_input ("OpenAssembler:").strip()
@@ -45,9 +55,7 @@ list <type> <nodename> <...> 	:lists all the nodes or nodetypes
 				 	nodetype
 					scene
 					connections
-					
-ls				:same as  the "list scene" command
-					
+										
 count <type>		 	:counts all the nodes or nodetypes 
 				 in the scene or nodetypelist.
 				 type can be:
@@ -65,6 +73,13 @@ delete <type> <nodename>	:delete a node from the scene.
 					
 rename <old> <new>		:renames the node: old to the
 				 name: new
+					
+connect <from> <to>		:make a connection from a node 
+				 output to a node input
+				 example: 
+				 connect mult1.out mult2.in1
+					
+new				:create a new scene
 										
 exit				:quit from the application 
 				'''
