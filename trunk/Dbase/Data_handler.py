@@ -75,6 +75,12 @@ class oas_data_handler:
 						print self.oas_rt[ndtps]['name']
 				print ""
 			
+			elif part == "variables":
+				print ""
+				for vtps in self.oas_variablecategory.keys():
+					print vtps
+				print ""
+			
 			elif part == "connections":
 				print ""
 				if len(inputs)>2:
@@ -198,6 +204,7 @@ class oas_data_handler:
 					self.oas_rt["Node"+generated_random]['name']=str(str(nds)+generated_random)
 					del self.oas_rt["Node"+generated_random]['tag']
 					del self.oas_rt["Node"+generated_random]['path']
+					self.oas_last_node_created=str(str(nds)+generated_random)
 					print "Node "+str(str(nds)+generated_random)+" created."
 					result=1
 			if result==0:
@@ -213,6 +220,7 @@ class oas_data_handler:
 					self.oas_rt["Node"+generated_random]['name']=str(str(nds)+generated_random)
 					del self.oas_rt["Node"+generated_random]['tag']
 					del self.oas_rt["Node"+generated_random]['path']
+					self.oas_last_node_created=str(str(nds)+generated_random)
 					return str("Node"+generated_random)
 
 ########################################################################################
@@ -294,6 +302,10 @@ class oas_data_handler:
 							chk=False
 				if self.oas_rt.has_key(node) and chk:
 					self.oas_rt[node]['name']=str(inputs[2])
+					if str(self.oas_last_node_created)==str(inputs[1]):
+						self.oas_last_node_created=str(inputs[2])
+					if str(self.oas_scene_setup['endnode'])==str(inputs[1]):
+						self.oas_scene_setup['endnode']=str(inputs[2])
 					if mode =="1":
 						print "Node "+str(inputs[1])+" is known as "+str(inputs[2])+" now."
 				else:
@@ -340,9 +352,15 @@ class oas_data_handler:
 				else:
 					# uncomment this if you want the: "input gets the output value on connection"
 					#self.oas_rt[node_in]['inputs'][value_in]['value']=self.oas_rt[node_out]['outputs'][value_out]['value']
-					
-					rnd=self.generate_random_with_check_for_connection()
-					self.oas_rt_connections[str("Connection"+str(rnd))]={'in_node':node_in,'out_node':node_out,'in_value':value_in,'out_value':value_out}
+					in_type=str(self.oas_rt[node_in]['inputs'][value_in]['variable_type'])
+					out_type=str(self.oas_rt[node_out]['outputs'][value_out]['variable_type'])
+
+					if self.oas_variablecategory[in_type]==self.oas_variablecategory[out_type]:
+						rnd=self.generate_random_with_check_for_connection()
+						self.oas_rt_connections[str("Connection"+str(rnd))]={'in_node':node_in,'out_node':node_out,'in_value':value_in,'out_value':value_out}
+					else:
+						if mode =="1":
+							print "You can not connect different parametertypes!"
 			else:
 				if mode =="1":
 					print "Not enough parameter."
@@ -360,8 +378,9 @@ class oas_data_handler:
 		self.oas_rt={}
 		self.oas_rt_connections={}
 		self.oas_scene_setup={'startframe': 100, 'endframe':200,'endnode':""}
-		self.save_filename=""
-		
+		self.oas_save_filename=""
+		self.oas_variablecategory={}
+		self.oas_last_node_created=""
 	    	if os.path.isdir(self.oas_home):
 			pass
 	    	else:

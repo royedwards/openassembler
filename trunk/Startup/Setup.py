@@ -22,8 +22,8 @@ class oas_setup:
 	def oas_create_setup(self,path):
 		setupFile_Content='''
 environments SA_SCRIPT_PATH
-font Arial
-fontsize 16
+font Helvetica
+fontsize 12
 sliderbarrows 1
 menucategory Math math
 menucategory Mass mass
@@ -32,17 +32,21 @@ menucategory OpenAssembler oas
 menucategory Massive massive
 menucategory Mesh mesh:geo:surface:curve
 manualpath /Users/simanlaci/munka/OpenAssembler/src/OpenNodes
+variablecategory red path,string
+variablecategory blue int,aint,vint,avint,float,afloat,vfloat,avfloat
+variablecategory green matrix,amatrix,vmatrix,avmatrix
+variablecategory black color,point,vector,avector,vvector,avvector
+
 '''
 		file=open(path,"w")
 		file.write(setupFile_Content)
 		file.close()
-
-	def oas_load_setup(self,path):
 	
 ######################################################################################################################################
 # Here we load and parse the setup file
 ######################################################################################################################################
-	
+
+	def oas_load_setup(self,path):
 		file=open(path,"r")
 		setupFile_Content=file.read()
 		file.close()
@@ -54,14 +58,23 @@ manualpath /Users/simanlaci/munka/OpenAssembler/src/OpenNodes
 				setup_parsed.append(ret)
 		return setup_parsed
 
+######################################################################################################################################
+# to collect the variabletypes settings (for the connection check procedure)
+######################################################################################################################################		
+		
+	def oas_register_variable_with_cat(self,setupfilecontent,variablecategory,var):
+		cat="undefined"
+		for i in range (0,len(setupfilecontent)):
+			if setupfilecontent[i][0]=="variablecategory":
+				if setupfilecontent[i][2].find(str(var))>-1:
+					cat=str(setupfilecontent[i][1])
+		variablecategory[str(var)]={'variablecategory':cat}
 
-
-	def oas_collect_node_dirs(self,setupfilecontent):
-	
 ######################################################################################################################################
 # This definition is checking the environment variable and the colecting the valid directories
 ######################################################################################################################################
-	
+
+	def oas_collect_node_dirs(self,setupfilecontent):
 		folders=[]
 		for i in range (0,len(setupfilecontent)):
 			if setupfilecontent[i][0]=="environments":
@@ -85,15 +98,12 @@ manualpath /Users/simanlaci/munka/OpenAssembler/src/OpenNodes
 							if os.path.isdir(splitted[n]):
 								folders.append(splitted[n])
 		return folders
-
-	
-	
-	def oas_collect_nodes_from_dirs(self,dirlist):
 	
 ######################################################################################################################################
 # This definition is collecting all the nodes from the directiories and parse them for the parameters
 ######################################################################################################################################
 
+	def oas_collect_nodes_from_dirs(self,dirlist):
 		nodelist={}
 		for singledir in dirlist:
 			dir_content=os.listdir(singledir)
@@ -205,7 +215,7 @@ manualpath /Users/simanlaci/munka/OpenAssembler/src/OpenNodes
 # Store the settings depending on if it is input or output
 ######################################################################################################################################									
 										
-				
+									self.oas_register_variable_with_cat(self.setup_contents,self.oas_variablecategory,str(cleanpart[w][1]))
 									if cleanpart[w][0]=="input":
 										inputs[str(cleanpart[w][2])]={'variable_type':str(cleanpart[w][1]),'value':str(default),'options':str(option)}
 									if cleanpart[w][0]=="output":

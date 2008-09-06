@@ -150,7 +150,19 @@ exit				:quit from the application
 					print "Wrong command parameter."
 					
 			elif input_command.split()[0]=="new":
-				self.oas_new("1",input_command.split()) 
+				if len(input_command.split())>0:
+					self.oas_new("1",input_command.split()) 
+				else:
+					print "Wrong command parameter."
+
+			elif input_command.split()[0]=="save":
+				if len(input_command.split())>0:
+					if (str(self.oas_save_filename)!="") and (len(input_command.split())<2):
+						self.oas_save("1",str(self.oas_save_filename)[3:],str(self.oas_save_filename))
+					else:
+						self.oas_save("1",input_command.split())  
+				else:
+					print "Wrong command parameter."
 			
 			else:
 				if input_command!="no character given":
