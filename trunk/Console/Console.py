@@ -148,15 +148,27 @@ exit				:quit from the application
 					self.oas_list("1",["ls","nodetypes"]) 
 				else:
 					print "Wrong command parameter."
+
+			elif input_command.split()[0]=="end":
+				if len(input_command.split())>1:
+					self.oas_end("1",input_command.split()) 
+				else:
+					print "Wrong command parameter."
 					
 			elif input_command.split()[0]=="new":
 				if len(input_command.split())>0:
 					self.oas_new("1",input_command.split()) 
 				else:
 					print "Wrong command parameter."
-
+					
+			elif input_command.split()[0]=="open":
+				if len(input_command.split())>2:
+					self.oas_open("1",input_command.split()) 
+				else:
+					print "Wrong command parameter."
+					
 			elif input_command.split()[0]=="save":
-				if len(input_command.split())>0:
+				if len(input_command.split())>2:
 					if (str(self.oas_save_filename)!="") and (len(input_command.split())<2):
 						self.oas_save("1",str(self.oas_save_filename)[3:],str(self.oas_save_filename))
 					else:

@@ -44,6 +44,9 @@ class oas_gateway(oas_data_handler,oas_fileio):
 	def oas_new(self,mode,inputs):
 		return self.oas_Startup()
 
+	def oas_end(self,mode,inputs):
+		return self.oas_data_end(mode,inputs)
+
 	def oas_save(self,mode,inputs):
 		return self.oas_file_save(mode,inputs)
 		

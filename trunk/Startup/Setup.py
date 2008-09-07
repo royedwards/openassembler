@@ -195,19 +195,19 @@ variablecategory black color,point,vector,avector,vvector,avvector
 
 									if str(cleanpart[w][1]).find("vector")>-1 or str(cleanpart[w][1]).find("point")>-1 or str(cleanpart[w][1]).find("color")>-1:
 										if len(default.split())>1:
-											default=str(default.split()[0])+";"+str(default.split()[1])+";"+str(default.split()[2])
+											default=str(default.split()[0])+","+str(default.split()[1])+","+str(default.split()[2])
 										elif len(default.split(","))>1:
-											default=str(default.split(",")[0])+";"+str(default.split(",")[1])+";"+str(default.split(",")[2])
+											default=str(default.split(",")[0])+","+str(default.split(",")[1])+","+str(default.split(",")[2])
 										else:
 											default="0;0;0"
 									
 									if str(cleanpart[w][1]).find("matrix")>-1:
 										if len(default.split())>1:
-											default=str(default.split(" ")[0])+";"+str(default.split(" ")[1])+";"+str(default.split(" ")[2])+";"+str(default.split(" ")[3])+";"+str(default.split(" ")[4])+";"+str(default.split(" ")[5])+";"+str(default.split(" ")[6])+";"+str(default.split(" ")[7])+";"+str(default.split(" ")[8])+";"+str(default.split(" ")[9])+";"+str(default.split(" ")[10])+";"+str(default.split(" ")[11])+";"+str(default.split(" ")[12])+";"+str(default.split(" ")[13])+";"+str(default.split(" ")[14])+";"+str(default.split(" ")[15])
+											default=str(default.split(" ")[0])+","+str(default.split(" ")[1])+","+str(default.split(" ")[2])+","+str(default.split(" ")[3])+","+str(default.split(" ")[4])+","+str(default.split(" ")[5])+","+str(default.split(" ")[6])+","+str(default.split(" ")[7])+","+str(default.split(" ")[8])+","+str(default.split(" ")[9])+","+str(default.split(" ")[10])+","+str(default.split(" ")[11])+","+str(default.split(" ")[12])+","+str(default.split(" ")[13])+","+str(default.split(" ")[14])+","+str(default.split(" ")[15])
 										elif len(default.split(","))>1:
-											default=str(default.split(",")[0])+";"+str(default.split(",")[1])+";"+str(default.split(",")[2])+";"+str(default.split(",")[3])+";"+str(default.split(",")[4])+";"+str(default.split(",")[5])+";"+str(default.split(",")[6])+";"+str(default.split(",")[7])+";"+str(default.split(",")[8])+";"+str(default.split(",")[9])+";"+str(default.split(",")[10])+";"+str(default.split(",")[11])+";"+str(default.split(",")[12])+";"+str(default.split(",")[13])+";"+str(default.split(",")[14])+";"+str(default.split(",")[15])
+											default=str(default.split(",")[0])+","+str(default.split(",")[1])+","+str(default.split(",")[2])+","+str(default.split(",")[3])+","+str(default.split(",")[4])+","+str(default.split(",")[5])+","+str(default.split(",")[6])+","+str(default.split(",")[7])+","+str(default.split(",")[8])+","+str(default.split(",")[9])+","+str(default.split(",")[10])+","+str(default.split(",")[11])+","+str(default.split(",")[12])+","+str(default.split(",")[13])+","+str(default.split(",")[14])+","+str(default.split(",")[15])
 										elif len(default.split("_"))>1:
-											default=str(default.split("_")[0])+";"+str(default.split("_")[1])+";"+str(default.split("_")[2])+";"+str(default.split("_")[3])+";"+str(default.split("_")[4])+";"+str(default.split("_")[5])+";"+str(default.split("_")[6])+";"+str(default.split("_")[7])+";"+str(default.split("_")[8])+";"+str(default.split("_")[9])+";"+str(default.split("_")[10])+";"+str(default.split("_")[11])+";"+str(default.split("_")[12])+";"+str(default.split("_")[13])+";"+str(default.split("_")[14])+";"+str(default.split("_")[15])
+											default=str(default.split("_")[0])+","+str(default.split("_")[1])+","+str(default.split("_")[2])+","+str(default.split("_")[3])+","+str(default.split("_")[4])+","+str(default.split("_")[5])+","+str(default.split("_")[6])+","+str(default.split("_")[7])+","+str(default.split("_")[8])+","+str(default.split("_")[9])+","+str(default.split("_")[10])+","+str(default.split("_")[11])+","+str(default.split("_")[12])+","+str(default.split("_")[13])+","+str(default.split("_")[14])+","+str(default.split("_")[15])
 										else:
 											default="0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0"
 																											

@@ -94,6 +94,7 @@ class oas_data_handler:
 			
 			else:
 				print "None-valid list option given."
+				return False
 		else:
 			part=inputs[1]
 			returnvalue=[]
@@ -117,7 +118,10 @@ class oas_data_handler:
 					for cns in self.oas_rt_connections.keys():		
 						if (self.oas_rt[(str(self.oas_rt_connections[cns]['in_node']))]['name'].find(inputs[2])>-1) or (self.oas_rt[(str(self.oas_rt_connections[cns]['out_node']))]['name'].find(inputs[2])>-1):
 							returnvalue.append(cns)				
-			return returnvalue
+			if returnvalue==[]:
+				return False
+			else:
+				return returnvalue
 		
 ####################################################################
 # this will show you the inputs and the outputs of the scene
@@ -163,6 +167,9 @@ class oas_data_handler:
 				for ins in self.oas_node_list[str(inputs[1])]['outputs'].keys():
 					print "\t"+str(ins)+" = "+str(self.oas_node_list[str(inputs[1])]['outputs'][str(ins)]['value'])
 				print ""
+			elif inputs[1]=="endnode":
+				if mode=="1":
+					print "Endnode is: "+str(self.oas_scene_setup['endnode'])
 			elif inputs[1]=="setup":
 				print ""
 				for ks in self.oas_scene_setup.keys():
@@ -193,7 +200,7 @@ class oas_data_handler:
 ###########################################################################################			
 				
 	def oas_data_create(self,mode,inputs):
-		if mode=="1":
+		if mode=="1" or mode=="0":
 			result=0
 			for nds in self.oas_node_list.keys():
 				if str(nds)==str(inputs[1]):
@@ -205,23 +212,14 @@ class oas_data_handler:
 					del self.oas_rt["Node"+generated_random]['tag']
 					del self.oas_rt["Node"+generated_random]['path']
 					self.oas_last_node_created=str(str(nds)+generated_random)
-					print "Node "+str(str(nds)+generated_random)+" created."
+					if mode=="1":
+						print "Node "+str(str(nds)+generated_random)+" created."
 					result=1
+					return str(str(nds)+generated_random)
 			if result==0:
-				print "Unknown nodetype"
-					
-		else:
-			for nds in self.oas_node_list.keys():
-				if str(nds)==str(inputs[1]):
-					generated_random=0
-					generated_random=str(self.generate_random_with_check())
-					self.oas_rt["Node"+generated_random]=deepcopy(self.oas_node_list[nds])
-					self.oas_rt["Node"+generated_random]['nodetype']=str(nds)
-					self.oas_rt["Node"+generated_random]['name']=str(str(nds)+generated_random)
-					del self.oas_rt["Node"+generated_random]['tag']
-					del self.oas_rt["Node"+generated_random]['path']
-					self.oas_last_node_created=str(str(nds)+generated_random)
-					return str("Node"+generated_random)
+				if mode=="1":
+					print "Unknown nodetype"
+				return False
 
 ########################################################################################
 # this is deleting a node or connection (disconnect)
@@ -271,6 +269,51 @@ class oas_data_handler:
 					nodename=str(inputs[2])
 			return nodename
 			
+###########################################################################################
+# this will set the node input value
+###########################################################################################			
+				
+	def oas_data_set(self,mode,inputs):
+		if mode=="1" or mode=="0":
+			if len(inputs)>2:
+				if len(inputs[1].split(".")):
+					nodelists={}
+					for noddd in self.oas_rt.keys():
+						nodelists[self.oas_rt[noddd]['name']]=noddd
+					if nodelists.has_key(inputs[1].split(".")[0]):
+						if self.oas_rt[nodelists[inputs[1].split(".")[0]]]['inputs'].has_key(inputs[1].split(".")[1]):
+							value=inputs[2]
+							if self.oas_rt[nodelists[inputs[1].split(".")[0]]]['inputs'][inputs[1].split(".")[1]]['variable_type'].find("matrix")>-1:
+								if len(value.split(","))>15:
+									pass
+								else:
+									if mode=="1":
+										print "Problem with a value.."
+									value="0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0"    
+							elif (self.oas_rt[nodelists[inputs[1].split(".")[0]]]['inputs'][inputs[1].split(".")[1]]['variable_type'].find("vector")>-1) or (self.oas_rt[nodelists[inputs[1].split(".")[0]]]['inputs'][inputs[1].split(".")[1]]['variable_type'].find("point")>-1) or (self.oas_rt[nodelists[inputs[1].split(".")[0]]]['inputs'][inputs[1].split(".")[1]]['variable_type'].find("color")>-1):
+								if len(value.split(","))>2:
+									pass
+								else:
+									if mode=="1":
+										print "Problem with a value.."
+									value="0,0,0"
+							else:
+								pass
+							self.oas_rt[nodelists[inputs[1].split(".")[0]]]['inputs'][inputs[1].split(".")[1]]['value']=value
+							return True
+						else:
+							if mode=="1":
+								print "Non existing input variable"
+							return False
+					else:
+						if mode=="1":
+							print "None existing node..."
+						return False
+				else:
+					if mode=="1":
+						print "Problematic description.."
+					return False
+
 ###########################################################################
 # rename a node can be normal 1 or silent 0 mode
 ###########################################################################
@@ -278,7 +321,7 @@ class oas_data_handler:
 	def oas_data_rename(self,mode,inputs):
 		if mode=="1" or mode=="0":
 			if len(inputs)>2:
-				ref_string="qwertyuiopasdfghjklzxcvbnm1234567890"
+				ref_string="qwertyuiopasdfghjklzxcvbnm1234567890_"
 				numb="1234567890"
 				result_new_name=""
 				for char in str(inputs[2]):
@@ -314,6 +357,28 @@ class oas_data_handler:
 			else:
 				if mode =="1":
 					print "Not enough parameter!"
+
+#####################################################################################
+# this call will mark a node as an end node
+#####################################################################################
+				
+	def oas_data_end(self,mode,inputs):
+		if mode=="1" or mode=="0":
+			chk=0
+			if len(inputs)>1:
+				for nds in self.oas_rt.keys():
+					if str(self.oas_rt[nds]['name'])==str(inputs[1]):
+						self.oas_scene_setup['endnode']=str(inputs[1])
+						chk=1
+			if chk==1:
+				if mode=="1":
+					print "Node "+str(inputs[1])+" marked as endnode."
+				return True
+			else:
+				if mode=="1":
+					print "Wrong node."
+				return False	
+		
 				
 #####################################################################################
 # create a connection between the nodes
@@ -349,6 +414,7 @@ class oas_data_handler:
 				if node_out=="" or node_in=="" or value_out=="" or value_in=="":
 					if mode =="1":
 						print "Wrong parameters!"
+					return False
 				else:
 					# uncomment this if you want the: "input gets the output value on connection"
 					#self.oas_rt[node_in]['inputs'][value_in]['value']=self.oas_rt[node_out]['outputs'][value_out]['value']
@@ -361,9 +427,12 @@ class oas_data_handler:
 					else:
 						if mode =="1":
 							print "You can not connect different parametertypes!"
+						return False
+				return True
 			else:
 				if mode =="1":
 					print "Not enough parameter."
+				return False
 
 
 #############################################################################################################
