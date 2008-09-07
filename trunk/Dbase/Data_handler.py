@@ -411,6 +411,15 @@ class oas_data_handler:
 				else:
 					pass
 				
+				con_chk=0
+				for con in self.oas_rt_connections.keys():
+					if (self.oas_rt_connections[con]['in_node']==str(node_in) and self.oas_rt_connections[con]['in_value']==str(value_in)):
+						con_chk=1
+				if con_chk==1:
+					if mode=="1":
+						print "This node input is already connected, you need to disconnect first."
+					return False
+				
 				if node_out=="" or node_in=="" or value_out=="" or value_in=="":
 					if mode =="1":
 						print "Wrong parameters!"
@@ -421,7 +430,7 @@ class oas_data_handler:
 					in_type=str(self.oas_rt[node_in]['inputs'][value_in]['variable_type'])
 					out_type=str(self.oas_rt[node_out]['outputs'][value_out]['variable_type'])
 
-					if self.oas_variablecategory[in_type]==self.oas_variablecategory[out_type]:
+					if self.oas_variablecategory[in_type]==self.oas_variablecategory[out_type] or in_type=="any":
 						rnd=self.generate_random_with_check_for_connection()
 						self.oas_rt_connections[str("Connection"+str(rnd))]={'in_node':node_in,'out_node':node_out,'in_value':value_in,'out_value':value_out}
 					else:

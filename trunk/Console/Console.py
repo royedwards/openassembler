@@ -24,7 +24,7 @@ class oas_console(oas_gateway):
 ####################################################################################
 		
 		x=1
-		while x==1:
+		while x==1:	
 			input_command=raw_input ("OpenAssembler:").strip()
 			if input_command=="":
 				input_command="no character given"
@@ -154,7 +154,21 @@ exit				:quit from the application
 					self.oas_end("1",input_command.split()) 
 				else:
 					print "Wrong command parameter."
-					
+
+			elif input_command.split()[0]=="set":
+				if len(input_command.split())>2:
+					self.oas_set("1",input_command.split()) 
+				else:
+					print "Wrong command parameter."
+
+			elif input_command.split()[0]=="run":
+				if len(input_command.split())==1:
+					self.oas_run("1",["run",str(self.oas_scene_setup['endnode'])]) 
+				elif len(input_command.split())>1:
+					self.oas_run("1",input_command.split())
+				else:
+					print "Wrong command parameter."
+			
 			elif input_command.split()[0]=="new":
 				if len(input_command.split())>0:
 					self.oas_new("1",input_command.split()) 
@@ -164,15 +178,17 @@ exit				:quit from the application
 			elif input_command.split()[0]=="open":
 				if len(input_command.split())>2:
 					self.oas_open("1",input_command.split()) 
+				elif len(input_command.split())==2:
+					self.oas_open("1",["open",str(input_command.split()[1][-3:]),str(input_command.split()[1])])
 				else:
 					print "Wrong command parameter."
 					
 			elif input_command.split()[0]=="save":
-				if len(input_command.split())>2:
-					if (str(self.oas_save_filename)!="") and (len(input_command.split())<2):
-						self.oas_save("1",str(self.oas_save_filename)[3:],str(self.oas_save_filename))
-					else:
-						self.oas_save("1",input_command.split())  
+				
+				if (str(self.oas_save_filename)!="") and (len(input_command.split())<2):
+					self.oas_save("1",["save",str(self.oas_save_filename)[-3:],str(self.oas_save_filename)])
+				elif len(input_command.split())>2:
+					self.oas_save("1",input_command.split())  
 				else:
 					print "Wrong command parameter."
 			

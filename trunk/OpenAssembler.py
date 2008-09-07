@@ -33,7 +33,7 @@ Owner: Laszlo Mates
 Options:
    -help 		      :display this screen
    -m <normal/console/no-gui> :this are the modes to start OpenAssembler
-		
+   -f <inputfile>	      :open a file during the startup		
 		'''
 			sys.exit(0)
 		elif sys.argv[i]=="-f":
@@ -47,7 +47,7 @@ Options:
 		elif sys.argv[i]=="-m":
 			try:
 				oas_arg_mode=sys.argv[i+1]
-				if oas_arg_mode=="normal" or oas_arg_mode=="console" or oas_arg_mode=="no-gui":
+				if oas_arg_mode=="normal" or oas_arg_mode=="console" or oas_arg_mode=="no-gui" or oas_arg_mode=="run":
 					pass
 				else:
 					oas_arg_mode="normal"

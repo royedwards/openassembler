@@ -9,6 +9,7 @@
 
 from Dbase.Data_handler import oas_data_handler
 from Dbase.FileIO import oas_fileio
+from Run.Run import oas_execute
 
 
 ###################################################################################
@@ -18,7 +19,7 @@ from Dbase.FileIO import oas_fileio
 # if mode is "0", this is the "silent" mode no error, no confirmation outputed
 ###################################################################################
 
-class oas_gateway(oas_data_handler,oas_fileio):
+class oas_gateway(oas_data_handler,oas_fileio,oas_execute):
 
 	def oas_list(self,mode,inputs):		
 		return self.oas_data_list(mode,inputs)
@@ -52,3 +53,9 @@ class oas_gateway(oas_data_handler,oas_fileio):
 		
 	def oas_open(self,mode,inputs):
 		return self.oas_file_open(mode,inputs)
+	
+	def oas_run(self,mode,inputs):
+		return self.oas_run_execute(mode,inputs)
+
+	def oas_set(self,mode,inputs):
+		return self.oas_data_set(mode,inputs)	

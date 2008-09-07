@@ -55,7 +55,8 @@ variablecategory black color,point,vector,avector,vvector,avvector
 		for rws in setupFile_Content:
 			ret=rws.split()
 			if len(ret)>0:
-				setup_parsed.append(ret)
+				if str(rws[:1])!=str("#"):
+					setup_parsed.append(ret)
 		return setup_parsed
 
 ######################################################################################################################################
