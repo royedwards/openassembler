@@ -14,6 +14,12 @@ define
 
 
 class mult:
-   def mult_main(self,A=1, B=1, out=1):
+   def mult_main(self,A=1, B=1, out=1,oas_output="out"):
 
-	return out=A*B
+	if oas_output=="out":
+		try:
+			return float(A)*float(B)
+		except:
+			return 0
+	else:
+		return 0

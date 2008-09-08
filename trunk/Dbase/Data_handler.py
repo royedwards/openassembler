@@ -170,6 +170,17 @@ class oas_data_handler:
 			elif inputs[1]=="endnode":
 				if mode=="1":
 					print "Endnode is: "+str(self.oas_scene_setup['endnode'])
+					
+			elif inputs[1]=="framerange":
+				if mode=="1":
+					print "From: "+str(self.oas_scene_setup['startframe'])+" to: "+str(self.oas_scene_setup['endframe'])
+				return (str(self.oas_scene_setup['startframe']),str(self.oas_scene_setup['endframe']))
+					
+			elif inputs[1]=="frame":
+				if mode=="1":
+					print "Frame: "+str(self.oas_scene_setup['frame'])
+				return (str(self.oas_scene_setup['frame']))
+					
 			elif inputs[1]=="setup":
 				print ""
 				for ks in self.oas_scene_setup.keys():
@@ -379,6 +390,59 @@ class oas_data_handler:
 					print "Wrong node."
 				return False	
 		
+		
+#####################################################################################
+# set the framerange
+#####################################################################################
+				
+	def oas_data_framerange(self,mode,inputs):
+		if mode=="1" or mode=="0":
+			if len(inputs)>2:
+				try:
+					a=int(inputs[1])
+					b=int(inputs[2])
+					if a>b:
+						if mode=="1":
+							print "Startframe is bigger than endframe!!"
+						return False
+					else:
+						self.oas_scene_setup['startframe']=a
+						self.oas_scene_setup['endframe']=b
+						if mode=="1":
+							print "Frame range are set."
+						return True
+				except:
+					if mode=="1":
+						print "Framerange values are wrong!"
+					return False
+			else:
+				if mode=="1":
+					print "Wrong parameterlist!"
+				return False
+		
+		
+#####################################################################################
+# set the currentframe
+#####################################################################################
+				
+	def oas_data_frame(self,mode,inputs):
+		if mode=="1" or mode=="0":
+			if len(inputs)>1:
+				try:
+					a=int(inputs[1])
+					self.oas_scene_setup['frame']=a
+					if mode=="1":
+						print "Frame range are set."
+					return True
+				except:
+					if mode=="1":
+						print "Framerange values are wrong!"
+					return False
+			else:
+				if mode=="1":
+					print "Wrong parameterlist!"
+				return False
+		
 				
 #####################################################################################
 # create a connection between the nodes
@@ -455,7 +519,7 @@ class oas_data_handler:
 		self.oas_home=str(self.oas_userhome)+"/.OpenAssembler"
 		self.oas_rt={}
 		self.oas_rt_connections={}
-		self.oas_scene_setup={'startframe': 100, 'endframe':200,'endnode':""}
+		self.oas_scene_setup={'startframe': 100,'frame':100,'endframe':200,'endnode':""}
 		self.oas_save_filename=""
 		self.oas_variablecategory={}
 		self.oas_last_node_created=""

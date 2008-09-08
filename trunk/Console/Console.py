@@ -161,6 +161,18 @@ exit				:quit from the application
 				else:
 					print "Wrong command parameter."
 
+			elif input_command.split()[0]=="framerange":
+				if len(input_command.split())>2:
+					self.oas_framerange("1",input_command.split()) 
+				else:
+					print "Wrong command parameter."
+
+			elif input_command.split()[0]=="frame":
+				if len(input_command.split())>1:
+					self.oas_frame("1",input_command.split()) 
+				else:
+					print "Wrong command parameter."
+
 			elif input_command.split()[0]=="run":
 				if len(input_command.split())==1:
 					self.oas_run("1",["run",str(self.oas_scene_setup['endnode'])]) 

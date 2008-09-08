@@ -59,3 +59,9 @@ class oas_gateway(oas_data_handler,oas_fileio,oas_execute):
 
 	def oas_set(self,mode,inputs):
 		return self.oas_data_set(mode,inputs)	
+
+	def oas_framerange(self,mode,inputs):
+		return self.oas_data_framerange(mode,inputs)
+
+	def oas_frame(self,mode,inputs):
+		return self.oas_data_frame(mode,inputs)
