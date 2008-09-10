@@ -1,1 +1,1 @@
-__all__=['Console']
+__all__=['Console','remoteConsole']

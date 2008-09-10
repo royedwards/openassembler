@@ -13,6 +13,7 @@
 import sys
 import os
 from Startup.Startup import oas_start
+from threading import Thread
 
 
 #-------------------------------------------------------------------------------------
@@ -47,7 +48,7 @@ Options:
 		elif sys.argv[i]=="-m":
 			try:
 				oas_arg_mode=sys.argv[i+1]
-				if oas_arg_mode=="normal" or oas_arg_mode=="console" or oas_arg_mode=="no-gui" or oas_arg_mode=="run":
+				if oas_arg_mode=="normal" or oas_arg_mode=="console" or oas_arg_mode=="client" or oas_arg_mode=="run":
 					pass
 				else:
 					oas_arg_mode="normal"

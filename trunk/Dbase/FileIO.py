@@ -143,20 +143,20 @@ class oas_fileio(oas_data_handler):
 										nodename=ln.strip().lstrip().split()[1]
 									else:
 										iss.append([ln.strip().lstrip().split()[0],ln.strip().lstrip().split()[1]])
-							creatednode=self.oas_data_create(mode,["create",str(nodetype)])
-							if creatednode==False:
+							creatednode=self.oas_data_create(mode,["create",str(nodetype)])[0]
+							if creatednode==0:
 								if mode=="1":
 									print "Pronlem with: "+str(nodetype)
 							else:
 								if nodename!="":
 									renamereturn=self.oas_data_rename(mode,["rename",creatednode,nodename])
-									if renamereturn==False:
+									if renamereturn==0:
 										if mode=="1":
 											print "Problem during the node creation..."
 										nodename=creatednode
 								for issl in iss:
 									setret=self.oas_data_set(mode,["set",str(nodename+"."+issl[0]),issl[1]])
-									if setret==False:
+									if setret==0:
 										if mode=="1":
 											print "Problem with "+str(nodename+"."+issl[0])
 						else:
