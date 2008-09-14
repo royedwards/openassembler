@@ -1,0 +1,161 @@
+<!DOCTYPE UI><UI version="3.3" stdsetdef="1">
+<class>OpenAssembler_Creator</class>
+<widget class="QDialog">
+    <property name="name">
+        <cstring>OpenAssembler_Creator</cstring>
+    </property>
+    <property name="geometry">
+        <rect>
+            <x>0</x>
+            <y>0</y>
+            <width>180</width>
+            <height>150</height>
+        </rect>
+    </property>
+    <property name="minimumSize">
+        <size>
+            <width>180</width>
+            <height>150</height>
+        </size>
+    </property>
+    <property name="maximumSize">
+        <size>
+            <width>180</width>
+            <height>150</height>
+        </size>
+    </property>
+    <property name="caption">
+        <string>OpenAssembler Creator</string>
+    </property>
+    <widget class="QLineEdit">
+        <property name="name">
+            <cstring>lineEdit1</cstring>
+        </property>
+        <property name="geometry">
+            <rect>
+                <x>0</x>
+                <y>0</y>
+                <width>180</width>
+                <height>20</height>
+            </rect>
+        </property>
+        <property name="paletteBackgroundColor">
+            <color>
+                <red>182</red>
+                <green>182</green>
+                <blue>182</blue>
+            </color>
+        </property>
+        <property name="text">
+            <string>Search</string>
+        </property>
+    </widget>
+    <widget class="QPushButton">
+        <property name="name">
+            <cstring>pushButton1_3_2</cstring>
+        </property>
+        <property name="geometry">
+            <rect>
+                <x>0</x>
+                <y>130</y>
+                <width>180</width>
+                <height>20</height>
+            </rect>
+        </property>
+        <property name="paletteBackgroundColor">
+            <color>
+                <red>122</red>
+                <green>230</green>
+                <blue>107</blue>
+            </color>
+        </property>
+        <property name="focusPolicy">
+            <enum>NoFocus</enum>
+        </property>
+        <property name="text">
+            <string>Create</string>
+        </property>
+        <property name="toggleButton">
+            <bool>false</bool>
+        </property>
+    </widget>
+    <widget class="QListView">
+        <column>
+            <property name="text">
+                <string>Nodetypes</string>
+            </property>
+            <property name="clickable">
+                <bool>false</bool>
+            </property>
+            <property name="resizable">
+                <bool>false</bool>
+            </property>
+        </column>
+    <item>
+        <property name="text">
+            <string>Category</string>
+        </property>
+        <property name="pixmap">
+            <pixmap></pixmap>
+        </property>
+        <item>
+            <property name="text">
+                <string>Node3</string>
+            </property>
+            <property name="pixmap">
+                <pixmap></pixmap>
+            </property>
+        </item>
+        <item>
+            <property name="text">
+                <string>Node2</string>
+            </property>
+            <property name="pixmap">
+                <pixmap></pixmap>
+            </property>
+        </item>
+    </item>
+    <item>
+        <property name="text">
+            <string>Category2</string>
+        </property>
+        <property name="pixmap">
+            <pixmap></pixmap>
+        </property>
+        <item>
+            <property name="text">
+                <string>Node01</string>
+            </property>
+            <property name="pixmap">
+                <pixmap></pixmap>
+            </property>
+        </item>
+    </item>
+        <property name="name">
+            <cstring>listView1_3</cstring>
+        </property>
+        <property name="geometry">
+            <rect>
+                <x>0</x>
+                <y>20</y>
+                <width>180</width>
+                <height>110</height>
+            </rect>
+        </property>
+        <property name="paletteBackgroundColor">
+            <color>
+                <red>182</red>
+                <green>182</green>
+                <blue>182</blue>
+            </color>
+        </property>
+        <property name="selectionMode">
+            <enum>Extended</enum>
+        </property>
+        <property name="resizeMode">
+            <enum>LastColumn</enum>
+        </property>
+    </widget>
+</widget>
+<layoutdefaults spacing="6" margin="11"/>
+</UI>
