@@ -9,13 +9,12 @@
 
 import sys, time, readline
 from Gateway.Gateway import oas_gateway
-from Port.server import oas_common_port_communication
 
 ######################################################################################
 # this file is for the console loop
 ######################################################################################
 
-class oas_console(oas_gateway,oas_common_port_communication):
+class oas_console(oas_gateway):
 	def oas_Console(self,imput_to_parse="",mode="normal"):
 		
 ####################################################################################
@@ -26,11 +25,11 @@ class oas_console(oas_gateway,oas_common_port_communication):
 			if imput_to_parse=="":
 				input_command=raw_input ("OpenAssembler--->").strip()
 			else:
+				x=0
 				input_command=imput_to_parse
 			if input_command=="":
 				input_command="no character given"
 			if input_command=="exit":
-				self.oas_server_halt(self.server_port)
 				sys.exit(0)
 			elif input_command=="help" or input_command=="?":
 				if mode=="normal":
@@ -157,72 +156,106 @@ exit				:quit from the application
 					return self.oas_rename(mode=mode,old=old,new=new) 			
 			
 			elif input_command.split()[0]=="show" or input_command.split()[0]=="sh":
-				if len(input_command.split())>1:
-					self.oas_show("1",input_command.split()) 
+				try:
+					showtype=input_command.split()[1]
+				except:
+					showtype=""			
+				if mode=="normal":
+					self.oas_show(mode=mode,showtype=showtype) 
 				else:
-					print "Wrong command parameter."
-													
+					return self.oas_show(mode=mode,showtype=showtype)
+									
 			elif input_command.split()[0]=="connect" or input_command.split()[0]=="cn":
-				if len(input_command.split())>1:
-					self.oas_connect("1",input_command.split()) 
+				try:
+					frv=input_command.split()[1]
+				except:
+					frv=""	
+				try:
+					tov=input_command.split()[2]
+				except:
+					tov=""		
+				if mode=="normal":
+					self.oas_connect(mode=mode,from_variable=frv,to_variable=tov) 
 				else:
-					print "Wrong command parameter."
-
+					return self.oas_connect(mode=mode,from_variable=frv,to_variable=tov)
+					 
 			elif input_command.split()[0]=="end":
-				if len(input_command.split())>1:
-					self.oas_end("1",input_command.split()) 
+				try:
+					endnode=input_command.split()[1]
+				except:
+					endnode=""			
+				if mode=="normal":
+					self.oas_end(mode=mode,endnode=endnode) 
 				else:
-					print "Wrong command parameter."
-
+					return self.oas_end(mode=mode,endnode=endnode)
+					
 			elif input_command.split()[0]=="set":
-				if len(input_command.split())>2:
-					self.oas_set("1",input_command.split()) 
+				try:
+					nv=input_command.split()[1]
+				except:
+					nv=""	
+				try:
+					vv=input_command.split()[2]
+				except:
+					vv=""		
+				if mode=="normal":
+					self.oas_set(mode=mode,nodevalue=nv,value=vv) 
 				else:
-					print "Wrong command parameter."
-
+					return self.oas_set(mode=mode,nodevalue=nv,value=vv)
+					 
 			elif input_command.split()[0]=="framerange":
-				if len(input_command.split())>2:
-					self.oas_framerange("1",input_command.split()) 
+				try:
+					ff=input_command.split()[1]
+				except:
+					ff=""	
+				try:
+					ef=input_command.split()[2]
+				except:
+					ef=""		
+				if mode=="normal":
+					self.oas_framerange(mode=mode,firstframe=ff,endframe=ef) 
 				else:
-					print "Wrong command parameter."
-
+					return self.oas_framerange(mode=mode,from_variable=frv,to_variable=tov)
+					 
 			elif input_command.split()[0]=="frame":
-				if len(input_command.split())>1:
-					self.oas_frame("1",input_command.split()) 
+				try:
+					frame=input_command.split()[1]
+				except:
+					frame=""			
+				if mode=="normal":
+					self.oas_frame(mode=mode,frame=frame) 
 				else:
-					print "Wrong command parameter."
+					return self.oas_frame(mode=mode,frame=frame)
 
 			elif input_command.split()[0]=="run":
-				if len(input_command.split())==1:
-					self.oas_run("1",["run",str(self.oas_scene_setup['endnode'])]) 
-				elif len(input_command.split())>1:
-					self.oas_run("1",input_command.split())
-				else:
-					print "Wrong command parameter."
+				self.oas_run(mode=mode) 
 			
 			elif input_command.split()[0]=="new":
-				if len(input_command.split())>0:
-					self.oas_new("1",input_command.split()) 
-				else:
-					print "Wrong command parameter."
+				self.oas_new(mode=mode) 
 					
 			elif input_command.split()[0]=="open":
-				if len(input_command.split())>2:
-					self.oas_open("1",input_command.split()) 
-				elif len(input_command.split())==2:
-					self.oas_open("1",["open",str(input_command.split()[1][-3:]),str(input_command.split()[1])])
+
+				try:
+					ft=input_command.split()[2]
+				except:
+					ft=""	
+				try:
+					fp=input_command.split()[1]
+				except:
+					fp=""		
+				if mode=="normal":
+					self.oas_open(mode=mode,filetype=ft,filename=fp) 
 				else:
-					print "Wrong command parameter."
-					
+					return self.oas_open(mode=mode,filetype=ft,filename=fp)
+					 
 			elif input_command.split()[0]=="save":
 				
 				if (str(self.oas_save_filename)!="") and (len(input_command.split())<2):
-					self.oas_save("1",["save",str(self.oas_save_filename)[-3:],str(self.oas_save_filename)])
+					self.oas_save(mode=mode,filetype=str(self.oas_save_filename)[-3:],filename=str(self.oas_save_filename))
 				elif len(input_command.split())>2:
-					self.oas_save("1",input_command.split())  
-				else:
-					print "Wrong command parameter."
-			
+					self.oas_save(mode=mode,filename=input_command.split()[1],filetype=input_command.split()[2])  
+								
 			else:
 				if input_command!="no character given":
-					print "Command not found. --> "+input_command
+					if mode=="normal":
+						print "Command not found. --> "+input_command

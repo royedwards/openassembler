@@ -24,47 +24,47 @@ class oas_gateway(oas_data_handler,oas_fileio,oas_execute):
 	def oas_list(self,mode,listtype="",searchtag=""):			
 		return self.oas_data_list(mode=mode,listtype=listtype,searchtag=searchtag)
 		
-	def oas_show(self,mode,inputs):
-		return self.oas_data_show(mode,inputs)
+	def oas_show(self,mode,showtype=""):
+		return self.oas_data_show(mode=mode,showtype=showtype)
 
 	def oas_count(self,mode,counttype=""):
-		return self.oas_data_count(mode,counttype)
+		return self.oas_data_count(mode=mode,counttype=counttype)
 
 	def oas_create(self,mode,nodetype=""):
-		return self.oas_data_create(mode,nodetype)
+		return self.oas_data_create(mode=mode,nodetype=nodetype)
 
 	def oas_delete(self,mode,deletetype="node",target=""):
-		return self.oas_data_delete(mode,deletetype,target)
+		return self.oas_data_delete(mode=mode,deletetype=deletetype,target=target)
 
 	def oas_rename(self,mode,old="",new=""):
-		return self.oas_data_rename(mode,old,new)
+		return self.oas_data_rename(mode=mode,old=old,new=new)
 
-	def oas_connect(self,mode,inputs):
-		return self.oas_data_connect(mode,inputs)
+	def oas_connect(self,mode,from_variable="",to_variable=""):
+		return self.oas_data_connect(mode=mode,from_variable=from_variable,to_variable=to_variable)
 		
-	def oas_new(self,mode,inputs):
+	def oas_new(self,mode):
 		return self.oas_Startup()
 
-	def oas_end(self,mode,inputs):
-		return self.oas_data_end(mode,inputs)
+	def oas_end(self,mode,endnode=""):
+		return self.oas_data_end(mode=mode,endnode=endnode)
 
-	def oas_save(self,mode,inputs):
-		return self.oas_file_save(mode,inputs)
+	def oas_save(self,mode,filename="",filetype=""):
+		return self.oas_file_save(mode=mode,filename=filename,filetype=filetype)
 		
-	def oas_open(self,mode,inputs):
-		return self.oas_file_open(mode,inputs)
+	def oas_open(self,mode,filename="",filetype=""):
+		return self.oas_file_open(mode=mode,filename=filename,filetype=filetype)
 	
-	def oas_run(self,mode,inputs):
-		return self.oas_run_execute(mode,inputs)
+	def oas_run(self,mode):
+		return self.oas_run_execute(mode=mode)
 
-	def oas_set(self,mode,inputs):
-		return self.oas_data_set(mode,inputs)	
+	def oas_set(self,mode,nodevalue="",value=""):
+		return self.oas_data_set(mode=mode,nodevalue=nodevalue,value=value)	
 
-	def oas_framerange(self,mode,inputs):
-		return self.oas_data_framerange(mode,inputs)
+	def oas_framerange(self,mode,firstframe="",endframe=""):
+		return self.oas_data_framerange(mode=mode,firstframe=firstframe,endframe=endframe)
 
-	def oas_frame(self,mode,inputs):
-		return self.oas_data_frame(mode,inputs)
+	def oas_frame(self,mode,frame=""):
+		return self.oas_data_frame(mode=mode,frame=frame)
 		
 	def oas_Start(self):
 		return self.oas_Startup()

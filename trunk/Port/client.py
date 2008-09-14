@@ -10,7 +10,7 @@
 
 from socket import *
 import sys, time
-from Console.remoteConsole import oas_remote_console
+#from Console.Console import oas_console
 
 
 class oas_client:

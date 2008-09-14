@@ -16,32 +16,30 @@ from Dbase.FileIO import oas_fileio
 
 class oas_execute(oas_data_handler,oas_fileio):
 	
-	def oas_run_execute(self,mode,inputs):
-		if mode=="1" or mode=="0":
-			node_cross_list={}
-			for nds in self.oas_rt.keys():
-				node_cross_list[self.oas_rt[nds]['name']]=nds
-			if node_cross_list!={}:
-				if node_cross_list.has_key(str(self.oas_scene_setup['endnode'])):
-					piramid=self.oas_make_piramid(node_cross_list,self.oas_scene_setup['endnode'])
-					optimized=self.oas_make_optimization(piramid)
-					cache_folder=self.oas_prepare_folders()
-					if cache_folder==False:
-						return False
-					else:
-						collection=self.oas_collect_nodes(optimized,node_cross_list,cache_folder)
-						jsfile_ret=self.oas_create_jobfile(optimized,node_cross_list,collection,cache_folder)
-						back=os.system("python "+str(jsfile_ret)+" &")
-					
-					return True
+	def oas_run_execute(self,mode="silent"):
+		node_cross_list={}
+		for nds in self.oas_rt.keys():
+			node_cross_list[self.oas_rt[nds]['name']]=nds
+		if node_cross_list!={}:
+			if node_cross_list.has_key(str(self.oas_scene_setup['endnode'])):
+				piramid=self.oas_make_piramid(node_cross_list,self.oas_scene_setup['endnode'])
+				optimized=self.oas_make_optimization(piramid)
+				cache_folder=self.oas_prepare_folders()
+				if cache_folder==False:
+					return 0
 				else:
-					if mode=="1":
-						print "No end-node!!"
-					return False
+					collection=self.oas_collect_nodes(optimized,node_cross_list,cache_folder)
+					jsfile_ret=self.oas_create_jobfile(optimized,node_cross_list,collection,cache_folder)
+					back=os.system("python "+str(jsfile_ret)+" &")
+					return 1
 			else:
-				if mode=="1":
-					print "There is no node in the scene."
-				return False
+				if mode=="normal":
+					print "No end-node!!"
+				return 0
+		else:
+			if mode=="normal":
+				print "There is no node in the scene."
+			return 0
 
 	def oas_make_piramid(self,node_list,fin_node):
         	level=[]
@@ -99,8 +97,7 @@ class oas_execute(oas_data_handler,oas_fileio):
 			else:
 				basesave="~/tmp/tmp.oas"
 	    		tmpfilder=self.oas_userhome+"/tmp/"+os.path.basename(basesave)[:-4]+fintime
-	    		os.makedirs(str(tmpfilder))
-            		#print "--  --  TMP cache folder are created..."
+			os.makedirs(str(tmpfilder))
         	except:
             		print "Error: Problem with the temp dir creation!!"
 			return False

@@ -9,14 +9,14 @@
 
 from socket import *
 import sys, time
-from Console.remoteConsole import oas_remote_console
+from Console.Console import oas_console
 import thread
 
 ######################################################################################
 # this file is for the port communication
 ######################################################################################
 
-class oas_server(oas_remote_console):
+class oas_server(oas_console):
 	def oas_port_server(self,port,lock):
 		lock.acquire()
 		oas_socket=socket(AF_INET, SOCK_STREAM)
@@ -44,7 +44,7 @@ class oas_server(oas_remote_console):
 					oas_socket.shutdown(2)
 					e=False
 				else:
-			     		ret=self.oas_remoteConsole(str(buff.strip()),0)
+			     		ret=self.oas_Console(imput_to_parse=str(buff.strip()),mode="silent")
 					clientSocket.send(str(ret))
 			     		clientSocket.close()
 					e=True
