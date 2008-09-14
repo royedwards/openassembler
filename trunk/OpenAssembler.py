@@ -13,7 +13,6 @@
 import sys
 import os
 from Startup.Startup import oas_start
-from threading import Thread
 
 
 #-------------------------------------------------------------------------------------
@@ -33,7 +32,7 @@ Owner: Laszlo Mates
 
 Options:
    -help 		      :display this screen
-   -m <normal/console/no-gui> :this are the modes to start OpenAssembler
+   -m <run/console/client> :this are the modes to start OpenAssembler
    -f <inputfile>	      :open a file during the startup		
 		'''
 			sys.exit(0)

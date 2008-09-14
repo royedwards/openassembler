@@ -16,25 +16,25 @@ from Port.server import oas_common_port_communication
 ######################################################################################
 
 class oas_console(oas_gateway,oas_common_port_communication):
-	def oas_Console(self,imp=""):
+	def oas_Console(self,imput_to_parse="",mode="normal"):
 		
 ####################################################################################
 # we are starting a loop and then we are lsitening and sorting out the given commands
 ####################################################################################
 		x=1
 		while x==1:	
-			if imp=="":
-				input_command=raw_input ("OpenAssembler:").strip()
+			if imput_to_parse=="":
+				input_command=raw_input ("OpenAssembler--->").strip()
 			else:
-				input_command=imp
+				input_command=imput_to_parse
 			if input_command=="":
 				input_command="no character given"
 			if input_command=="exit":
-				print "OpenAssembler now quiting..."
 				self.oas_server_halt(self.server_port)
 				sys.exit(0)
 			elif input_command=="help" or input_command=="?":
-				print '''
+				if mode=="normal":
+					print '''
 OpenAssembler V2 Console v0.1beta
 Owner: Laszlo Mates
 email: laszlo.mates@gmail.com
@@ -86,41 +86,76 @@ new				:create a new scene
 exit				:quit from the application 
 				'''
 			
-			elif input_command.split()[0]=="list":
-				if len(input_command.split())>1:
-					self.oas_list("1",input_command.split()) 
-			
+			elif input_command.split()[0]=="list" or input_command.split()[0]=="ls" or input_command.split()[0]=="lc" or input_command.split()[0]=="ln":
+				try:
+					ltyp=input_command.split()[1]
+				except:
+					ltyp=""
+				if input_command.split()[0]=="ln":
+					ltyp="nodetypes"
+				elif input_command.split()[0]=="lc":
+					ltyp="connections"
+				elif input_command.split()[0]=="ls":
+					ltyp="scene"
+				try:
+					src=input_command.split()[2]
+				except:
+					src=""	
+				if mode=="normal":
+					self.oas_list(mode=mode,listtype=ltyp,searchtag=src)
 				else:
-					print "Wrong command parameter."
-			
+					return  self.oas_list(mode=mode,listtype=ltyp,searchtag=src)
+					
 			elif input_command.split()[0]=="count":
-				if len(input_command.split())>1:
-					self.oas_count("1",input_command.split()) 
-			
+				try:
+					ltyp=input_command.split()[1]
+				except:
+					ltyp="nodetypes"
+				if mode=="normal":
+					self.oas_count(mode=mode,counttype=ltyp)
 				else:
-					print "Wrong command parameter."
+					return  self.oas_count(mode=mode,counttype=ltyp)			
 			
 			elif input_command.split()[0]=="create" or input_command.split()[0]=="cr":
-				if len(input_command.split())>1:
-					self.oas_create("1",input_command.split()) 
-			
+				try:
+					ndtp=input_command.split()[1]
+				except:
+					ndtp=""
+					
+				if mode=="normal":
+					self.oas_create(mode=mode,nodetype=ndtp) 
 				else:
-					print "Wrong command parameter."
+					return self.oas_create(mode=mode,nodetype=ndtp) 
+
 			
 			elif input_command.split()[0]=="delete" or input_command.split()[0]=="del":
-				if len(input_command.split())>1:
-					self.oas_delete("1",input_command.split()) 
-			
+				try:
+					ndtp=input_command.split()[1]
+				except:
+					ndtp="node"	
+				try:
+					trg=input_command.split()[2]
+				except:
+					trg=""		
+				if mode=="normal":
+					self.oas_delete(mode=mode,deletetype=ndtp,target=trg) 
 				else:
-					print "Wrong command parameter."
+					return self.oas_delete(mode=mode,deletetype=ndtp,target=trg) 
 			
 			elif input_command.split()[0]=="rename" or input_command.split()[0]=="rn":
-				if len(input_command.split())>1:
-					self.oas_rename("1",input_command.split()) 
-			
+				try:
+					old=input_command.split()[1]
+				except:
+					old="node"	
+				try:
+					new=input_command.split()[2]
+				except:
+					new=""		
+				if mode=="normal":
+					self.oas_rename(mode=mode,old=old,new=new) 
 				else:
-					print "Wrong command parameter."
-								
+					return self.oas_rename(mode=mode,old=old,new=new) 			
+			
 			elif input_command.split()[0]=="show" or input_command.split()[0]=="sh":
 				if len(input_command.split())>1:
 					self.oas_show("1",input_command.split()) 
@@ -130,24 +165,6 @@ exit				:quit from the application
 			elif input_command.split()[0]=="connect" or input_command.split()[0]=="cn":
 				if len(input_command.split())>1:
 					self.oas_connect("1",input_command.split()) 
-				else:
-					print "Wrong command parameter."
-					
-			elif input_command.split()[0]=="ls":
-				if len(input_command.split())>0:
-					self.oas_list("1",["ls","scene"]) 
-				else:
-					print "Wrong command parameter."
-					
-			elif input_command.split()[0]=="lc":
-				if len(input_command.split())>0:
-					self.oas_list("1",["ls","connections"]) 
-				else:
-					print "Wrong command parameter."
-					
-			elif input_command.split()[0]=="ln":
-				if len(input_command.split())>0:
-					self.oas_list("1",["ls","nodetypes"]) 
 				else:
 					print "Wrong command parameter."
 

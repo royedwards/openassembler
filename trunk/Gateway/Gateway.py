@@ -21,23 +21,23 @@ from Run.Run import oas_execute
 
 class oas_gateway(oas_data_handler,oas_fileio,oas_execute):
 
-	def oas_list(self,mode,inputs):		
-		return self.oas_data_list(mode,inputs)
+	def oas_list(self,mode,listtype="",searchtag=""):			
+		return self.oas_data_list(mode=mode,listtype=listtype,searchtag=searchtag)
 		
 	def oas_show(self,mode,inputs):
 		return self.oas_data_show(mode,inputs)
 
-	def oas_count(self,mode,inputs):
-		return self.oas_data_count(mode,inputs)
+	def oas_count(self,mode,counttype=""):
+		return self.oas_data_count(mode,counttype)
 
-	def oas_create(self,mode,inputs):
-		return self.oas_data_create(mode,inputs)
+	def oas_create(self,mode,nodetype=""):
+		return self.oas_data_create(mode,nodetype)
 
-	def oas_delete(self,mode,inputs):
-		return self.oas_data_delete(mode,inputs)
+	def oas_delete(self,mode,deletetype="node",target=""):
+		return self.oas_data_delete(mode,deletetype,target)
 
-	def oas_rename(self,mode,inputs):
-		return self.oas_data_rename(mode,inputs)
+	def oas_rename(self,mode,old="",new=""):
+		return self.oas_data_rename(mode,old,new)
 
 	def oas_connect(self,mode,inputs):
 		return self.oas_data_connect(mode,inputs)
@@ -65,3 +65,7 @@ class oas_gateway(oas_data_handler,oas_fileio,oas_execute):
 
 	def oas_frame(self,mode,inputs):
 		return self.oas_data_frame(mode,inputs)
+		
+	def oas_Start(self):
+		return self.oas_Startup()
+		
