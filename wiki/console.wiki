@@ -36,14 +36,8 @@ Here are the list of the commands:
   # [create]
   # [delete]
 
------------------------------------------------------------------------------------------
 
-===count <type>===
-   This will count the elements in the scene. 
-   Type can be:
-  # nodetypes
-  # scene
-  # connections
+
 
 -----------------------------------------------------------------------------------------
 
