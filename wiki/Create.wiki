@@ -1,1 +1,27 @@
-soon
+=Create a node=
+
+It is very easy to create a node for OpenAssembler.
+
+All you need to do is to follow a few rule for the script layout.
+
+Well lets start an example:
+
+You want to create a node to handle all the math functions.
+
+You need to start with an identifier line:
+{{{
+###OpenAssembler Node python file###
+}}}
+
+Then you need to tell to the interface about your nodes, your inputs your outputs, and some other stuffs.
+
+You need to indicate the name of the node like this:
+{{{
+    name multiMath
+}}}
+then you need to tag it:
+{{{
+   tags anything:something:more
+}}}
+and after you need to specify the connection points: first the side: input/output and the variabletype int/float/string/... and then the name like A.. than the default value and at last any option if you want
+If you have any space in your value or in your option, you have tu use ""
