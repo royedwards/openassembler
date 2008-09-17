@@ -1,1 +1,14 @@
-soon
+You can istall OpenAssembler several way:
+
+  # You download the executeable-package from this site
+  # You download the python scripts from this site, and you running them
+  # svn checkout http://openassembler.googlecode.com/svn/trunk/ openassembler-read-only
+
+
+After you get it, you can copy it somewhere, and it is ready to use.
+
+It is worth to include its path to the global environment.
+
+Maybe you need to edit the setup file (was generated automaticaly on the first run)
+
+The setup file is in your home directory under the folder: *.OpenAssembler*
