@@ -34,3 +34,9 @@ Here are the list of the commands:
 Well this will exit from the application and it will close any open window, server and everything except of course the remote console, which will be froozen until the next server for the same ip and port will not appear up.
 
 ===list <type> <elementfilter>===
+It will list you the elements with the given type filtered by elementfilter
+The types can be the following:
+  # nodetype
+  # scene
+  # connections
+  # variables
