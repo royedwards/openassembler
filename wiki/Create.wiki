@@ -25,3 +25,7 @@ then you need to tag it:
 }}}
 and after you need to specify the connection points: first the side: input/output and the variabletype int/float/string/... and then the name like A.. than the default value and at last any option if you want
 If you have any space in your value or in your option, you have tu use ""
+So here is an example line:
+{{{
+   input int A 1 "min=0 max=100"
+}}}
