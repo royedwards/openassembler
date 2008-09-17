@@ -16,9 +16,9 @@ The setup file is in your home directory under the folder: *.OpenAssembler*
 This file is looks like this:
 
 {{{
-#environments   SA_SCRIPT_PATH
+#environments   SOAS_SCRIPT_PATH
 font Helvetica			
-manualpath /net/homes/lmates/OpenAssembler/OpenNodes
+manualpath /home/user/OpenAssembler/OpenNodes
 fontsize 12
 sliderbarrows 1
 
