@@ -52,6 +52,6 @@ list connections mult_01
 This will list you all the connections where mult_01 is presented
 
 Shortcuts: 
-  * ls list all the nodes in the scene
-  * lc list all the connections in the scene
-  * ln list all the nodetypes in the scene
+  * *ls* list all the nodes in the scene
+  * *lc* list all the connections in the scene
+  * *ln* list all the nodetypes in the scene
