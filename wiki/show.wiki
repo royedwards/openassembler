@@ -53,5 +53,13 @@ startframe = 1
 frame = 100
 endframe = 15
 }}}
+Or for connections:
+{{{
+show Connection899775
+}}}
+and the answer is:
+{{{
+m_01.add --> printer_01.A
+}}}
 
 and so on...
