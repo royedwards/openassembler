@@ -29,3 +29,28 @@ So here is an example line:
 {{{
    input int A 1 "min=0 max=100"
 }}}
+
+All you need to do is to put all this important informations into a commentblock, and !!this is very important you need to put it into a define{} like this:
+
+{{{
+###OpenAssembler Node python file###
+
+'''
+define
+{
+	name multiMath
+	tags oas:math
+	input int A 1
+	input int B 1
+	output int mult 1
+	output int add 1
+	output int sub 1
+	output int div 1
+	output int pow 1
+
+}
+'''
+
+}}} 
+
+do not forget tu put all this things inside a ''' blablabla ''' marks. This will thee python that it is not relevant for the function.
