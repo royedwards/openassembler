@@ -29,7 +29,7 @@ It is because the server is automatically started with the console, and it was i
 Console is a very important tool for OpenAssembler! You can reach every tool and command with simply typing the proper command after the prompt. You can open, save, create nodes, run them open, a gui element... everything you want and you ever need.
 
 Here are the list of the commands:
-
+---
 ===exit===
   Well this will exit from the application and it will close any open window, server and everything except of course the remote console, which will be froozen until the next server for the same ip and port will not appear up.
 
