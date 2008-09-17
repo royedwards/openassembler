@@ -85,3 +85,6 @@ Shortcut:
    * *cr* same like the full command cr <something>
 
 -----------------------------------------------------------------------------------------
+
+===delete <type> <name>===
+   This will delete the given name of object from the given type. If you delete a node which have connections, than the connections will be deleted automatically of course.
