@@ -24,4 +24,4 @@ OpenAssembler Server started at 172.18.58.83:23345 !
 It is because the server is automatically started with the console, and it was indicateing that messages are accepted over the remote console.
 
 
-=Console=
+==Console commands==
