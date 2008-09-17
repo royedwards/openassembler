@@ -10,6 +10,11 @@ or
 python OpenAssembler.py -m console
 }}}
 
+Or you can start it by loading up a file:
+
+{{{
+OpenAssembler -m console -f ~/test.oas
+}}}
 
 then you will get this prompt:
 {{{
