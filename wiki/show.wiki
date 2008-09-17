@@ -1,0 +1,27 @@
+===show <what>===
+This command will show you several different thihng. You cna use it for the followings:
+  # get the default settings on a nodetype element
+  # get the settings on a node
+  # or get the settings on a connection (!!!! Not working at the moment !!!!)
+  # check the endnode
+  # check the framerange
+  # check the current frame
+  # get the scene settings
+
+Examples:
+for nodetype:
+{{{
+show mult
+}}}
+and the answer is:
+{{{
+Name of the node: mult
+This node is a nodetype template node!
+Path to the sourcefile: /net/homes/lmates/OpenAssembler/OpenNodes/mult.py
+Inputs:
+        A = 1
+        B = 1
+Outputs:
+        out = 1
+}}}
+so, you get important informations on the nodetype, like the path to the node-description...
