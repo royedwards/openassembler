@@ -30,6 +30,12 @@ Console is a very important tool for OpenAssembler! You can reach every tool and
 
 Here are the list of the commands:
 
+[exit]
+[list]
+[count]
+[create]
+[delete]
+
 -----------------------------------------------------------------------------------------
 
 ===exit===
