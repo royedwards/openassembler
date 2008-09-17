@@ -1,0 +1,6 @@
+===count <type>===
+   This will count the elements in the scene. 
+   Type can be:
+  # nodetypes
+  # scene
+  # connections
