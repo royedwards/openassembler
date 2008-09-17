@@ -53,4 +53,4 @@ define
 
 }}} 
 
-do not forget tu put all this things inside a ''' blablabla ''' marks. This will thee python that it is not relevant for the function.
+Do not forget to put all this things inside a ''' blablabla ''' marks. This will thee python that it is not relevant for the function.
