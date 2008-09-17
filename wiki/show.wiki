@@ -25,3 +25,31 @@ Outputs:
         out = 1
 }}}
 so, you get important informations on the nodetype, like the path to the node-description...
+
+If you use this command on a node in the scene, it become someting different a little:
+{{{
+show mult_01
+}}}
+and the answer:
+{{{
+ID of the node: Node260052
+Name of the node: mult_01
+This node is a scene node!
+Inputs:
+        A = =oas_current_frame
+        B = 2
+Outputs:
+        out = 1
+}}}
+By this command you can get the unique id of the node aswell.
+
+{{{
+show setup
+}}}
+will give you back the settings of the scene:
+{{{
+endnode = printer_01
+startframe = 1
+frame = 100
+endframe = 15
+}}}
