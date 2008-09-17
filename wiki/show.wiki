@@ -2,7 +2,7 @@
 This command will show you several different thihng. You cna use it for the followings:
   # *<nodetype>* get the default settings on a nodetype element
   # *<nodename>* get the settings on a node
-  # *<connection_id>* get the settings on a connection (!!!! Not working at the moment !!!!)
+  # *<connection_id>* get the settings on a connection 
   # *endnode* check the endnode
   # *framerange* check the framerange
   # *frame* check the current frame
