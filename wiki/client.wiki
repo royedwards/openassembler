@@ -18,6 +18,6 @@ OpenAssembler:
 
 ==Client commands==
 
-You cna use the same commands as for the console. The only difference is that your answers will be a littlebit different. This is with the reason to able to parse the ansers simply.
+You cna use the same commands as for the console. The only difference is that your *answers will be a littlebit different*. This is with the reason to able to parse the ansers simply.
 
 For the commands, please check the [console] wiki.
