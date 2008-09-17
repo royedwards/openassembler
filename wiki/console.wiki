@@ -18,7 +18,7 @@ OpenAssembler--->
 
 After some time (quite soon) you will get a message from the server, like this one:
 {{{
-OpenAssembler Server started at 172.18.58.83:23345 !
+OpenAssembler Server started at 192.168.0.1:23345 !
 }}}
 
 It is because the server is automatically started with the console, and it was indicateing that messages are accepted over the remote console.
