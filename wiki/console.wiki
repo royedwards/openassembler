@@ -82,6 +82,6 @@ create mult
 This will create you a node named something like: mult345234, so if you will press ls then it will listy you this beauty node...
 
 Shortcut:
-   * *cr*
+   * *cr* same like the full command cr <something>
 
 -----------------------------------------------------------------------------------------
