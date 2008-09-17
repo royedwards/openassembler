@@ -1,5 +1,3 @@
-==Intro==
-
 OpenAssembler have a console mode this is the most basic interface for oas.
 I suggest to start with this one, and than later you can open up everything else.
 
@@ -27,3 +25,9 @@ It is because the server is automatically started with the console, and it was i
 
 
 ==Console commands==
+
+Console is a very important tool for OpenAssembler! You can reach every tool and command with simply typing the proper command after the prompt. You can open, save, create nodes, run them open, a gui element... everything you want and you ever need.
+
+Here are the list of the commands:
+
+=exit=   well thin will exit
