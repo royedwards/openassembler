@@ -30,10 +30,12 @@ Console is a very important tool for OpenAssembler! You can reach every tool and
 
 Here are the list of the commands:
 
----- 
+----------------------------------------------------------------------------------------- 
 
 ===exit===
   Well this will exit from the application and it will close any open window, server and everything except of course the remote console, which will be froozen until the next server for the same ip and port will not appear up.
+
+-----------------------------------------------------------------------------------------
 
 ===list <type> <elementfilter>===
   It will list you the elements with the given type filtered by elementfilter
@@ -58,12 +60,16 @@ Shortcuts:
   * *lc* list all the connections in the scene
   * *ln* list all the nodetypes in the scene
 
+-----------------------------------------------------------------------------------------
+
 ===count <type>===
    This will count the elements in the scene. 
    Type can be:
   # nodetypes
   # scene
   # connections
+
+-----------------------------------------------------------------------------------------
 
 ===create <nodetype>===
    It will create a node for you with the given parameter. The node will have a unique name, you can change it later of course
@@ -77,3 +83,5 @@ This will create you a node named something like: mult345234, so if you will pre
 
 Shortcut:
    * *cr*
+
+-----------------------------------------------------------------------------------------
