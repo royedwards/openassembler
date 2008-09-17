@@ -30,7 +30,7 @@ Console is a very important tool for OpenAssembler! You can reach every tool and
 
 Here are the list of the commands:
 
-=exit=
+===exit===
 Well this will exit from the application and it will close any open window, server and everything except of course the remote console, which will be froozen until the next server for the same ip and port will not appear up.
 
-=list <type> <elementfilter>=
+===list <type> <elementfilter>===
