@@ -35,14 +35,3 @@ Here are the list of the commands:
   # [count]
   # [create]
   # [delete]
-
-
-
-
-
-
-
-
-
-===delete <type> <name>===
-   This will delete the given name of object from the given type. If you delete a node which have connections, than the connections will be deleted automatically of course.
