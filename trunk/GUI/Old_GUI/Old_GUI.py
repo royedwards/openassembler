@@ -10,84 +10,51 @@
 #---------------------------------------------------------------------------------------------------------------------
 
 from Tkinter import *
-from WindowFrames.NodeSliderBar import CanvasInitSliderBar
-#from WindowFrames.NodeEditorCanvas import CanvasInitNodeEditor
-from WindowFrames.TimeLine import CanvasInitTimeLine
-from WindowFrames.MenuLine import CanvasInitMenuLine
-#from WindowFrames.PreferencePanel import CanvasInitPreferencePanel
-from WindowFrames.MicroViewer import CanvasInitMicroViewer
+from WindowFrames.NodeEditorCanvas import CanvasInitNodeEditor
+import thread, sys
+from GUI.Old_GUI.Misc.GUI_Gateway import gui_gateway
 
-
-
-class _Application(Frame,CanvasInitMicroViewer,CanvasInitMenuLine,CanvasInitTimeLine,CanvasInitSliderBar):
+class OldGUI(Frame,CanvasInitNodeEditor,gui_gateway):
     def __init__(self, master=None):
         Frame.__init__(self, master)
-        self.grid()
+        self.pack(expand=1,fill=BOTH)
         self.Startup()
 	self._createWidgets()
 
     def Startup(self):
-
-	    self.menulink=""
-	    self.swiss_file=""
-
+	    
+	    #we need this to pass from open.... not from server.. :)
+	    self.main_serverport=23345
+	    
     	    self.font="Helvetica"
     	    self.fontsize="12"
-	    self.sliderbarrows="1"
-	    self.menucats=[["OpenAssembler","Math","Test","Misc"]]
-            self.MenuNodeItems=[["Math","mult","multiMath"],["Test","TXT_FileIn"]]
-	    self.SliderBarNodeList=[["mult","multiMath"],[],[]]
 	    
-    	    self.lastx=30
+	    # we need this to pass from server
+            self.MenuNodeItems=[["Math","mult","multiMath"],["Test","TXT_FileIn"]]
+    	    
+	    self.lastx=30
             self.lasty=30
             self.GlobalScale=.75
             self.origin_node=""
             self.origin_out=""
             self.origin_uni=""
-            self.sceneFileName=""
-            	        
-            #self.CreateGlobalPreferences(1, 100, "Basic scene setup...","...")
-            self.RuntimeLines=[]
-            self.startFrame=IntVar()
-            self.startFrame.set(1)
-            self.endFrame=IntVar()
-            self.endFrame.set(100)
-            self.currentFrame=IntVar()
-            self.currentFrame.set(self.startFrame.get())
-            self.nodeInPreferences=StringVar()
-            self.nodeInPreferences.set("OpenAssembler")
-            self.eott=StringVar()
-            self.eott.set("...")
-    	    self.GUI_definition=""
-    	    self.GUI_slider=""
             self.menuopen="0"
 	    
-    	    #sliderfile=open(self.sliderbarDescriptionFile,"r")
-    	    #self.GUI_slider=sliderfile.read()
-    	    #sliderfile.close()
-	    
-	    self.bigc=[]
-	    self.smallc=[]
-
+	    # we need this to pass from server
+	    self.savedfile=""
 
     def _createWidgets(self):
+            self.editorc=self.StartUpNodeEditorCanvas()
 
-    	    mview=self.StartUpMicroViewerCanvas()
-            #ppanel=self.StartUpPreferencePanelCanvas("PreferencePanel", "right")
-            #editorcanvas=self.StartUpNodeEditorCanvas("NodeEditorCanvas", "top",ppanel)
-            menuline=self.StartUpMenuLineCanvas()
-            tline=self.StartUpTimeLineCanvas()
-            slider=self.StartUpSliderBarCanvas()            
-            #self.sldr=slider
-	    #self.pplane=ppanel
-	    self.editorc=""
-	    #self.editorc=editorcanvas
+class Old_GUI:
+	def start_old_gui(self,lock,empty):
+		app= OldGUI()
+		lock.acquire()
+		app.master.title("OpenAssembler NodeEditor Old-Interface")
+		lock.release()
+		app.mainloop()
+		sys.exit()
+		
 
 
-app= _Application()
-app.master.title("OpenAssembler v2.0.01beta")
-app.tk_strictMotif(1)
-app.tk_setPalette("gray35")
-app.master.wm_resizable(width=False ,height=False)
-app.mainloop()
 

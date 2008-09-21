@@ -7,26 +7,21 @@
 #
 #------------------------------------------------------------------------------------------------------------------------------------
 
-
 from Tkinter import *
 from MouseEvents import NodeEditorCanvasEvents
 
-
 class CanvasInitNodeEditor(NodeEditorCanvasEvents):
 
-    def _initNodeEditorCanvas(self,TargetCanvas,TargetSide,preferencespanel):
-        TargetCanvas = Canvas (self, width=1280, height=720,relief=GROOVE, cursor="draft_large", confine="false",bg="gray45",bd=2, scrollregion=(0,0,2048,1536))
-        TargetCanvas.grid(row=7,column=1,rowspan=116, sticky=N)
-	TargetCanvas.grid_columnconfigure(1,weight=1)
-	TargetCanvas.grid_rowconfigure(7,weight=1)
-	
-        def handlerB1Click(event, self=self, TargetCanvas=TargetCanvas,preferencespanel=preferencespanel):
+    def StartUpNodeEditorCanvas(self):
+        TargetCanvas = Canvas (self, width=800, height=600,relief=GROOVE, cursor="draft_large", confine="false",bg="gray45",bd=2, scrollregion=(0,0,2048,1536))
+	TargetCanvas.pack(expand=1,fill=BOTH)
+
+        def handlerB1Click(event, self=self, TargetCanvas=TargetCanvas):
             EventTags=TargetCanvas.gettags(CURRENT)
             self.lastx=event.x
             self.lasty=event.y
-            self.B1ClickNodeEditor(event, TargetCanvas,self.lastx,self.lasty,EventTags,preferencespanel)
+            self.B1ClickNodeEditor(event, TargetCanvas,self.lastx,self.lasty,EventTags)
         TargetCanvas.bind("<Button-1>", handlerB1Click)
-
 
         def handlerB3Click(event, self=self, TargetCanvas=TargetCanvas):
             EventTags=TargetCanvas.gettags(CURRENT)
@@ -35,21 +30,19 @@ class CanvasInitNodeEditor(NodeEditorCanvasEvents):
             self.B3ClickNodeEditor(event, TargetCanvas,self.lastx,self.lasty,EventTags)
         TargetCanvas.bind("<Button-3>", handlerB3Click)
 
-
-
-        def handlerRelease(event, self=self, TargetCanvas=TargetCanvas,preferencespanel=preferencespanel):
+        def handlerRelease(event, self=self, TargetCanvas=TargetCanvas):
             self.lastx=event.x
             self.lasty=event.y
-            self.ReleaseNodeEditor(event, TargetCanvas,self.lastx,self.lasty,preferencespanel)
+            self.ReleaseNodeEditor(event, TargetCanvas,self.lastx,self.lasty)
 
         TargetCanvas.bind("<B1-ButtonRelease>", handlerRelease)
         TargetCanvas.bind("<B2-ButtonRelease>", handlerRelease)
         TargetCanvas.bind("<B3-ButtonRelease>", handlerRelease)
 
-        def handlerB1DoubleClick(event, self=self, TargetCanvas=TargetCanvas,preferencespanel=preferencespanel):
+        def handlerB1DoubleClick(event, self=self, TargetCanvas=TargetCanvas):
             self.lastx=event.x
             self.lasty=event.y
-            self.B1DoubleClickNodeEditor(event, TargetCanvas,self.lastx,self.lasty,preferencespanel)
+            self.B1DoubleClickNodeEditor(event, TargetCanvas,self.lastx,self.lasty)
 
         TargetCanvas.bind("<Double-Button-1>", handlerB1DoubleClick)
 
@@ -87,14 +80,5 @@ class CanvasInitNodeEditor(NodeEditorCanvasEvents):
             self.lasty=event.y
         TargetCanvas.bind_all("f", Fevent)
 
-
-        print "NodeEditorCanvas Initialised."
         return TargetCanvas
 
-    def _ForgetNodeEditorCanvas(self,TargetCanvas):
-        TargetCanvas.forget()
-        print "NodeEditorCanvas Closed."
-
-    def StartUpNodeEditorCanvas(self,Name,Side,preferencespanel):
-        TargetCanvas=self._initNodeEditorCanvas(Name,Side,preferencespanel)
-        return TargetCanvas

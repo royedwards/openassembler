@@ -1,1 +1,1 @@
-__all__=['NodeSliderBar','MouseEvents','NodeEditorCanvas','TimeLine','MenuLine','PreferencePanel','MicroViewer']
+__all__=['MouseEvents','NodeEditorCanvas','TimeLine','MenuLine']

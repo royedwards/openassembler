@@ -11,13 +11,15 @@ import os
 import sys
 from random import *
 from copy import deepcopy
+from Dbase.variables import oas_variablechecker
+
 
 ####################################################################################
 # this module is responsible for the runtime data management (and for all other data
 # which is stored in memory)
 ###################################################################################
 	
-class oas_data_handler:
+class oas_data_handler(oas_variablechecker):
 
 ############################################
 # random generator for the nodes
@@ -150,6 +152,13 @@ class oas_data_handler:
 			if mode=="normal":
 				print ""
 				
+		elif self.oas_rt_connections.has_key(str(showtype)):
+			if mode=="normal":
+				print ""
+				print self.oas_rt[self.oas_rt_connections[str(showtype)]['out_node']]['name']+"."+self.oas_rt_connections[str(showtype)]['out_value']+" --> "+self.oas_rt[self.oas_rt_connections[str(showtype)]['in_node']]['name']+"."+self.oas_rt_connections[str(showtype)]['in_value']
+				print ""
+			nodlist=[str(self.oas_rt[self.oas_rt_connections[str(showtype)]['out_node']]['name']+"."+self.oas_rt_connections[str(showtype)]['out_value']),str(self.oas_rt[self.oas_rt_connections[str(showtype)]['in_node']]['name']+"."+self.oas_rt_connections[str(showtype)]['in_value'])]
+		
 		elif showtype=="endnode":
 			if mode=="normal":
 				print "Endnode is: "+str(self.oas_scene_setup['endnode'])
@@ -285,22 +294,7 @@ class oas_data_handler:
 					nodelists[self.oas_rt[noddd]['name']]=noddd
 				if nodelists.has_key(nodevalue.split(".")[0]):
 					if self.oas_rt[nodelists[nodevalue.split(".")[0]]]['inputs'].has_key(nodevalue.split(".")[1]):
-						if self.oas_rt[nodelists[nodevalue.split(".")[0]]]['inputs'][nodevalue.split(".")[1]]['variable_type'].find("matrix")>-1:
-							if len(value.split(","))>15:
-								pass
-							else:
-								if mode=="normal":
-									print "Problem with a value.."
-								value="0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0"    
-						elif (self.oas_rt[nodelists[nodevalue.split(".")[0]]]['inputs'][nodevalue.split(".")[1]]['variable_type'].find("vector")>-1) or (self.oas_rt[nodelists[nodevalue.split(".")[0]]]['inputs'][nodevalue.split(".")[1]]['variable_type'].find("point")>-1) or (self.oas_rt[nodelists[nodevalue.split(".")[0]]]['inputs'][nodevalue.split(".")[1]]['variable_type'].find("color")>-1):
-							if len(value.split(","))>2:
-								pass
-							else:
-								if mode=="normal":
-									print "Problem with a value.."
-								value="0,0,0"
-						else:
-							pass
+						value=self.oas_variable(self.oas_rt[nodelists[nodevalue.split(".")[0]]]['inputs'][nodevalue.split(".")[1]]['variable_type'],value)
 						self.oas_rt[nodelists[nodevalue.split(".")[0]]]['inputs'][nodevalue.split(".")[1]]['value']=value
 						return [str(value)]
 					else:
@@ -513,6 +507,7 @@ class oas_data_handler:
 		self.oas_variablecategory={}
 		self.oas_last_node_created=""
 		self.server_port=23345
+		self.broadcast_ports=[23345]
 	    	if os.path.isdir(self.oas_home):
 			pass
 	    	else:

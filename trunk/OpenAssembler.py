@@ -47,7 +47,7 @@ Options:
 		elif sys.argv[i]=="-m":
 			try:
 				oas_arg_mode=sys.argv[i+1]
-				if oas_arg_mode=="normal" or oas_arg_mode=="console" or oas_arg_mode=="client" or oas_arg_mode=="run":
+				if oas_arg_mode=="normal" or oas_arg_mode=="console" or oas_arg_mode=="client" or oas_arg_mode=="run" or oas_arg_mode=="old_gui":
 					pass
 				else:
 					oas_arg_mode="normal"

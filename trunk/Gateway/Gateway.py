@@ -10,7 +10,7 @@
 from Dbase.Data_handler import oas_data_handler
 from Dbase.FileIO import oas_fileio
 from Run.Run import oas_execute
-
+from GUI.Old_GUI.Old_GUI import Old_GUI
 
 ###################################################################################
 # this is a collection of our shared python definitions
@@ -19,7 +19,7 @@ from Run.Run import oas_execute
 # if mode is "0", this is the "silent" mode no error, no confirmation outputed
 ###################################################################################
 
-class oas_gateway(oas_data_handler,oas_fileio,oas_execute):
+class oas_gateway(oas_data_handler,oas_fileio,oas_execute,Old_GUI):
 
 	def oas_list(self,mode,listtype="",searchtag=""):			
 		return self.oas_data_list(mode=mode,listtype=listtype,searchtag=searchtag)
@@ -68,4 +68,7 @@ class oas_gateway(oas_data_handler,oas_fileio,oas_execute):
 		
 	def oas_Start(self):
 		return self.oas_Startup()
+		
+	def oas_oldGUI(self,lock,*arg):
+		return self.start_old_gui(lock,"")
 		

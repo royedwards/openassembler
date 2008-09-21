@@ -9,6 +9,7 @@
 
 import sys, time, readline
 from Gateway.Gateway import oas_gateway
+import thread
 
 ######################################################################################
 # this file is for the console loop
@@ -195,7 +196,7 @@ exit				:quit from the application
 				except:
 					nv=""	
 				try:
-					vv=input_command.split()[2]
+					vv=input_command.split(" ",2)[2]
 				except:
 					vv=""		
 				if mode=="normal":
@@ -215,7 +216,7 @@ exit				:quit from the application
 				if mode=="normal":
 					self.oas_framerange(mode=mode,firstframe=ff,endframe=ef) 
 				else:
-					return self.oas_framerange(mode=mode,from_variable=frv,to_variable=tov)
+					return self.oas_framerange(mode=mode,firstframe=ff,endframe=ef)
 					 
 			elif input_command.split()[0]=="frame":
 				try:
@@ -254,8 +255,17 @@ exit				:quit from the application
 					self.oas_save(mode=mode,filetype=str(self.oas_save_filename)[-3:],filename=str(self.oas_save_filename))
 				elif len(input_command.split())>2:
 					self.oas_save(mode=mode,filename=input_command.split()[1],filetype=input_command.split()[2])  
+					
+					
+			elif input_command.split()[0]=="old_gui" or input_command.split()[0]=="gui":
+				thread.start_new_thread(self.oas_oldGUI,(self.lock,"")) 
+					
+					
 								
 			else:
 				if input_command!="no character given":
 					if mode=="normal":
 						print "Command not found. --> "+input_command
+						
+						
+

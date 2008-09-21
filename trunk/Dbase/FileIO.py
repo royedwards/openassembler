@@ -57,7 +57,7 @@ class oas_fileio(oas_data_handler):
 						result+="node "+str(self.oas_rt[nds]['nodetype'])+"\n{\n"
 						result+="\tname "+str(self.oas_rt[nds]['name'])+"\n\n"
 						for inps in self.oas_rt[nds]['inputs'].keys():
-							result+="\t"+str(inps)+" "+str(self.oas_rt[nds]['inputs'][str(inps)]['value'])+"\n"
+							result+="\t"+str(inps)+" \""+str(self.oas_rt[nds]['inputs'][str(inps)]['value'])+"\"\n"
 						result+="}\n\n"
 					
 					result+="connection\n{\n"
@@ -142,7 +142,7 @@ class oas_fileio(oas_data_handler):
 									if ln.strip().lstrip().split()[0]=="name":
 										nodename=ln.strip().lstrip().split()[1]
 									else:
-										iss.append([ln.strip().lstrip().split()[0],ln.strip().lstrip().split()[1]])
+										iss.append([ln.strip().lstrip().split()[0],ln.strip().lstrip().split(" ",1)[1]])
 							creatednode=self.oas_data_create(mode,nodetype=str(nodetype))[0]
 							if creatednode==0:
 								if mode=="normal":
@@ -155,7 +155,7 @@ class oas_fileio(oas_data_handler):
 											print "Problem during the node creation..."
 										nodename=creatednode
 								for issl in iss:
-									setret=self.oas_data_set(mode,nodevalue=str(nodename+"."+issl[0]),value=issl[1])
+									setret=self.oas_data_set(mode,nodevalue=str(nodename+"."+issl[0]),value=issl[1].lstrip("\"").strip("\""))
 									if setret==0:
 										if mode=="normal":
 											print "Problem with "+str(nodename+"."+issl[0])

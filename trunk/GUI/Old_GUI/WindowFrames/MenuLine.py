@@ -10,27 +10,40 @@
 from Tkinter import *
 import tkFont
 import tkFileDialog
+from GUI.Old_GUI.Misc.GUI_Gateway import gui_gateway
 
-class CanvasInitMenuLine:
+class CanvasInitMenuLine(gui_gateway):
 
     def NewScene(self):
-	pass
-
-    def SaveAsScene(self):
-	pass
+	self.oas_gui_new()
 
     def SaveScene(self):
-	pass
-
+            if self.savedfile=="":
+	    	fdiagback=tkFileDialog.SaveAs(filetypes=[('OpenAsembler Scene','*.oas')],title="Save OpenAssembler scene file as:").show()
+            	if fdiagback==():
+                	pass
+            	else:
+			self.oas_gui_save(fdiagback)
+			self.savedfile=fdiagback
+	    else:
+	    	self.oas_gui_save(self.savedfile)
+			
+    def SaveAsScene(self):
+            fdiagback=tkFileDialog.SaveAs(filetypes=[('OpenAsembler Scene','*.oas')],title="Save OpenAssembler scene file as:").show()
+            if fdiagback==():
+                pass
+            else:
+		self.oas_gui_save(fdiagback)
+		self.savedfile=fdiagback
+		
     def OpenScene(self):
-	pass
-	
-    def Preferences(self):
-	pass
+            fdiagback=tkFileDialog.Open(filetypes=[('OpenAsembler Scene','*.oas')],title="Open OpenAssembler scene file as:").show()
+            if fdiagback==():
+                pass
+            else:
+		self.oas_gui_open(fdiagback)
+		self.savedfile=fdiagback
 
-    def swiss(self):
-	pass
-	
     def StartUpMenuLineCanvas(self):
         TargetCanvas = Canvas (self, width=1280, height=30,relief=GROOVE, cursor="draft_large", confine="false",bg="gray35",bd=2)
         TargetCanvas.grid(row=1,column=1,rowspan=6,sticky=N)
@@ -54,16 +67,6 @@ class CanvasInitMenuLine:
         sas=onefor=Button(timelineFrame,width=10,highlightcolor="gray35",bd=1,padx=5,pady=1,highlightbackground="gray35",text="Save as...",font=iofont)
         sas.grid(row=1,column=4)
         sas.bind('<B1-ButtonRelease>',lambda event:self.SaveAsScene())
-
-        pref=Button(timelineFrame,width=11,bd=1,padx=5,pady=1,text="Preferences",font=iofont)
-        pref.grid(row=1,column=5,padx=15)
-        pref.bind('<B1-ButtonRelease>',lambda event:self.Preferences())
-
-        iofont2 = tkFont.Font ( family=self.font , size=int(self.fontsize)-2, weight=tkFont.BOLD)
-
-        swiss=Button(timelineFrame,width=11,bd=1,padx=5,pady=1,text="Swiss",font=iofont2,fg="gray90",bg = "darkred")
-        swiss.grid(row=1,column=6,padx=815)
-        swiss.bind('<B1-ButtonRelease>',lambda event:self.swiss())
 
         TargetCanvas.create_window(8,18,window=timelineFrame,anchor='w')
 	

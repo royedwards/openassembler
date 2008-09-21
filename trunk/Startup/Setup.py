@@ -16,8 +16,9 @@
 import os
 import sys
 import string
+from Dbase.variables import oas_variablechecker
 
-class oas_setup:
+class oas_setup(oas_variablechecker):
 
 	def oas_create_setup(self,path):
 		setupFile_Content='''
@@ -136,7 +137,7 @@ variablecategory black color,point,vector,avector,vvector,avvector
 									im_part[k]=im_part[k].lstrip().strip()
 							cleanpart=[]
 							for z in range(0, len(im_part)):
-                						important_line=im_part[z].split()
+								important_line=im_part[z].split(" ",3)
                 						cleanline=[]
                 						for y in range(0,len(important_line)):
                 	    						if important_line[y]=="":
@@ -157,35 +158,33 @@ variablecategory black color,point,vector,avector,vvector,avvector
 								if cleanpart[w][0]=="tags":
 									entry_firsttag=cleanpart[w][1].split(":")[0]
 								if cleanpart[w][0]=="input" or cleanpart[w][0]=="output":
-									deff=""
 									default=""
 									option=""
-									for d in range (3,len(cleanpart[w])):
-										deff+=cleanpart[w][d]+" "
-									deff=deff.strip()
-					
 ######################################################################################################################################
 # Recognize the optinos in the inputs values
 ######################################################################################################################################
 									
-									if (deff.find("\"min"))>0:
-										option=deff[(deff.find("\"min")):]
-										default=deff[:(deff.find("\"min"))]
-										if default.lstrip("\"").strip("\"").strip("\n")==" ":
-											default="0"
-									elif (deff.find("\"ext"))>0:
-										option=deff[(deff.find("\"ext")):]
-										default=deff[:(deff.find("\"ext"))]
-										if default.lstrip("\"").strip("\"").strip("\n")==" ":
-											default="0"
-									elif (deff.find("\"hidden"))>0:
-										option=deff[(deff.find("\"hidden")):]
-										default=deff[:(deff.find("\"hidden"))]
-										if default.lstrip("\"").strip("\"").strip("\n")==" ":
-											default="0"
-									else:
-										default=deff
-											
+									if len(cleanpart[w])>3:
+										cleanarray=[]
+										if "\"" in cleanpart[w][3]:
+											for porc in cleanpart[w][3].split("\""):
+												if porc=="":
+													pass
+												else:
+													cleanarray.append(porc)
+										else:
+											for porc in cleanpart[w][3].split():
+												if porc=="":
+													pass
+												else:
+													cleanarray.append(porc)	
+													
+										if len(cleanarray)>1:
+												default=cleanarray[0]
+												option=cleanarray[1]		
+										else:
+												default=cleanarray[0]
+																	
 									default= default.lstrip("\"").strip("\"")
 									if default=="" or default=="\"\"" or default==None:
 										default="0"
@@ -193,25 +192,8 @@ variablecategory black color,point,vector,avector,vvector,avvector
 ######################################################################################################################################
 # It will convert the different format of variables to the one we can understand
 ######################################################################################################################################
-
-									if str(cleanpart[w][1]).find("vector")>-1 or str(cleanpart[w][1]).find("point")>-1 or str(cleanpart[w][1]).find("color")>-1:
-										if len(default.split())>1:
-											default=str(default.split()[0])+","+str(default.split()[1])+","+str(default.split()[2])
-										elif len(default.split(","))>1:
-											default=str(default.split(",")[0])+","+str(default.split(",")[1])+","+str(default.split(",")[2])
-										else:
-											default="0;0;0"
-									
-									if str(cleanpart[w][1]).find("matrix")>-1:
-										if len(default.split())>1:
-											default=str(default.split(" ")[0])+","+str(default.split(" ")[1])+","+str(default.split(" ")[2])+","+str(default.split(" ")[3])+","+str(default.split(" ")[4])+","+str(default.split(" ")[5])+","+str(default.split(" ")[6])+","+str(default.split(" ")[7])+","+str(default.split(" ")[8])+","+str(default.split(" ")[9])+","+str(default.split(" ")[10])+","+str(default.split(" ")[11])+","+str(default.split(" ")[12])+","+str(default.split(" ")[13])+","+str(default.split(" ")[14])+","+str(default.split(" ")[15])
-										elif len(default.split(","))>1:
-											default=str(default.split(",")[0])+","+str(default.split(",")[1])+","+str(default.split(",")[2])+","+str(default.split(",")[3])+","+str(default.split(",")[4])+","+str(default.split(",")[5])+","+str(default.split(",")[6])+","+str(default.split(",")[7])+","+str(default.split(",")[8])+","+str(default.split(",")[9])+","+str(default.split(",")[10])+","+str(default.split(",")[11])+","+str(default.split(",")[12])+","+str(default.split(",")[13])+","+str(default.split(",")[14])+","+str(default.split(",")[15])
-										elif len(default.split("_"))>1:
-											default=str(default.split("_")[0])+","+str(default.split("_")[1])+","+str(default.split("_")[2])+","+str(default.split("_")[3])+","+str(default.split("_")[4])+","+str(default.split("_")[5])+","+str(default.split("_")[6])+","+str(default.split("_")[7])+","+str(default.split("_")[8])+","+str(default.split("_")[9])+","+str(default.split("_")[10])+","+str(default.split("_")[11])+","+str(default.split("_")[12])+","+str(default.split("_")[13])+","+str(default.split("_")[14])+","+str(default.split("_")[15])
-										else:
-											default="0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0"
-																											
+									default=self.oas_variable(str(cleanpart[w][1]),default)
+															
 ######################################################################################################################################
 # Store the settings depending on if it is input or output
 ######################################################################################################################################									
@@ -225,3 +207,7 @@ variablecategory black color,point,vector,avector,vvector,avvector
 							nodelist[str(entry_name)]={'tag':str(entry_firsttag),'path':str(singledir+"/"+desc_files),'inputs':inputs,'outputs':outputs}
 		return nodelist
 
+
+	def oas_line_parser(self,line):
+		line=line.lstrip().strip()
+		pass

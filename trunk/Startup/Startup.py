@@ -15,7 +15,6 @@ from Port.client import oas_client
 from Gateway.Gateway import oas_gateway
 import thread
 
-
 ###################################################################################
 # oas starts up here this is needed to call, for the basic environment-variable setup
 ###################################################################################
@@ -50,8 +49,8 @@ class oas_start(oas_setup,oas_client,oas_console,oas_server,oas_gateway):
 # the server is starting here with a separate task
 ###################################################################################
 
-			lock=thread.allocate_lock()
-			thread.start_new_thread(self.oas_port_server,(self.server_port,lock))
+			self.lock=thread.allocate_lock()
+			thread.start_new_thread(self.oas_port_server,(self.server_port,self.lock))
 
 		
 ###################################################################################
@@ -61,4 +60,6 @@ class oas_start(oas_setup,oas_client,oas_console,oas_server,oas_gateway):
 			if args_list[0]=="console":
 				self.oas_Console()
 
-			
+			if args_list[0]=="old_gui":
+				thread.start_new_thread(self.oas_oldGUI,(self.lock,""))
+				self.oas_Console()
