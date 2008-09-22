@@ -1,0 +1,58 @@
+==Basic OpenAssembler v2 tutorial==
+
+I hope the install vas sucesfull, you downloaded the files extract them, edited and copied the ini file to the ~/.OpenAssembler folder. If so, and you have all the requirements than you can run oas.
+
+So,
+
+Lets start oas with the following command (I guess you are in the oas folder)
+
+{{{
+python OpenAssembler.py -m console
+}}}
+
+Fingers crossed XXXX and..
+
+You have to see something similar:
+{{{
+OpenAssembler--->
+OpenAssembler Server started at 192.168.0.1:23345 !
+
+}}}
+
+If you see the same, well this is something like positive start.
+
+Press a few enter, to get a clean prompt, like this:
+{{{
+OpenAssembler--->
+}}}
+
+Well, first of all, we need to know what type of nodes you have.
+
+For the complete command reference, check the console page.
+
+So,
+
+{{{
+ln
+}}}
+
+You will see something liek this.
+
+{{{
+OpenAssembler--->
+OpenAssembler--->
+OpenAssembler--->ln
+
+printer
+DualColor_Test
+TXT_FileOut
+TXT_In
+multiMath
+TXT_Combine
+TXT_FileIn
+TXT_Replace
+mult
+OutputCollector
+
+OpenAssembler--->
+}}}
