@@ -132,3 +132,89 @@ OpenAssembler--->
 }}}
 
 Yep, we have this node in the scene.
+
+Now we can rename this node, by the command:
+
+{{{
+rename mult695790 mult_01
+}}}
+
+{{{
+OpenAssembler--->rename mult695790 mult_01
+Node mult695790 is known as mult_01 now.
+OpenAssembler---> 
+}}}
+
+Lest create a few more node:
+{{{
+OpenAssembler--->rename mult695790 mult_01
+Node mult695790 is known as mult_01 now.
+OpenAssembler--->
+OpenAssembler--->
+OpenAssembler--->
+OpenAssembler--->cr mult
+Node mult604765 created.
+OpenAssembler--->cr multiMath
+Node multiMath500884 created.
+OpenAssembler--->rename mult604765 mult_02
+Node mult604765 is known as mult_02 now.
+OpenAssembler--->rename multiMath500884 multi_01
+Node multiMath500884 is known as multi_01 now.
+OpenAssembler--->cr printer
+Node printer264754 created.
+OpenAssembler--->rename printer264754 printer_01
+Node printer264754 is known as printer_01 now.
+OpenAssembler--->  
+}}}
+
+Now we ahve seweral nodes in the scene:
+{{{
+OpenAssembler--->ls
+
+mult_02
+multi_01
+mult_01
+printer_01
+
+OpenAssembler--->
+}}}
+
+Btw, the printer node is a node to print values to the console. :)
+
+If we are ready with this, we can start to connect them.
+
+First connect the 2 mult into the multimath and the multi to the printer.
+
+{{{
+OpenAssembler--->cn mult_01.out multi_01.A
+OpenAssembler--->cn mult_02.out multi_01.B
+OpenAssembler--->cn multi_01.add printer_01.A
+OpenAssembler--->
+}}}
+
+If you type:
+{{{
+lc
+}}}
+
+You will get the list of the connections:
+
+{{{
+OpenAssembler--->lc
+
+Connection754333
+Connection465509
+Connection600641
+
+OpenAssembler--->
+}}}
+
+And you can check a connection if you want, by:
+
+{{{
+OpenAssembler--->show Connection754333
+
+mult_01.out --> multi_01.A
+
+OpenAssembler--->
+}}}
