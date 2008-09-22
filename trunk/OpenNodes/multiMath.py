@@ -4,7 +4,7 @@
 define
 {
 	name multiMath
-	tags oas:math
+	tags math
 	input int A 1
 	input int B 1
 	output int mult 1

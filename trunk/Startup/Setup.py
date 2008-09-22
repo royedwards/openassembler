@@ -59,6 +59,41 @@ variablecategory black color,point,vector,avector,vvector,avvector
 				if str(rws[:1])!=str("#"):
 					setup_parsed.append(ret)
 		return setup_parsed
+		
+######################################################################################################################################
+# to collect font settings
+######################################################################################################################################		
+
+	def oas_font_settings(self,parsed):
+		fnt=""
+		fntsz=""
+		for liness in parsed:
+			liness=liness.lstrip().strip()
+			if liness.split()[0]=="font":
+				fnt=liness.split()[1]
+			if liness.split()[0]=="fontsize":
+				fntsz=liness.split()[1]
+		return [fnt,fntsz]
+
+	def oas_menucategory_settings(self,parsed):
+		fnt=""
+		fntsz=""
+		mncat=[]
+		mncline=[]
+		for liness in parsed:
+			liness=liness.lstrip().strip()
+			
+			if liness.split()[0]=="menucategory":
+				mncline=[liness.split()[1]]
+				for ctl in liness.split()[2].split(":"):
+					for nd in self.oas_node_list.keys():
+						if self.oas_node_list[nd]['tag']==str(ctl):
+							mncline.append(str(nd))
+			mncat.append(mncline)
+		return mncat
+
+
+
 
 ######################################################################################################################################
 # to collect the variabletypes settings (for the connection check procedure)
@@ -207,7 +242,24 @@ variablecategory black color,point,vector,avector,vvector,avvector
 							nodelist[str(entry_name)]={'tag':str(entry_firsttag),'path':str(singledir+"/"+desc_files),'inputs':inputs,'outputs':outputs}
 		return nodelist
 
-
-	def oas_line_parser(self,line):
-		line=line.lstrip().strip()
-		pass
+	def oas_setup_port(self,parsed,element):
+		ret=0
+		for lns in parsed:
+			if lns[0].strip().lstrip()=="port":
+				if lns[1].strip().lstrip()==element:
+					ret=int(lns[2].strip().lstrip())
+		if ret==0:
+			sys.exit()
+		return ret
+	
+	def oas_setup_broadcast(self,parsed):
+		ret=0
+		br_col=[]
+		for lns in parsed:
+			if lns[0].strip().lstrip()=="port":
+				if lns[1].strip().lstrip()!="server":
+					br_col.append(int(lns[2].strip().lstrip()))
+		return br_col
+		
+		
+		

@@ -4,7 +4,7 @@
 define
 {
 	name printer
-	tags oas:viewer
+	tags viewer
 	input any A 1
 
 }

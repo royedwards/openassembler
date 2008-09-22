@@ -110,6 +110,7 @@ class oas_data_handler(oas_variablechecker):
 				print "Name of the node: "+str(self.oas_rt[showtype]['name'])
 				print "This node is a scene node!"
 				print "Inputs:"
+			nodlist.append((str(self.oas_rt[showtype]['name'])+":"+str(self.oas_rt[showtype]['tag'])))
 			for ins in self.oas_rt[str(showtype)]['inputs'].keys():
 				con_chk=0
 				for con in self.oas_rt_connections.keys():
@@ -131,7 +132,7 @@ class oas_data_handler(oas_variablechecker):
 				nodlist.append("output."+str(ins)+"="+str(self.oas_rt[str(showtype)]['outputs'][str(ins)]['value']))
 			if mode=="normal":
 				print ""
-				
+							
 		elif self.oas_node_list.has_key(str(showtype)):
 			if mode=="normal":
 				print ""
@@ -139,6 +140,7 @@ class oas_data_handler(oas_variablechecker):
 				print "This node is a nodetype template node!"
 				print "Path to the sourcefile: "+str(self.oas_node_list[str(showtype)]['path'])
 				print "Inputs:"
+			nodlist.append((str(showtype)+":"+str(self.oas_node_list[showtype]['tag'])))
 			for ins in self.oas_node_list[str(showtype)]['inputs'].keys():
 				if mode=="normal":
 					print "\t"+str(ins)+" = "+str(self.oas_node_list[str(showtype)]['inputs'][str(ins)]['value'])
@@ -506,8 +508,6 @@ class oas_data_handler(oas_variablechecker):
 		self.oas_save_filename=""
 		self.oas_variablecategory={}
 		self.oas_last_node_created=""
-		self.server_port=23345
-		self.broadcast_ports=[23345]
 	    	if os.path.isdir(self.oas_home):
 			pass
 	    	else:
@@ -523,3 +523,5 @@ class oas_data_handler(oas_variablechecker):
 		
 		self.oas_collect_node_dirs(self.setup_contents)
 		self.oas_node_list=self.oas_collect_nodes_from_dirs(self.oas_collect_node_dirs(self.setup_contents))
+		self.server_port=self.oas_setup_port(self.setup_contents,"server")
+		self.broadcast_ports=self.oas_setup_broadcast(self.setup_contents)

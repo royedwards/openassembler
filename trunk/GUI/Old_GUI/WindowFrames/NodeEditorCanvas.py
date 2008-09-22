@@ -13,7 +13,7 @@ from MouseEvents import NodeEditorCanvasEvents
 class CanvasInitNodeEditor(NodeEditorCanvasEvents):
 
     def StartUpNodeEditorCanvas(self):
-        TargetCanvas = Canvas (self, width=800, height=600,relief=GROOVE, cursor="draft_large", confine="false",bg="gray45",bd=2, scrollregion=(0,0,2048,1536))
+        TargetCanvas = Canvas (self, width=640, height=480,relief=GROOVE, cursor="draft_large", confine="false",bg="gray45",bd=2, scrollregion=(0,0,2048,1536))
 	TargetCanvas.pack(expand=1,fill=BOTH)
 
         def handlerB1Click(event, self=self, TargetCanvas=TargetCanvas):

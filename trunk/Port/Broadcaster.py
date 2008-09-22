@@ -32,3 +32,18 @@ class oas_broadcaster:
 					time.sleep(1)
 					errchk=1		
 		
+	def oas_broadcast_chk(self,port_list):
+		port_list=[port_list]
+		for port in port_list:
+			input_command="chk"
+			try:	
+				chk_socket=socket(AF_INET, SOCK_STREAM)
+				chk_socket.connect((gethostbyname(gethostname()),port))
+				chk_socket.recv(2048)
+				chk_socket.send(input_command)
+				rec=chk_socket.recv(2048)
+				return rec
+			except:
+				return 0
+							
+		

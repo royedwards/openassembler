@@ -10,10 +10,20 @@
 
 from Tkinter import *
 import tkFileDialog
+import sys
+from GUI.common.GUI_Interface import GUI_Interface_client
 
 
-class NodeEditorCanvasEvents:
+class NodeEditorCanvasEvents(GUI_Interface_client):
 
+    
+    def CloseGUI(self):
+    	self.oas_gui_interface_client(self.editorport,"server halt")
+    	self.event_generate("<<cloose>>", when='tail')
+        
+    def CloseALL(self):
+    	self.oas_gui_interface_client(self.editorport,"server halt")
+    	self.event_generate("<<cloose_all>>", when='tail')
     
     def NewScene(self):
 	self.oas_gui_new()
@@ -84,6 +94,8 @@ class NodeEditorCanvasEvents:
 		menu.add_command(label="Save", command=lambda :self.SaveScene())
 		menu.add_command(label="SaveAs", command=lambda :self.SaveAsScene())
 		menu.add_separator()
+		menu.add_command(label="Close Editor", command=lambda :self.CloseGUI())
+		menu.add_command(label="Exit ALL", command=lambda :self.CloseALL())
 		menu.post(event.x_root, event.y_root)
         else:
           pass

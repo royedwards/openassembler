@@ -24,7 +24,10 @@ class oas_console(oas_gateway):
 		x=1
 		while x==1:	
 			if imput_to_parse=="":
-				input_command=raw_input ("OpenAssembler--->").strip()
+				try:
+					input_command=raw_input ("OpenAssembler--->").strip()
+				except KeyboardInterrupt:
+					sys.exit()
 			else:
 				x=0
 				input_command=imput_to_parse
@@ -260,8 +263,35 @@ exit				:quit from the application
 			elif input_command.split()[0]=="old_gui" or input_command.split()[0]=="gui":
 				thread.start_new_thread(self.oas_oldGUI,(self.lock,"")) 
 					
-					
-								
+			elif input_command.split()[0]=="current_file":
+				if mode=="normal":
+					print self.oas_save_filename
+				else:
+					return self.oas_save_filename 
+			
+			elif input_command.split()[0]=="variabletypes":
+				if mode=="normal":
+					print self.oas_variablecategory
+				else:
+					rr=[]
+					for ks in self.oas_variablecategory.keys():
+						rr.append(str(ks)+":"+str(self.oas_variablecategory[ks]['variablecategory']))
+					return rr	
+						
+			elif input_command.split()[0]=="check":
+				r="0"
+				if input_command.split()>1: 
+					try:
+						r=self.oas_server_chk(int(input_command.split()[1]))
+					except:
+						if mode=="normal":
+							pass
+						else:
+							return 0						
+					if mode=="normal":
+						print r
+					else:
+						return r
 			else:
 				if input_command!="no character given":
 					if mode=="normal":
