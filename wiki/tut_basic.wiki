@@ -28,7 +28,7 @@ OpenAssembler--->
 
 Well, first of all, we need to know what type of nodes you have.
 
-For the complete command reference, check the console page.
+For the complete command reference, check the [console] page.
 
 So,
 
