@@ -261,5 +261,62 @@ set mult_02.A =oas_current_frame
 
 If we check now our nodes now:
 {{{
+OpenAssembler--->show mult_01
 
+ID of the node: Node965456
+Name of the node: mult_01
+This node is a scene node!
+Inputs:
+        A = =oas_current_frame
+        B = 4
+Outputs:
+        out = 1
+
+OpenAssembler--->show multi_01
+
+ID of the node: Node114687
+Name of the node: multi_01
+This node is a scene node!
+Inputs:
+        A = 1   Connected
+        B = 1   Connected
+Outputs:
+        pow = 1
+        add = 1
+        div = 1
+        mult = 1
+        sub = 1
+
+OpenAssembler---> 
 }}}
+
+You can see the connections, and the important settings as well.
+So the only thing to do is to save the scene:
+{{{
+OpenAssembler--->save /home/user/tutorial_example.oas oas
+File saved.
+OpenAssembler--->
+}}}
+and, to run it!!!!!!!!!!!!!!!:
+
+{{{
+OpenAssembler--->run
+OpenAssembler--->
+52.0
+56.0
+60.0
+64.0
+68.0
+72.0
+76.0
+80.0
+84.0
+88.0
+
+OpenAssembler---> 
+}}}
+
+
+Very good!!!!!!!!! Yes!!!!!!!!!!!!!!!
+
+Have fun!
