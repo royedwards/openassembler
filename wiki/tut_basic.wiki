@@ -56,3 +56,79 @@ OutputCollector
 
 OpenAssembler--->
 }}}
+
+This means you have this nodes installed, so you can start to combine them.
+
+At this exmaple we will use the mult and the multiMath node.
+
+If oyu are not so sure about the structure of this nodes, you can type:
+{{{
+show mult
+}}}
+
+And the result is:
+
+{{{
+OpenAssembler--->show mult
+
+Name of the node: mult
+This node is a nodetype template node!
+Path to the sourcefile: /net/homes/lmates/OpenAssembler/OpenNodes/mult.py
+Inputs:
+        A = 1
+        B = 1
+Outputs:
+        out = 1
+
+OpenAssembler--->
+}}}
+You can see now, that we have just 1 output and 2 input named A and B. The multiMath node looks like this:
+{{{
+OpenAssembler--->show multiMath
+
+Name of the node: multiMath
+This node is a nodetype template node!
+Path to the sourcefile: /net/homes/lmates/OpenAssembler/OpenNodes/multiMath.py
+Inputs:
+        A = 1
+        B = 1
+Outputs:
+        pow = 1
+        add = 1
+        div = 1
+        sub = 1
+        mult = 1
+
+OpenAssembler---> 
+}}}
+
+You can see that there is much more output for this one.
+
+Well lets create a node:
+{{{
+cr mult
+}}}
+
+And you will see the node created:
+
+{{{
+OpenAssembler--->cr mult
+Node mult695790 created.
+OpenAssembler---> 
+}}}
+This means you created a node named mult695790 and the type is a mult. (sorry about the long initial names, I will change it later, just It is needed for debugging now)
+
+Just to doublecheck:
+{{{
+ls
+}}}
+
+{{{
+OpenAssembler--->ls
+
+mult695790
+
+OpenAssembler---> 
+}}}
+
+Yep, we have this node in the scene.
