@@ -218,3 +218,48 @@ mult_01.out --> multi_01.A
 
 OpenAssembler--->
 }}}
+
+If you vant to run the network later (yeh, thats the aim I guess) than you need to mark a node as an end-node. This is needed to pars to the run, where to start. And it is wise to set the framerange and the current frame as well.
+
+{{{
+OpenAssembler--->end printer_01
+Node printer_01 marked as endnode.
+OpenAssembler--->framerange 1 10
+Frame range are set.
+OpenAssembler--->frame 1
+Frame range are set.
+OpenAssembler--->
+}}}
+
+I just realised, that the set frame comamnd is wrong... :D and showing the same result as the framerange command. (but it is doing what it have to...)
+
+We can check now the settings if we want:
+{{{
+OpenAssembler--->show setup
+
+endnode = printer_01
+startframe = 1
+frame = 1
+endframe = 10
+
+OpenAssembler---> 
+}}}
+
+Now we can set some values.
+{{{
+OpenAssembler--->set mult_01.A 2
+OpenAssembler--->set mult_01.B 4
+OpenAssembler--->set mult_02.A 6
+OpenAssembler--->set mult_02.B 8
+OpenAssembler---> 
+}}}
+
+It is nice, and now my favourite part comes: you can set expressinons as a value, like this, which will take the current frame number as an input:
+{{{
+set mult_02.A =oas_current_frame
+}}}
+
+If we check now our nodes now:
+{{{
+
+}}}
