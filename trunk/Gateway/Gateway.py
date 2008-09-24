@@ -32,19 +32,34 @@ class oas_gateway(oas_data_handler,oas_fileio,oas_execute,Old_GUI,oas_broadcaste
 		return self.oas_data_count(mode=mode,counttype=counttype)
 
 	def oas_create(self,mode,nodetype=""):
-		return self.oas_data_create(mode=mode,nodetype=nodetype)
+		rv=self.oas_data_create(mode=mode,nodetype=nodetype)
+		if rv!=0:
+			self.oas_Broadcast(self.broadcast_ports,"draw node "+str(rv[0]))
+		return rv
 
 	def oas_delete(self,mode,deletetype="node",target=""):
-		return self.oas_data_delete(mode=mode,deletetype=deletetype,target=target)
+		rv=self.oas_data_delete(mode=mode,deletetype=deletetype,target=target)
+		if rv!=0:
+			self.oas_Broadcast(self.broadcast_ports,"delete node "+str(rv[0]))		
+		return rv
 
 	def oas_rename(self,mode,old="",new=""):
-		return self.oas_data_rename(mode=mode,old=old,new=new)
+		rv=self.oas_data_rename(mode=mode,old=old,new=new)
+		if rv!=0:
+			self.oas_Broadcast(self.broadcast_ports,"rename "+str(old)+" "+str(rv[0]))		
+		return rv
 
 	def oas_connect(self,mode,from_variable="",to_variable=""):
-		return self.oas_data_connect(mode=mode,from_variable=from_variable,to_variable=to_variable)
+		rv=self.oas_data_connect(mode=mode,from_variable=from_variable,to_variable=to_variable)
+		if rv!=0:
+			self.oas_Broadcast(self.broadcast_ports,"connect "+rv[0]+" "+rv[1]+" "+rv[2])		
+		return rv
 		
 	def oas_new(self,mode):
-		return self.oas_Startup()
+		rv=self.oas_Startup()
+		if rv!=0:
+			self.oas_Broadcast(self.broadcast_ports,"new scene")		
+		return rv
 
 	def oas_end(self,mode,endnode=""):
 		return self.oas_data_end(mode=mode,endnode=endnode)
@@ -53,7 +68,10 @@ class oas_gateway(oas_data_handler,oas_fileio,oas_execute,Old_GUI,oas_broadcaste
 		return self.oas_file_save(mode=mode,filename=filename,filetype=filetype)
 		
 	def oas_open(self,mode,filename="",filetype=""):
-		return self.oas_file_open(mode=mode,filename=filename,filetype=filetype)
+		rv=self.oas_file_open(mode=mode,filename=filename,filetype=filetype)
+		if rv!=0:
+			self.oas_Broadcast(self.broadcast_ports,"refresh")		
+		return rv
 	
 	def oas_run(self,mode):
 		return self.oas_run_execute(mode=mode)
@@ -75,4 +93,7 @@ class oas_gateway(oas_data_handler,oas_fileio,oas_execute,Old_GUI,oas_broadcaste
 		
 	def oas_server_chk(self,port):
 		return self.oas_broadcast_chk(port)
+		
+	def oas_ui_refresh(self):
+		self.oas_Broadcast(self.broadcast_ports,"refresh")
 		

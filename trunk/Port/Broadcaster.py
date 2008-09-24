@@ -17,20 +17,15 @@ class oas_broadcaster:
 		for port in port_list:
 			chk=1
 			input_command=message
-			errchk=1
 			rec=""
-			while errchk==1:
-				try:
+			try:
 				
-					chk_socket=socket(AF_INET, SOCK_STREAM)
-					chk_socket.connect((gethostbyname(gethostname()),port))
-					chk_socket.recv(2048)
-					chk_socket.send(input_command)
-					rec=chk_socket.recv(2048)
-					errchk=0
-				except:
-					time.sleep(1)
-					errchk=1		
+				chk_socket=socket(AF_INET, SOCK_STREAM)
+				chk_socket.connect((gethostbyname(gethostname()),port))
+				chk_socket.recv(2048)
+				chk_socket.send(input_command)
+			except:
+				pass
 		
 	def oas_broadcast_chk(self,port_list):
 		port_list=[port_list]
