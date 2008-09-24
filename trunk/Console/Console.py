@@ -292,6 +292,8 @@ exit				:quit from the application
 						print r
 					else:
 						return r
+			elif input_command.split()[0]=="refresh":
+				self.oas_ui_refresh()
 			else:
 				if input_command!="no character given":
 					if mode=="normal":

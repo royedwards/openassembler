@@ -33,7 +33,56 @@ class gui_gateway(GUI_Interface_client):
 			ret.append(x)
 		return ret
 		
-	def oas_gui_nodelist(self):
+	def oas_gui_connectionslist(self):
+		r=self.oas_gui_interface_client(self.main_serverport,("list connections"))
+		re=r.strip("]").lstrip("[").split(",")
+		ret=[]
+		for x in re:
+			x=x.strip().lstrip().strip("\'").lstrip("\'")
+			ret.append(x)
+		return ret
+		
+	def oas_gui_scenenodelist(self):
+		r=self.oas_gui_interface_client(self.main_serverport,("list scene"))
+		re=r.strip("]").lstrip("[").split(",")
+		ret=[]
+		for x in re:
+			x=x.strip().lstrip().strip("\'").lstrip("\'")
+			ret.append(x)
+		return ret
+		
+	def oas_gui_connection_show(self,toshow):
+		r=self.oas_gui_interface_client(self.main_serverport,("show "+str(toshow)))
+		re=r.strip("]").lstrip("[").split(",")
+		ret=[]
+		for x in re:
+			x=x.strip().lstrip().strip("\'").lstrip("\'")
+			ret.append(x)
+		return (toshow,ret[0].split(".")[0],ret[0].split(".")[1],ret[1].split(".")[0],ret[1].split(".")[1])
+		
+	def oas_gui_scenenode_show(self,toshow):
+		r=self.oas_gui_interface_client(self.main_serverport,("show "+str(toshow)))
+		re=r.strip("]").lstrip("[").split(",")
+		ret=[]
+		for x in re:
+			x=x.strip().lstrip().strip("\'").lstrip("\'")
+			ret.append(x)
+		result=[]
+		result.append(ret[0].split(":")[2])
+		result.append(ret[0].split(":")[0])
+		result.append(ret[0].split(":")[1])
+		ins=[]
+		outs=[]
+		for y in ret:
+			if y.find("input.")>-1:
+				ins.append(y.split(".")[1].split("=")[0])
+			if y.find("output.")>-1:
+				outs.append(y.split(".")[1].split("=")[0])
+		result.append(ins)
+		result.append(outs)
+		return result
+		
+	def oas_gui_nodetypes(self):
 		nods={}
 		for no in self.oas_gui_nodetypelist():
 			noderet=self.oas_gui_interface_client(self.main_serverport,("show "+str(no)))
@@ -54,6 +103,16 @@ class gui_gateway(GUI_Interface_client):
 	def oas_gui_addnode(self,node):
 		self.oas_gui_interface_client(self.main_serverport,("create "+str(node)))
 		
+	def oas_gui_connect(self,outnode,outvalue,innode,invalue):
+		outnode=self.oas_gui_scenenode_show(outnode)[1]
+		innode=self.oas_gui_scenenode_show(innode)[1]
+		self.oas_gui_interface_client(self.main_serverport,("connect "+str(outnode)+"."+str(outvalue)+" "+str(innode)+"."+str(invalue)))
+		
+	def oas_gui_refresh(self):
+		self.oas_gui_interface_client(self.main_serverport,("refresh"))
+		
+	def oas_gui_deletenode(self,node):
+		self.oas_gui_interface_client(self.main_serverport,("delete node "+str(node)))
 		
 	def oas_gui_currentfile(self):
 		ret=self.oas_gui_interface_client(self.main_serverport,("current_file"))

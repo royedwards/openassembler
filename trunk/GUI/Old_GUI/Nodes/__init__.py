@@ -1,1 +1,1 @@
-__all__=['NodeList','ConnectionLine']
+__all__=['ConnectionLine']

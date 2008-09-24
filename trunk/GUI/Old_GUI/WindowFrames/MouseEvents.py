@@ -12,11 +12,10 @@ from Tkinter import *
 import tkFileDialog
 import sys
 from GUI.common.GUI_Interface import GUI_Interface_client
+from GUI.Old_GUI.Nodes.ConnectionLine import ConnectLine
 
 
-class NodeEditorCanvasEvents(GUI_Interface_client):
-
-    
+class NodeEditorCanvasEvents(GUI_Interface_client,ConnectLine):
     def CloseGUI(self):
     	self.oas_gui_interface_client(self.editorport,"server halt")
     	self.event_generate("<<cloose>>", when='tail')
@@ -27,6 +26,9 @@ class NodeEditorCanvasEvents(GUI_Interface_client):
     
     def NewScene(self):
 	self.oas_gui_new()
+	
+    def Refresh(self):
+    	self.oas_gui_refresh()
 
     def SaveScene(self):
             if self.savedfile=="":
@@ -87,6 +89,8 @@ class NodeEditorCanvasEvents(GUI_Interface_client):
                                 if self.MenuNodeItems[g][h]!="":
                                         submenu.add_command(label=self.MenuNodeItems[g][h], command=lambda rty=self.MenuNodeItems[g][h]:self.AddNode(rty))
 		menu.add_separator()
+		menu.add_command(label="Refresh", command=lambda :self.Refresh())
+		menu.add_separator()
 		menu.add_command(label="New", command=lambda :self.NewScene())
 		menu.add_separator()
 		menu.add_command(label="Open", command=lambda :self.OpenScene())
@@ -102,7 +106,7 @@ class NodeEditorCanvasEvents(GUI_Interface_client):
         self.menuopen="0"
 
     def delNodeFromMenu(self,TargetCanvas,EventTags):
-                TargetCanvas.delete(EventTags[4])
+    	self.oas_gui_deletenode(EventTags[0])
 
     def markEndFromMenu(self,TargetCanvas,EventTags):
     	pass
@@ -117,7 +121,6 @@ class NodeEditorCanvasEvents(GUI_Interface_client):
 	menu.add_command(label="Mark as EndNode", command=lambda :self.markEndFromMenu(TargetCanvas,Eventtag))
         menu.add_command(label="Delete", command=lambda :self.delNodeFromMenu(TargetCanvas,Eventtag))
         menu.post(event.x_root, event.y_root)
-
 
     def B3ClickNodeEditor(self,event,TargetCanvas,lasx,lasty,Eventtag):
         try:
@@ -141,11 +144,8 @@ class NodeEditorCanvasEvents(GUI_Interface_client):
             else:
                 try:
                     if EventTags[3]=="IN":
-                        if self.checkMultipleSelfConnection(self.origin_node, self.origin_out, EventTags[0], EventTags[2])==0:
-                            tst1=TargetCanvas.itemcget(EventTags[1],"fill")
-                            tst2=TargetCanvas.itemcget(self.origin_uni,"fill")
-                            if tst1==tst2:
-                                self.DrawNewLine(TargetCanvas, self.origin_node,self.origin_out,self.origin_uni, EventTags[0],EventTags[2],EventTags[1])
+                        if self.origin_node!="":
+			    self.oas_gui_connect(self.origin_node,self.origin_out,EventTags[0],EventTags[2])
                 except:
                     pass
         else:

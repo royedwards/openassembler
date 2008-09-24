@@ -78,7 +78,7 @@ class oas_data_handler(oas_variablechecker):
 		elif listtype=="connections":
 			for cns in self.oas_rt_connections.keys():		
 				if searchtag!="":
-					if (self.oas_rt[(str(self.oas_rt_connections[cns]['in_node']))]['name'].find(searchtag)>-1) or (self.oas_rt[(str(self.oas_rt_connections[cns]['out_node']))]['name'].find(searchtag)>-1):
+					if self.oas_rt[(str(self.oas_rt_connections[cns]['in_node']))]['name']==str(searchtag) or self.oas_rt[(str(self.oas_rt_connections[cns]['out_node']))]['name']==str(searchtag):
 						returnvalue.append(cns)	
 				else:
 						returnvalue.append(cns)		
@@ -110,7 +110,7 @@ class oas_data_handler(oas_variablechecker):
 				print "Name of the node: "+str(self.oas_rt[showtype]['name'])
 				print "This node is a scene node!"
 				print "Inputs:"
-			nodlist.append((str(self.oas_rt[showtype]['name'])+":"+str(self.oas_rt[showtype]['tag'])))
+			nodlist.append(str(self.oas_rt[showtype]['name'])+":"+str(self.oas_rt[showtype]['nodetype'])+":"+str(showtype))
 			for ins in self.oas_rt[str(showtype)]['inputs'].keys():
 				con_chk=0
 				for con in self.oas_rt_connections.keys():
@@ -250,34 +250,32 @@ class oas_data_handler(oas_variablechecker):
 		if str(deletetype)=="node":
 			nodename=""
 			for nds in self.oas_rt.keys():
-				if str(self.oas_rt[nds]['name'])==str(target):
+				if nds==target:
+					nodename=nds
+				elif str(self.oas_rt[nds]['name'])==str(target):
 					nodename=str(nds)
 			if self.oas_rt.has_key(nodename):
-				line_delete_list=self.oas_data_list("0",["","connections",str(target)])
+				line_delete_list=self.oas_data_list(mode="silent",listtype="connections",searchtag=str(self.oas_rt[nodename]['name']))
 				del self.oas_rt[nodename]
 				for connss in line_delete_list:
-					self.oas_data_delete(mode,["","connection",str(connss)])
+					x=self.oas_data_delete(mode=mode,deletetype="connection",target=str(connss))
 				if mode=="normal":
 					print "Node "+str(target)+" deleted."
-					return []
-				return []
+				return [nodename]
 
 			else:
 				if mode=="normal":
 					print "Node "+str(target)+" not found."
-					return 0
 				return 0
 		elif str(deletetype)=="connection":
 			if self.oas_rt_connections.has_key(str(target)):
 				del self.oas_rt_connections[str(target)]
 				if mode=="normal":
 					print "Connection "+str(target)+" deleted."
-					return []
-				return []
+				return [target]
 			else:
 				if mode=="normal":
 					print "Wrong connection name."
-					return 0
 				return 0
 		else:
 			if mode=="normal":
@@ -418,11 +416,11 @@ class oas_data_handler(oas_variablechecker):
 				a=int(frame)
 				self.oas_scene_setup['frame']=a
 				if mode=="normal":
-					print "Frame range are set."
+					print "Frame is set."
 				return [a]
 			except:
 				if mode=="normal":
-					print "Framerange values are wrong!"
+					print "Frame value are wrong!"
 				return 0
 		else:
 			if mode=="normal":
@@ -469,7 +467,7 @@ class oas_data_handler(oas_variablechecker):
 					print "This node input is already connected, you need to disconnect first."
 				return 0
 				
-			if node_out=="" or node_in=="" or value_out=="" or value_in=="":
+			if node_out=="" or node_in=="" or value_out=="" or value_in=="" or node_in==node_out:
 				if mode =="normal":
 					print "Wrong parameters!"
 				return 0
@@ -486,7 +484,7 @@ class oas_data_handler(oas_variablechecker):
 					if mode =="normal":
 						print "You can not connect different parametertypes!"
 					return 0
-			return [node_out+"."+value_out,node_in+"."+value_in]
+			return [node_out+"."+value_out,node_in+"."+value_in,str("Connection"+str(rnd))]
 		else:
 			if mode =="normal":
 				print "Not enough parameter."

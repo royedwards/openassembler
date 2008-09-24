@@ -15,15 +15,16 @@ import thread,os,sys,string
 from GUI.common.GUI_Gateway import gui_gateway
 from GUI.common.GUI_Setup import oas_GUI_setup
 from GUI.common.GUI_Interface import GUI_Interface_server
+from GUI.Old_GUI.Misc.Old_GUI_Interpreter import old_gui_interpreter
 
 
-
-class OldGUI(Frame,CanvasInitNodeEditor,gui_gateway,oas_GUI_setup,GUI_Interface_server):
+class OldGUI(Frame,CanvasInitNodeEditor,gui_gateway,oas_GUI_setup,GUI_Interface_server,old_gui_interpreter):
     def __init__(self, master=None):
         Frame.__init__(self, master)
         self.pack(expand=1,fill=BOTH)
         self.Startup()
 	self._createWidgets()
+	self.oas_gui_refresh()
 
     def Startup(self):
 	self.lastx=30
@@ -33,6 +34,7 @@ class OldGUI(Frame,CanvasInitNodeEditor,gui_gateway,oas_GUI_setup,GUI_Interface_
         self.origin_out=""
         self.origin_uni=""
         self.menuopen="0"
+	self.RuntimeLines=[]
 	    
 	self.oas_userhome=os.environ.get("HOME")
 	self.oas_home=str(self.oas_userhome)+"/.OpenAssembler"
@@ -40,7 +42,7 @@ class OldGUI(Frame,CanvasInitNodeEditor,gui_gateway,oas_GUI_setup,GUI_Interface_
 	fnt=self.oas_gui_font(parsedret)
 	self.main_serverport=self.oas_gui_serverport(parsedret,"server")
 	self.editorport=self.oas_gui_serverport(parsedret,"editor")
-	self.oas_node_list=self.oas_gui_nodelist()
+	self.oas_node_list=self.oas_gui_nodetypes()
 	self.font=fnt[0]
 	self.fontsize=int(fnt[1])
 	self.MenuNodeItems=self.oas_gui_menucategory(parsedret)

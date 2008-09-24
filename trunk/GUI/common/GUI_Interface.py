@@ -7,10 +7,8 @@
 #
 ######################################################################################
 
-
 from socket import *
 import sys, time
-
 
 class GUI_Interface_client:
 	def oas_gui_interface_client(self,port,message):
@@ -61,5 +59,6 @@ class GUI_Interface_server:
 					clientSocket.send("1")
 					clientSocket.close()
 				else:
+					self.old_gui_do(buff)
 					clientSocket.close()
 
