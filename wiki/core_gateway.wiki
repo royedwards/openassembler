@@ -1,0 +1,28 @@
+Punctions you can access by importing the Gateway/Gateway.py module:
+
+  * oas_list(mode,listtype,searchtag)
+  * oas_show(mode,showtype)
+  * oas_count(mode,counttype)
+  * oas_create(mode,nodetype)
+  * oas_delete(mode,deletetype,target)
+  * oas_rename(mode,old,new)
+  * oas_connect(mode,from_variable,to_variable)
+  * oas_new(mode)
+  * oas_end(mode,endnode)
+  * oas_save(mode,filename,filetype)
+  * oas_open(mode,filename,filetype)
+  * oas_run(mode)
+  * oas_set(mode,nodevalue,value)
+  * oas_positions(mode,nodevalue,posx,posy)
+  * oas_framerange(mode,firstframe,endframe)
+  * oas_frame(mode,frame)
+  * oas_Start()
+  * oas_server_chk(port)
+  * oas_ui_refresh()
+
+
+mode can be:
+  * normal
+  * silent
+
+if the mode is normal it will output to the stdout but will not have return value sometimes, if it is silent, than we will have a returnvalue, but no output for stdout. Silent is used for post and inter-software communication.
