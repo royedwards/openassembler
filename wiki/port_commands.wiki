@@ -1,9 +1,9 @@
-The port module is cooperating with the console module, so we can accept all the comamnds with the same way as it was in the commansline interface. 
+The port module is cooperating with the [console] module, so we can accept all the comamnds with the same way as it was in the commansline interface. 
 
 Plusz a few more:
 
-  * *current_file*, which will answer the current opened scene if there are any.
-  * *variabletypes*, will answer all the veriabletypes and variablecategoryes
-  * *check*, you can use it like: check 23346 will check you the port 23346
-  * *refresh*, this will send a refresh request for the gui, it is important to keep in sync
-  * *positions*, you can use like: positions <node> 20 40, this will set node to x=20 y=40
+  * *[current_file]*, which will answer the current opened scene if there are any.
+  * *[variabletypes]*, will answer all the veriabletypes and variablecategoryes
+  * *[check]*, you can use it like: check 23346 will check you the port 23346
+  * *[refresh]*, this will send a refresh request for the gui, it is important to keep in sync
+  * *[positions]*, you can use like: positions <node> 20 40, this will set node to x=20 y=40
