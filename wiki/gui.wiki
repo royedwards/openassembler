@@ -1,6 +1,6 @@
 You can start the interface by this command:
 
-to run the GUI you need a runnig server already. To start a server, you have to start a a console in a separate terminal. Check here:[console]
+to run the GUI you need a runnig server already. To start a server, you have to start a a console in a separate terminal. Check here: [console]
 
 
 
