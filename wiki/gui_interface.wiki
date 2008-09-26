@@ -1,0 +1,15 @@
+Functions you can access by importing the GUI/common/GUI_Interface.py module:
+
+{{{
+from GUI.common.GUI_Interface import GUI_Interface_client
+}}}
+
+  * oas_gui_interface_client(port,message)
+
+
+{{{
+from GUI.common.GUI_Interface import GUI_Interface_server
+}}}
+
+  * oas_gui_interface_server(port,multitasking_lock)
+
