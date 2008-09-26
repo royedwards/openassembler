@@ -1,4 +1,4 @@
-Punctions you can access by importing the Gateway/Gateway.py module:
+Functions you can access by importing the Gateway/Gateway.py module:
 
   * oas_list(mode,listtype,searchtag)
   * oas_show(mode,showtype)
