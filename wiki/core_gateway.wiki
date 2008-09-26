@@ -1,5 +1,9 @@
 Functions you can access by importing the Gateway/Gateway.py module:
 
+{{{
+from Gateway.Gateway import oas_gateway
+}}}
+
   * oas_list(mode,listtype,searchtag)
   * oas_show(mode,showtype)
   * oas_count(mode,counttype)
