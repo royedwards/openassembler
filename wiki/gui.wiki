@@ -1,0 +1,7 @@
+You can start the interface by this command:
+
+{{{
+python OpenAssembler.py -m old_gui
+}}}
+
+More to come...
