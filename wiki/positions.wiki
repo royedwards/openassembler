@@ -1,0 +1,3 @@
+==positions <node> <x> <y>==
+
+This command is used to set the position of the node by the gui.
