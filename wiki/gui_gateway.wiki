@@ -1,5 +1,9 @@
 Functions you can access by importing the GUI/common/GUI_Gateway.py module:
 
+{{{
+from GUI.common.GUI_Gateway import gui_gateway
+}}}
+
   * oas_gui_new()
   * oas_gui_open(path)
   * oas_gui_save(path)
