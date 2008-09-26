@@ -51,4 +51,3 @@ Here are the list of the commands:
   # [new]
   # [open]
   # [save]
-  # [old_gui]
