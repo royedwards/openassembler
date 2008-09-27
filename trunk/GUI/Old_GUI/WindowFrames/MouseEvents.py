@@ -17,21 +17,28 @@ from GUI.Old_GUI.Nodes.ConnectionLine import ConnectLine
 
 class NodeEditorCanvasEvents(GUI_Interface_client,ConnectLine):
     def CloseGUI(self):
-    	self.oas_gui_interface_client(self.editorport,"server halt")
+    	self.nodePositions()
+	self.oas_gui_interface_client(self.editorport,"server halt")
     	self.event_generate("<<cloose>>", when='tail')
-        
-    def CloseALL(self):
-    	self.oas_gui_interface_client(self.editorport,"server halt")
-    	self.event_generate("<<cloose_all>>", when='tail')
-    
+            
     def NewScene(self):
 	self.oas_gui_new()
 	
     def Refresh(self):
-    	self.oas_gui_refresh()
+    	self.nodePositions()
+	self.oas_gui_refresh()
 
+
+    def nodePositions(self):
+	nodes=self.oas_gui_scenenodelist()
+	for nds in nodes:
+		realid=self.oas_gui_scenenode_show(nds)[0]
+		bb=self.editorc.bbox(str(realid)+"select")
+		self.oas_gui_set_positions(nds,int((bb[0]-5)*1/self.GlobalScale),int((bb[1]-5)*1/self.GlobalScale))	
+	
     def SaveScene(self):
-            if self.savedfile=="":
+            self.nodePositions()
+	    if self.savedfile=="":
 	    	fdiagback=tkFileDialog.SaveAs(filetypes=[('OpenAsembler Scene','*.oas')],title="Save OpenAssembler scene file as:").show()
             	if fdiagback==():
                 	pass
@@ -42,7 +49,8 @@ class NodeEditorCanvasEvents(GUI_Interface_client,ConnectLine):
 	    	self.oas_gui_save(self.savedfile)
 			
     def SaveAsScene(self):
-            fdiagback=tkFileDialog.SaveAs(filetypes=[('OpenAsembler Scene','*.oas')],title="Save OpenAssembler scene file as:").show()
+            self.nodePositions()
+	    fdiagback=tkFileDialog.SaveAs(filetypes=[('OpenAsembler Scene','*.oas')],title="Save OpenAssembler scene file as:").show()
             if fdiagback==():
                 pass
             else:
@@ -89,6 +97,7 @@ class NodeEditorCanvasEvents(GUI_Interface_client,ConnectLine):
                                 if self.MenuNodeItems[g][h]!="":
                                         submenu.add_command(label=self.MenuNodeItems[g][h], command=lambda rty=self.MenuNodeItems[g][h]:self.AddNode(rty))
 		menu.add_separator()
+		menu.add_command(label="RUN!!!", command=lambda :self.runall())
 		menu.add_command(label="Refresh", command=lambda :self.Refresh())
 		menu.add_separator()
 		menu.add_command(label="New", command=lambda :self.NewScene())
@@ -99,7 +108,6 @@ class NodeEditorCanvasEvents(GUI_Interface_client,ConnectLine):
 		menu.add_command(label="SaveAs", command=lambda :self.SaveAsScene())
 		menu.add_separator()
 		menu.add_command(label="Close Editor", command=lambda :self.CloseGUI())
-		menu.add_command(label="Exit ALL", command=lambda :self.CloseALL())
 		menu.post(event.x_root, event.y_root)
         else:
           pass
@@ -108,8 +116,28 @@ class NodeEditorCanvasEvents(GUI_Interface_client,ConnectLine):
     def delNodeFromMenu(self,TargetCanvas,EventTags):
     	self.oas_gui_deletenode(EventTags[0])
 
-    def markEndFromMenu(self,TargetCanvas,EventTags):
-    	pass
+    def delLineFromMenu(self,TargetCanvas,EventTags):
+    	self.oas_gui_deleteline(EventTags[0])
+
+    def markEndFromMenu(self,EventTags):
+	self.oas_gui_endnode(EventTags[0])
+
+    def runall(self):
+    	self.oas_gui_run()
+
+    def preview(self,EventTags):
+    	self.markEndFromMenu(EventTags)
+	self.oas_gui_preview()
+	
+    def PopupMenuLine(self,TargetCanvas,event,Eventtag):
+
+    	try:
+		self.menulink.destroy()
+	except:
+		pass
+        self.menulink=menu=Menu(TargetCanvas,tearoff=0,title=Eventtag[3])
+        menu.add_command(label="Delete", command=lambda :self.delLineFromMenu(TargetCanvas,Eventtag))
+        menu.post(event.x_root, event.y_root)
 
     def PopupMenuNode(self,TargetCanvas,event,Eventtag):
 
@@ -118,7 +146,9 @@ class NodeEditorCanvasEvents(GUI_Interface_client,ConnectLine):
 	except:
 		pass
         self.menulink=menu=Menu(TargetCanvas,tearoff=0,title=Eventtag[3])
-	menu.add_command(label="Mark as EndNode", command=lambda :self.markEndFromMenu(TargetCanvas,Eventtag))
+	menu.add_command(label="Preview", command=lambda :self.preview(Eventtag))
+	menu.add_command(label="Mark as EndNode", command=lambda :self.markEndFromMenu(Eventtag))
+	menu.add_separator()
         menu.add_command(label="Delete", command=lambda :self.delNodeFromMenu(TargetCanvas,Eventtag))
         menu.post(event.x_root, event.y_root)
 
@@ -132,7 +162,9 @@ class NodeEditorCanvasEvents(GUI_Interface_client,ConnectLine):
 	       self.PopupMenuMain(TargetCanvas,event)
         else:
                if Eventtag[3]!="line":
-	       	self.PopupMenuNode(TargetCanvas,event,Eventtag)
+	       		self.PopupMenuNode(TargetCanvas,event,Eventtag)
+	       elif Eventtag[3]=="line":
+	       		self.PopupMenuLine(TargetCanvas,event,Eventtag)
 
     def ReleaseNodeEditor(self,event,TargetCanvas,lasx,lasty):
         EventTags=TargetCanvas.gettags(CURRENT)

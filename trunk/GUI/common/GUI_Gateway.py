@@ -80,6 +80,7 @@ class gui_gateway(GUI_Interface_client):
 				outs.append(y.split(".")[1].split("=")[0])
 		result.append(ins)
 		result.append(outs)
+		result.append((int(ret[1].split(":")[0]),int(ret[1].split(":")[1])))
 		return result
 		
 	def oas_gui_nodetypes(self):
@@ -100,8 +101,28 @@ class gui_gateway(GUI_Interface_client):
 		ret2=str(ret).strip("]").lstrip("[").split(",")[1].strip().lstrip().lstrip("\'").strip("\'")
 		return [ret1,ret2]
 		
+	def oas_gui_run(self):
+		ret=self.oas_gui_interface_client(self.main_serverport,("run"))
+		return ret
+		
+	def oas_gui_setframerange(self,start,end):
+		ret=self.oas_gui_interface_client(self.main_serverport,("framerange "+str(start)+" "+str(end)))
+		return ret
+		
+	def oas_gui_preview(self):
+		frangee=self.oas_gui_showframerange()
+		curr=self.oas_gui_showframe()
+		self.oas_gui_setframerange(curr,curr)
+		ret=self.oas_gui_interface_client(self.main_serverport,("run"))
+		self.oas_gui_setframerange(frangee[0],frangee[1])
+		return ret
+		
 	def oas_gui_addnode(self,node):
 		self.oas_gui_interface_client(self.main_serverport,("create "+str(node)))
+		
+	def oas_gui_endnode(self,nodein):
+		node=self.oas_gui_scenenode_show(nodein)[1]
+		self.oas_gui_interface_client(self.main_serverport,("end "+str(node)))
 		
 	def oas_gui_connect(self,outnode,outvalue,innode,invalue):
 		outnode=self.oas_gui_scenenode_show(outnode)[1]
@@ -113,6 +134,9 @@ class gui_gateway(GUI_Interface_client):
 		
 	def oas_gui_deletenode(self,node):
 		self.oas_gui_interface_client(self.main_serverport,("delete node "+str(node)))
+		
+	def oas_gui_deleteline(self,node):
+		self.oas_gui_interface_client(self.main_serverport,("delete connection "+str(node)))
 		
 	def oas_gui_currentfile(self):
 		ret=self.oas_gui_interface_client(self.main_serverport,("current_file"))
@@ -130,3 +154,8 @@ class gui_gateway(GUI_Interface_client):
 	def oas_gui_server_check(self,port):
 		ret=self.oas_gui_interface_client(self.main_serverport,("check "+str(port)))
 		return ret
+
+	def oas_gui_set_positions(self,node,posx,posy):
+		ret=self.oas_gui_interface_client(self.main_serverport,("positions "+str(node)+" "+str(posx)+" "+str(posy)))
+		return ret
+		

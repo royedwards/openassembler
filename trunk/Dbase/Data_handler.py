@@ -111,6 +111,7 @@ class oas_data_handler(oas_variablechecker):
 				print "This node is a scene node!"
 				print "Inputs:"
 			nodlist.append(str(self.oas_rt[showtype]['name'])+":"+str(self.oas_rt[showtype]['nodetype'])+":"+str(showtype))
+			nodlist.append(str(self.oas_rt[showtype]['posx'])+":"+str(self.oas_rt[showtype]['posy']))
 			for ins in self.oas_rt[str(showtype)]['inputs'].keys():
 				con_chk=0
 				for con in self.oas_rt_connections.keys():
@@ -220,7 +221,7 @@ class oas_data_handler(oas_variablechecker):
 # if mode is 0 it will create the node, but in "silent" mode
 ###########################################################################################			
 				
-	def oas_data_create(self,mode="silent",nodetype=""):
+	def oas_data_create(self,mode="silent",nodetype="",posx=100,posy=100):
 		result=0
 		for nds in self.oas_node_list.keys():
 			if str(nds)==str(nodetype):
@@ -229,6 +230,8 @@ class oas_data_handler(oas_variablechecker):
 				self.oas_rt["Node"+generated_random]=deepcopy(self.oas_node_list[nds])
 				self.oas_rt["Node"+generated_random]['nodetype']=str(nds)
 				self.oas_rt["Node"+generated_random]['name']=str(str(nds)+generated_random)
+				self.oas_rt["Node"+generated_random]['posx']=posx
+				self.oas_rt["Node"+generated_random]['posy']=posy
 				del self.oas_rt["Node"+generated_random]['tag']
 				del self.oas_rt["Node"+generated_random]['path']
 				self.oas_last_node_created=str(str(nds)+generated_random)
@@ -309,6 +312,26 @@ class oas_data_handler(oas_variablechecker):
 				if mode=="normal":
 					print "Problematic description.."
 				return 0
+
+
+	def oas_data_positions(self,mode="silent",nodevalue="",posx=100,posy=100):
+		if nodevalue!="" and posx!="" and posy!="":
+				nodelists={}
+				for noddd in self.oas_rt.keys():
+					nodelists[self.oas_rt[noddd]['name']]=noddd
+				if nodelists.has_key(nodevalue):
+						try:
+							self.oas_rt[nodelists[nodevalue]]['posx']=int(posx)
+							self.oas_rt[nodelists[nodevalue]]['posy']=int(posy)
+						except:
+							return 0
+						
+						return [posx,posy]
+				else:
+					if mode=="normal":
+						print "None existing node..."
+					return 0
+
 
 ###########################################################################
 # rename a node can be normal 1 or silent 0 mode

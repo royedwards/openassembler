@@ -10,7 +10,6 @@
 from Dbase.Data_handler import oas_data_handler
 from Dbase.FileIO import oas_fileio
 from Run.Run import oas_execute
-from GUI.Old_GUI.Old_GUI import Old_GUI
 from Port.Broadcaster import oas_broadcaster
 
 ###################################################################################
@@ -20,7 +19,7 @@ from Port.Broadcaster import oas_broadcaster
 # if mode is "0", this is the "silent" mode no error, no confirmation outputed
 ###################################################################################
 
-class oas_gateway(oas_data_handler,oas_fileio,oas_execute,Old_GUI,oas_broadcaster):
+class oas_gateway(oas_data_handler,oas_fileio,oas_execute,oas_broadcaster):
 
 	def oas_list(self,mode,listtype="",searchtag=""):			
 		return self.oas_data_list(mode=mode,listtype=listtype,searchtag=searchtag)
@@ -40,7 +39,12 @@ class oas_gateway(oas_data_handler,oas_fileio,oas_execute,Old_GUI,oas_broadcaste
 	def oas_delete(self,mode,deletetype="node",target=""):
 		rv=self.oas_data_delete(mode=mode,deletetype=deletetype,target=target)
 		if rv!=0:
-			self.oas_Broadcast(self.broadcast_ports,"delete node "+str(rv[0]))		
+			if deletetype=="node":
+				self.oas_Broadcast(self.broadcast_ports,"delete node "+str(rv[0]))
+			elif deletetype=="connection":
+				self.oas_Broadcast(self.broadcast_ports,"delete connection "+str(rv[0]))
+			else:
+				pass	
 		return rv
 
 	def oas_rename(self,mode,old="",new=""):
@@ -78,6 +82,9 @@ class oas_gateway(oas_data_handler,oas_fileio,oas_execute,Old_GUI,oas_broadcaste
 
 	def oas_set(self,mode,nodevalue="",value=""):
 		return self.oas_data_set(mode=mode,nodevalue=nodevalue,value=value)	
+		
+	def oas_positions(self,mode,nodevalue="",posx=100,posy=100):
+		return self.oas_data_positions(mode=mode,nodevalue=nodevalue,posx=posx,posy=posy)
 
 	def oas_framerange(self,mode,firstframe="",endframe=""):
 		return self.oas_data_framerange(mode=mode,firstframe=firstframe,endframe=endframe)
@@ -87,9 +94,6 @@ class oas_gateway(oas_data_handler,oas_fileio,oas_execute,Old_GUI,oas_broadcaste
 		
 	def oas_Start(self):
 		return self.oas_Startup()
-		
-	def oas_oldGUI(self,lock,*arg):
-		return self.start_old_gui(lock,"")
 		
 	def oas_server_chk(self,port):
 		return self.oas_broadcast_chk(port)

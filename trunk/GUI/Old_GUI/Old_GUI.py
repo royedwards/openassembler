@@ -54,28 +54,22 @@ class OldGUI(Frame,CanvasInitNodeEditor,gui_gateway,oas_GUI_setup,GUI_Interface_
 	while c=="0":
 		c="1"
 		c=str(self.oas_gui_server_check(self.editorport))
-	    
-	    
-	    
 
     def _createWidgets(self):
             self.editorc=self.StartUpNodeEditorCanvas()
 
 class Old_GUI(GUI_Interface_server):
-	def start_old_gui(self,lock,empty):
-		lock.acquire()
+	def start_old_gui(self):
 		app= OldGUI() 
 		app.master.title("OpenAssembler NodeEditor Old-Interface")
 		def killer():
 			app.master.destroy()
 		def killer_all():
 			app.master.destroy()
-			thread.interrupt_main()
 		app.bind("<<cloose>>", lambda app=app:killer())
 		app.bind("<<cloose_all>>", lambda app=app:killer_all())
-
-		lock.release()
 		app.mainloop()
+		sys.exit(0)
 		
 		
 

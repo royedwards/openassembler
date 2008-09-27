@@ -13,27 +13,26 @@ from Console.Console import oas_console
 from Port.server import oas_server
 from Port.client import oas_client
 from Gateway.Gateway import oas_gateway
+from GUI.Old_GUI.Old_GUI import Old_GUI
+
 import thread
 
 ###################################################################################
 # oas starts up here this is needed to call, for the basic environment-variable setup
 ###################################################################################
 
-class oas_start(oas_setup,oas_client,oas_console,oas_server,oas_gateway):
+class oas_start(oas_setup,oas_client,oas_console,oas_server,oas_gateway,Old_GUI):
 	def __init__(self,args_list):
 		
 		if args_list[0]=="client":
-			
-###################################################################################
-# remote client is a special case, we do not need to setup a scene and a server
-###################################################################################
-			
 			self.oas_Start()
 			self.oas_remoteClient(self.server_port)
 			
 		elif args_list[0]=="run":
 			self.oas_run("1",["run"])
 		
+		if args_list[0]=="old_gui":
+			self.start_old_gui()
 		else:
 		
 ###################################################################################
@@ -60,6 +59,4 @@ class oas_start(oas_setup,oas_client,oas_console,oas_server,oas_gateway):
 			if args_list[0]=="console":
 				self.oas_Console()
 
-			if args_list[0]=="old_gui":
-				thread.start_new_thread(self.oas_oldGUI,(self.lock,""))
-				self.oas_Console()
+

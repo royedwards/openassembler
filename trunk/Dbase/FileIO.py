@@ -70,6 +70,11 @@ class oas_fileio(oas_data_handler):
 						result+="\t"+str(stn)+" "+str(self.oas_scene_setup[stn])+"\n"
 					result+="}\n\n"
 					
+					result+="node_positions\n{\n"
+					for stn in self.oas_rt.keys():
+						result+="\t"+str(self.oas_rt[stn]['name'])+" "+str(self.oas_rt[stn]['posx'])+":"+str(self.oas_rt[stn]['posy'])+"\n"
+					result+="}\n\n"
+					
 					file_save=open(str(filename),"w")
 					file_save.write(result)
 					file_save.close()
@@ -165,18 +170,30 @@ class oas_fileio(oas_data_handler):
 
 
 					
-										
+					try:
+						pospart=str(readed_content.split("node_positions\n{\n")[1].split("}\n")[0]).strip().split("\n")
+						for lnn in pospart:
+							sret=self.oas_data_positions(mode,nodevalue=str(lnn.strip().lstrip().split()[0]),posx=str(lnn.strip().lstrip().split()[1]).split(":")[0],posy=str(lnn.strip().lstrip().split()[1]).split(":")[1])
+							if sret==0:
+								if mode=="normal":
+									print "Problem with the positions..."
+					except:
+						pass					
+					
+					
 					try:	
 						conpart=str(readed_content.split("connection\n{\n")[1].split("}\n")[0]).strip().split("\n")		
 						for lns in conpart:
 							cret=self.oas_data_connect(mode,from_variable=str(lns.strip().lstrip().split()[0]),to_variable=str(lns.strip().lstrip().split()[1]))      
-							if cret==False:
+							if cret==0:
 								if mode=="normal":
 									print "Problem when connectiong nodes."
 					except:
 						if mode=="normal":
 							print "Wrong file content..."
 						return 0
+					
+					
 					
 					self.oas_save_filename=str(filename)
 					return str(filename)
