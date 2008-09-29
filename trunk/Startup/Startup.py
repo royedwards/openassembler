@@ -29,7 +29,7 @@ class oas_start(oas_setup,oas_client,oas_console,oas_server,oas_gateway,Old_GUI)
 			self.oas_remoteClient(self.server_port)
 
 		
-		if args_list[0]=="old_gui":
+		if args_list[0]=="gui":
 			self.start_old_gui()
 		else:
 			self.oas_Start()

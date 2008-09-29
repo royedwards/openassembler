@@ -19,7 +19,7 @@ from Startup.Startup import oas_start
 #   Parsing the arg's
 #-------------------------------------------------------------------------------------
 
-oas_arg_mode="normal"
+oas_arg_mode="console"
 oas_arg_inputfile=""
 if len(sys.argv)<2:
 	pass
@@ -32,7 +32,7 @@ Owner: Laszlo Mates
 
 Options:
    -help 		      :display this screen
-   -m <run/console/client> :this are the modes to start OpenAssembler
+   -m <run/console/client/gui> :this are the modes to start OpenAssembler
    -f <inputfile>	      :open a file during the startup		
 		'''
 			sys.exit(0)
@@ -47,12 +47,12 @@ Options:
 		elif sys.argv[i]=="-m":
 			try:
 				oas_arg_mode=sys.argv[i+1]
-				if oas_arg_mode=="normal" or oas_arg_mode=="console" or oas_arg_mode=="client" or oas_arg_mode=="run" or oas_arg_mode=="old_gui":
+				if oas_arg_mode=="console" or oas_arg_mode=="client" or oas_arg_mode=="run" or oas_arg_mode=="gui":
 					pass
 				else:
-					oas_arg_mode="normal"
+					oas_arg_mode="console"
 			except:
-				oas_arg_mode="normal"
+				oas_arg_mode="console"
 		else:
 			pass
 
