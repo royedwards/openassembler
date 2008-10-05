@@ -1,7 +1,30 @@
-With normal start you will have the normal console, but the server is out of order.
+With normal start you will have the normal console without the server. I recomend you the server version.
 
 To start oas without the server: (to remember: gui will not work without the server)
 
 {{{
 python OpenAssembler.py
 }}}
+
+==Console commands==
+
+Console is a very important tool for OpenAssembler! You can reach every tool and command with simply typing the proper command after the prompt. You can open, save, create nodes, run them open, a gui element... everything you want and you ever need.
+
+Here are the list of the commands:
+
+  # [exit]
+  # [list]
+  # [count]
+  # [create]
+  # [delete]
+  # [rename]
+  # [show]
+  # [connect]
+  # [end]
+  # [set]
+  # [frame]
+  # [framerange]
+  # [run_console run]
+  # [new]
+  # [open]
+  # [save]
