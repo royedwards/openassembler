@@ -25,3 +25,7 @@ After some time (quite soon) you will get a message from the server, like this o
 {{{
 OpenAssembler Server started at 192.168.0.1:23345 !
 }}}
+
+
+For the commands:
+[console Normal console]
