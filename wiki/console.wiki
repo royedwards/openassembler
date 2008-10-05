@@ -1,7 +1,7 @@
-OpenAssembler have a console mode this is the most basic interface for oas.
+OpenAssembler have a server mode combined with the most basic console.
 I suggest to start with this one, and than later you can open up everything else.
 
-You can start the oas console like this:
+You can start the oas server and console like this:
 {{{
 OpenAssembler -m server
 }}}
@@ -25,29 +25,3 @@ After some time (quite soon) you will get a message from the server, like this o
 {{{
 OpenAssembler Server started at 192.168.0.1:23345 !
 }}}
-
-It is because the server is automatically started with the console, and it was indicateing that messages are accepted over the remote console.
-
-
-==Console commands==
-
-Console is a very important tool for OpenAssembler! You can reach every tool and command with simply typing the proper command after the prompt. You can open, save, create nodes, run them open, a gui element... everything you want and you ever need.
-
-Here are the list of the commands:
-
-  # [exit]
-  # [list]
-  # [count]
-  # [create]
-  # [delete]
-  # [rename]
-  # [show]
-  # [connect]
-  # [end]
-  # [set]
-  # [frame]
-  # [framerange]
-  # [run_console run]
-  # [new]
-  # [open]
-  # [save]
