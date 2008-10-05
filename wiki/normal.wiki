@@ -1,0 +1,7 @@
+With normal start you will have the normal console, but the server is out of order.
+
+To start oas without the server: (to remember: gui will not work without the server)
+
+{{{
+python OpenAssembler.py
+}}}
