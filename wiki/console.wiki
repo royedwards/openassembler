@@ -3,11 +3,11 @@ I suggest to start with this one, and than later you can open up everything else
 
 You can start the oas console like this:
 {{{
-OpenAssembler -m console
+OpenAssembler -m server
 }}}
 or
 {{{
-python OpenAssembler.py -m console
+python OpenAssembler.py -m server
 }}}
 
 Or you can start it by loading up a file:
