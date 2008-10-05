@@ -61,6 +61,9 @@ class OldGUI(Frame,CanvasInitNodeEditor,gui_gateway,oas_GUI_setup,GUI_Interface_
 class Old_GUI(GUI_Interface_server):
 	def start_old_gui(self):
 		app= OldGUI() 
+		def deleteWindow():
+			pass
+		app.master.protocol("WM_DELETE_WINDOW",deleteWindow)
 		app.master.title("OpenAssembler NodeEditor Old-Interface")
 		def killer():
 			app.master.destroy()

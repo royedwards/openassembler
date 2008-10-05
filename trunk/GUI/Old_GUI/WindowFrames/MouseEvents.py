@@ -17,7 +17,10 @@ from GUI.Old_GUI.Nodes.ConnectionLine import ConnectLine
 
 class NodeEditorCanvasEvents(GUI_Interface_client,ConnectLine):
     def CloseGUI(self):
-    	self.nodePositions()
+    	try:
+		self.nodePositions()
+	except:
+		pass
 	self.oas_gui_interface_client(self.editorport,"server halt")
     	self.event_generate("<<cloose>>", when='tail')
             
