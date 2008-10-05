@@ -29,6 +29,10 @@ class oas_start(oas_setup,oas_client,oas_console,oas_server,oas_gateway,Old_GUI,
 		if args_list[0]=="client":
 			self.oas_Start()
 			self.oas_remoteClient(self.server_port)
+
+		elif args_list[0]=="normal":
+			self.oas_Start()
+			self.oas_Console()
 			
 		elif args_list[0]=="run":
 			self.oas_run("1",["run"])
@@ -61,7 +65,7 @@ class oas_start(oas_setup,oas_client,oas_console,oas_server,oas_gateway,Old_GUI,
 # We are checking if we want to start a consol version or the gui version
 ###################################################################################
 		
-			if args_list[0]=="console":
+			if args_list[0]=="server":
 				self.oas_Console()
 
 
