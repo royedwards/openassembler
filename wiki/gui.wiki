@@ -4,7 +4,7 @@ You can start the interface by this command:
 
 
 {{{
-python OpenAssembler.py -m old_gui
+python OpenAssembler.py -m editor
 }}}
 
 More to come...
