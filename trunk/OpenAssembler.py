@@ -22,39 +22,39 @@ from Startup.Startup import oas_start
 oas_arg_mode="normal"
 oas_arg_inputfile=""
 if len(sys.argv)<2:
-	pass
+        pass
 else:
-	for i in range(1,len(sys.argv)):
-		if sys.argv[i]=="-h" or sys.argv[i]=="--h" or sys.argv[i]=="-help" or sys.argv[i]=="--help" or sys.argv[i]=="?" or sys.argv[i]=="-?":
-			print '''
+        for i in range(1,len(sys.argv)):
+                if sys.argv[i]=="-h" or sys.argv[i]=="--h" or sys.argv[i]=="-help" or sys.argv[i]=="--help" or sys.argv[i]=="?" or sys.argv[i]=="-?":
+                        print '''
 OpenAssembler v2 alpha-001
 Owner: Laszlo Mates
 
 Options:
-   -help 		      :display this screen
+   -help                      :display this screen
    -m <run/console/client> :this are the modes to start OpenAssembler
-   -f <inputfile>	      :open a file during the startup		
-		'''
-			sys.exit(0)
-		elif sys.argv[i]=="-f":
-			try:
-				oas_arg_inputfile=sys.argv[i+1]
-			except:
-				oas_arg_inputfile=""
-			if os.path.isfile(oas_arg_inputfile)!=True:
-				oas_arg_inputfile=""
-				
-		elif sys.argv[i]=="-m":
-			try:
-				oas_arg_mode=sys.argv[i+1]
-				if oas_arg_mode=="normal" or oas_arg_mode=="server" or oas_arg_mode=="client" or oas_arg_mode=="run" or oas_arg_mode=="editor" or oas_arg_mode=="preferences":
-					pass
-				else:
-					oas_arg_mode="normal"
-			except:
-				oas_arg_mode="normal"
-		else:
-			pass
+   -f <inputfile>             :open a file during the startup           
+                '''
+                        sys.exit(0)
+                elif sys.argv[i]=="-f":
+                        try:
+                                oas_arg_inputfile=sys.argv[i+1]
+                        except:
+                                oas_arg_inputfile=""
+                        if os.path.isfile(oas_arg_inputfile)!=True:
+                                oas_arg_inputfile=""
+                                
+                elif sys.argv[i]=="-m":
+                        try:
+                                oas_arg_mode=sys.argv[i+1]
+                                if oas_arg_mode=="normal" or oas_arg_mode=="server" or oas_arg_mode=="client" or oas_arg_mode=="run" or oas_arg_mode=="editor" or oas_arg_mode=="preferences":
+                                        pass
+                                else:
+                                        oas_arg_mode="normal"
+                        except:
+                                oas_arg_mode="normal"
+                else:
+                        pass
 
 
 

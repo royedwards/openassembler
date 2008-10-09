@@ -46,9 +46,9 @@ class OldPreferences(Frame,CanvasInitPreferencePanel,gui_gateway,oas_GUI_setup,G
 	thread.start_new_thread(self.oas_gui_interface_server,(self.preferencesport,llock))
 	
 	c="0"
-	while c=="0":
-		c="1"
-		c=str(self.oas_gui_server_check(self.preferencesport))
+	#while c=="0":
+		#c="1"
+		#c=str(self.oas_gui_server_check(self.preferencesport))
 
     def _createWidgets(self):
             self.preferencec=self.StartUpPreferencePanelCanvas()
