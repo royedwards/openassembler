@@ -521,8 +521,14 @@ class oas_data_handler(oas_variablechecker):
 ###########################################################################################################
 
 	def oas_Startup(self):
-		self.oas_userhome=os.environ.get("HOME")
-		self.oas_home=str(self.oas_userhome)+"/.OpenAssembler"
+		
+		import platform
+		if platform.system()=="Windows":
+			self.oas_userhome=os.environ.get("USERPROFILE")
+			self.oas_home=str(self.oas_userhome)+"/OpenAssembler"
+		else:
+			self.oas_userhome=os.environ.get("HOME")
+			self.oas_home=str(self.oas_userhome)+"/.OpenAssembler"
 		self.oas_rt={}
 		self.oas_rt_connections={}
 		self.oas_scene_setup={'startframe': 100,'frame':100,'endframe':200,'endnode':""}

@@ -7,7 +7,11 @@
 #
 ######################################################################################
 
-import sys, time, readline
+import platform
+if platform.system()=="Windows":
+	import sys, time
+else:
+	import sys, time, readline
 from Gateway.Gateway import oas_gateway
 import thread
 

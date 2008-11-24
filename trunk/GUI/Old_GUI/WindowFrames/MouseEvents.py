@@ -9,7 +9,7 @@
 
 
 from Tkinter import *
-import tkFileDialog
+import tkFileDialog, tkFont
 import sys
 from GUI.common.GUI_Interface import GUI_Interface_client
 from GUI.Old_GUI.Nodes.ConnectionLine import ConnectLine
@@ -88,13 +88,15 @@ class NodeEditorCanvasEvents(GUI_Interface_client,ConnectLine):
 		self.menulink.destroy()
 	except:
 		pass	
-        if self.menuopen=="0":
+        iofont = tkFont.Font ( family=self.font, size=self.fontsize-4 )
+	
+	if self.menuopen=="0":
 	        self.menuopen="1"
-                self.menulink=menu=Menu(TargetCanvas,tearoff=0,title="NodeList")
+                self.menulink=menu=Menu(TargetCanvas,tearoff=0,title="NodeList",font=iofont)
 
                 for g in range(0,len(self.MenuNodeItems)):
                   if self.MenuNodeItems[g][0]!="":
-                        submenu=Menu(menu,tearoff=0,title=self.MenuNodeItems[g][0])
+                        submenu=Menu(menu,tearoff=0,title=self.MenuNodeItems[g][0],font=iofont)
                         menu.add_cascade(label=self.MenuNodeItems[g][0],menu=submenu)
                         for h in range(1,len(self.MenuNodeItems[g])):
                                 if self.MenuNodeItems[g][h]!="":
@@ -138,7 +140,8 @@ class NodeEditorCanvasEvents(GUI_Interface_client,ConnectLine):
 		self.menulink.destroy()
 	except:
 		pass
-        self.menulink=menu=Menu(TargetCanvas,tearoff=0,title=Eventtag[3])
+        iofont = tkFont.Font ( family=self.font, size=self.fontsize-4 )
+	self.menulink=menu=Menu(TargetCanvas,tearoff=0,title=Eventtag[3],font=iofont)
         menu.add_command(label="Delete", command=lambda :self.delLineFromMenu(TargetCanvas,Eventtag))
         menu.post(event.x_root, event.y_root)
 
@@ -148,7 +151,8 @@ class NodeEditorCanvasEvents(GUI_Interface_client,ConnectLine):
 		self.menulink.destroy()
 	except:
 		pass
-        self.menulink=menu=Menu(TargetCanvas,tearoff=0,title=Eventtag[3])
+        iofont = tkFont.Font ( family=self.font, size=self.fontsize-4 )
+	self.menulink=menu=Menu(TargetCanvas,tearoff=0,title=Eventtag[3],font=iofont)
 	menu.add_command(label="Preview", command=lambda :self.preview(Eventtag))
 	menu.add_command(label="Mark as EndNode", command=lambda :self.markEndFromMenu(Eventtag))
 	menu.add_separator()

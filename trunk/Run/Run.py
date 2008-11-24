@@ -30,7 +30,11 @@ class oas_execute(oas_data_handler,oas_fileio):
 				else:
 					collection=self.oas_collect_nodes(optimized,node_cross_list,cache_folder)
 					jsfile_ret=self.oas_create_jobfile(optimized,node_cross_list,collection,cache_folder)
-					back=os.system("python "+str(jsfile_ret)+" &")
+					import platform
+					if platform.system()=="Windows":
+						back=os.system("python \""+str(jsfile_ret)+"\"")
+					else:
+						back=os.system("python "+str(jsfile_ret)+" &")
 					return 1
 			else:
 				if mode=="normal":
