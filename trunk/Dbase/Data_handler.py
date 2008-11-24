@@ -531,7 +531,7 @@ class oas_data_handler(oas_variablechecker):
 			self.oas_home=str(self.oas_userhome)+"/.OpenAssembler"
 		self.oas_rt={}
 		self.oas_rt_connections={}
-		self.oas_scene_setup={'startframe': 100,'frame':100,'endframe':200,'endnode':""}
+		self.oas_scene_setup={'startframe': 100,'frame':100,'endframe':100,'endnode':""}
 		self.oas_save_filename=""
 		self.oas_variablecategory={}
 		self.oas_last_node_created=""

@@ -27,8 +27,15 @@ class OldPreferences(Frame,CanvasInitPreferencePanel,gui_gateway,oas_GUI_setup,G
 	#self.oas_gui_refresh()
 
     def Startup(self):  
-	self.oas_userhome=os.environ.get("HOME")
-	self.oas_home=str(self.oas_userhome)+"/.OpenAssembler"
+	
+	import platform
+	if platform.system()=="Windows":
+		self.oas_userhome=os.environ.get("USERPROFILE")
+		self.oas_home=str(self.oas_userhome)+"/OpenAssembler"
+	else:
+		self.oas_userhome=os.environ.get("HOME")
+		self.oas_home=str(self.oas_userhome)+"/.OpenAssembler"
+
 	parsedret=self.oas_gui_setup(self.oas_home+"/OpenAssembler.ini")
 	fnt=self.oas_gui_font(parsedret)
 	self.main_serverport=self.oas_gui_serverport(parsedret,"server")

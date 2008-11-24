@@ -30,7 +30,7 @@ class CanvasInitPreferencePanel:
         label.grid()	
 
 	prefscroll=Scrollbar(self,orient="vertical")
-	prefscroll.grid(column=1,row=0,rowspan=2,sticky=N+S)
+	prefscroll.grid(column=1,row=0,rowspan=3,sticky=N+S)
 	TargetCanvas = Canvas (self, width=445, height=500,bg="gray35",yscrollcommand=prefscroll.set)
      	TargetCanvas.grid(column=0,row=1, sticky=N+S+E+W)
 	prefscroll.config(command=TargetCanvas.yview)
@@ -51,6 +51,15 @@ class CanvasInitPreferencePanel:
 	ParameterFrame.update_idletasks()
 
 	TargetCanvas.config(scrollregion=TargetCanvas.bbox("all"))
+	
+	frbott=Frame(self)
+	frbott.grid(column=0,row=2)
+	iofont2 = tkFont.Font ( family=self.font, size=int(self.fontsize) )
+	setbutton=Button(frbott,text="Set",font=iofont2,width=26,height=0,pady=0,fg="gray90",bg="gray15")
+	setbutton.grid(column=0,row=0)
+
+	cancelbutton=Button(frbott,text="Cancel",font=iofont2,width=26,height=0,pady=0,fg="gray90",bg="gray15")
+	cancelbutton.grid(column=1,row=0)
 
         return ParameterFrame
 
