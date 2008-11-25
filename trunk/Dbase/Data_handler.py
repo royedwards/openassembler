@@ -11,6 +11,7 @@ import os
 import sys
 from random import *
 from copy import deepcopy
+from Startup.Setup import oas_setup
 from Dbase.variables import oas_variablechecker
 
 
@@ -19,7 +20,7 @@ from Dbase.variables import oas_variablechecker
 # which is stored in memory)
 ###################################################################################
 	
-class oas_data_handler(oas_variablechecker):
+class oas_data_handler(oas_variablechecker,oas_setup):
 
 ############################################
 # random generator for the nodes

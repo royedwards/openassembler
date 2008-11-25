@@ -108,6 +108,7 @@ class oas_fileio(oas_data_handler):
 				if os.path.exists(str(filename)):
 					files=open(str(filename),"r")
 					readed_content=files.read()
+					readed_content=readed_content.replace("\r\n","\n")
 					files.close()
 					self.oas_Startup()
 					try:
@@ -117,7 +118,7 @@ class oas_fileio(oas_data_handler):
 								self.oas_scene_setup['endnode']=str(lns.strip().lstrip().split()[1])
 					except:
 						if mode=="normal":
-							print "Wrong file content..."
+							print "Wrong file content.../define-part/"
 						return 0
 					
 					try:	
@@ -129,7 +130,7 @@ class oas_fileio(oas_data_handler):
 								self.oas_scene_setup[str(lns.strip().lstrip().split()[0])]=""
 					except:
 						if mode=="normal":
-							print "Wrong file content..."
+							print "Wrong file content.../settings-part/"
 						return 0
 					
 					ndlist=readed_content.split("\nnode ")
@@ -190,7 +191,7 @@ class oas_fileio(oas_data_handler):
 									print "Problem when connectiong nodes."
 					except:
 						if mode=="normal":
-							print "Wrong file content..."
+							print "Wrong file content.../connection-part/"
 						return 0
 					
 					

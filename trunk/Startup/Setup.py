@@ -50,6 +50,7 @@ variablecategory black color,point,vector,avector,vvector,avvector
 	def oas_load_setup(self,path):
 		file=open(path,"r")
 		setupFile_Content=file.read()
+		setupFile_Content=setupFile_Content.replace("\r\n","\n")
 		file.close()
 		setupFile_Content=setupFile_Content.split("\n")
 		setup_parsed=[]
@@ -116,12 +117,12 @@ variablecategory black color,point,vector,avector,vvector,avvector
 		for i in range (0,len(setupfilecontent)):
 			if setupfilecontent[i][0]=="environments":
 				if len(setupfilecontent[i])>1:
-					splitted=setupfilecontent[i][1].split(":")
+					splitted=setupfilecontent[i][1].split(";")
 					for n in range (0,len(splitted)):
 						if splitted[n]!="":
 							envretun=os.environ.get(splitted[n])
 							if envretun!=None:
-								envretun=envretun.split(":")
+								envretun=envretun.split(";")
 								for m in range (0,len(envretun)):
 									if envretun[m]!="":
 										if os.path.isdir(envretun[m]):
@@ -129,7 +130,7 @@ variablecategory black color,point,vector,avector,vvector,avvector
 		for i in range (0,len(setupfilecontent)):
 			if setupfilecontent[i][0]=="manualpath":
 				if len(setupfilecontent[i])>1:
-					splitted=setupfilecontent[i][1].split(":")
+					splitted=setupfilecontent[i][1].split(";")
 					for n in range (0,len(splitted)):
 						if splitted[n]!="":
 							if os.path.isdir(splitted[n]):
@@ -158,11 +159,11 @@ variablecategory black color,point,vector,avector,vvector,avvector
 					checker_perm=True
 				except:
 					checker_perm=False
-				
 				if os.path.isfile(str(singledir+"/"+desc_files))==True and checker_perm:
 					if os.path.splitext(desc_files)[1][1:][:2]=="sa" or os.path.splitext(desc_files)[1][1:][:2]=="py":
 						node_file=open(str(singledir+"/"+desc_files),"r")
 						node_file_content=node_file.read()
+						node_file_content=node_file_content.replace("\r\n","\n")
 						node_file.close()
 						if len(node_file_content.split("define\n{",1))>1:
 							im_part=node_file_content.split("define\n{",1)[1].split("}",1)[0]

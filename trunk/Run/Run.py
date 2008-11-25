@@ -16,7 +16,10 @@ from Dbase.FileIO import oas_fileio
 
 class oas_execute(oas_data_handler,oas_fileio):
 	
-	def oas_run_execute(self,mode="silent"):
+	def oas_run_execute(self,mode="silent",runmode="normal",fixedframe=1):
+		back=None
+		self.runmode=runmode
+		self.fixedframe=fixedframe
 		node_cross_list={}
 		for nds in self.oas_rt.keys():
 			node_cross_list[self.oas_rt[nds]['name']]=nds
@@ -30,12 +33,22 @@ class oas_execute(oas_data_handler,oas_fileio):
 				else:
 					collection=self.oas_collect_nodes(optimized,node_cross_list,cache_folder)
 					jsfile_ret=self.oas_create_jobfile(optimized,node_cross_list,collection,cache_folder)
-					import platform
-					if platform.system()=="Windows":
-						back=os.system("python \""+str(jsfile_ret)+"\"")
+					if self.runmode=="maya":
+						dir=cache_folder
+						#import compileall
+						#compileall.compile_dir(dir)
+						if os.path.isdir(dir):
+							sys.path.append(dir)
+						import oas_run_job as ojs
+						runciclecall=ojs.run()
+						return runciclecall.run_main()
 					else:
-						back=os.system("python "+str(jsfile_ret)+" &")
-					return 1
+						import platform
+						if platform.system()=="Windows":
+							back=os.system("python \""+str(jsfile_ret)+"\"")
+						else:
+							back=os.system("python "+str(jsfile_ret)+" &")
+						return back
 			else:
 				if mode=="normal":
 					print "No end-node!!"
@@ -44,7 +57,7 @@ class oas_execute(oas_data_handler,oas_fileio):
 			if mode=="normal":
 				print "There is no node in the scene."
 			return 0
-
+		
 	def oas_make_piramid(self,node_list,fin_node):
         	level=[]
         	level_number=0
@@ -100,13 +113,29 @@ class oas_execute(oas_data_handler,oas_fileio):
 				basesave=self.oas_save_filename
 			else:
 				basesave="~/tmp/tmp.oas"
-	    		tmpfilder=self.oas_userhome+"/tmp/"+os.path.basename(basesave)[:-4]+fintime
-			os.makedirs(str(tmpfilder))
+	    		if self.runmode=="maya":
+				tmpfilder=self.oas_userhome+"/tmp"
+			else:
+				tmpfilder=self.oas_userhome+"/tmp/"+os.path.basename(basesave)[:-4]+fintime
+			if os.path.isdir(tmpfilder):
+				pass
+			else:
+				os.makedirs(str(tmpfilder))
+			if self.runmode=="maya":
+				if os.path.isfile(str(tmpfilder)+"/__init__.py"):
+					pass
+				else:
+					ifile=open(str(tmpfilder)+"/__init__.py","w")
+					ifile.write("__all__=['oas_run_job'] \n")
+					ifile.close()
+			else:
+				pass
+				
         	except:
             		print "Error: Problem with the temp dir creation!!"
 			return False
         	try:
-			self.oas_file_save("0",["save","oas",(str(tmpfilder)+"/tmp_run.oas")])
+			self.oas_file_save(mode="silent",filename=str(tmpfilder)+"/tmp_run.oas")
             		#print "--  --  OAS saved..."
         	except:
             		print "Error: Problem with copying files!!!"
@@ -152,11 +181,24 @@ class oas_execute(oas_data_handler,oas_fileio):
 			mds+=mms+","
 		mds=mds.strip(",")
 		js+="\n"
-		for cf in range(int(self.oas_scene_setup['startframe']),int(self.oas_scene_setup['endframe'])+1):
+		self.lastoutput=""
+		if self.runmode=="maya":
+			srtfame=self.fixedframe
+			edframe=self.fixedframe
+		else:
+			srtfame=self.oas_scene_setup['startframe']
+			edframe=self.oas_scene_setup['endframe']
+		for cf in range(int(srtfame),int(edframe)+1):
 			js+="# ------------------------------ Frame "+str(cf)+" ------------------------------\n"
-			js+="class run"+str(cf)+"("+str(mds)+"):\n"
-			js+="\tdef __init__(self):\n"
-			js+="\t\tself.run_main()\n"
+			if self.runmode=="maya":
+				js+="class run"+"("+str(mds)+"):\n"
+			else:
+				js+="class run"+str(cf)+"("+str(mds)+"):\n"
+			if self.runmode=="maya":
+				pass
+			else:
+				js+="\tdef __init__(self):\n"
+				js+="\t\tself.run_main()\n"
 			js+="\tdef run_main(self):\n"
 			js+="\t\toas_current_frame="+str(cf)+"\n"
 			for n in range (0,len(nodelist)):
@@ -173,6 +215,7 @@ class oas_execute(oas_data_handler,oas_fileio):
 					outs=["out"]
 				for out in outs:
 					js+="\t\t"+str(nodelist[n])+"_variable_"+str(out)+"="+"self."+str(collection[nodelist[n]]['nodetype'])+"_main(oas_output=\""+str(out)+"\""
+					self.lastoutput=str(nodelist[n])+"_variable_"+str(out)
 					for ins in self.oas_rt[crosslist[nodelist[n]]]['inputs'].keys():
 						js+=","+str(ins)+"="
 						hascon=""
@@ -190,7 +233,12 @@ class oas_execute(oas_data_handler,oas_fileio):
 						else:
 							js+=hascon
 					js+=")\n"
-			js+="run"+str(cf)+"()\n"
+				if (n+1)==len(nodelist):
+					js+="\t\t"+"return "+str(self.lastoutput)+"\n"
+			if self.runmode=="maya":
+				pass
+			else:
+				js+="run"+str(cf)+"()\n"
 		jsfile=open(path+"/oas_run_job.py","w")
 		jsfile.write(js)
 		jsfile.close()

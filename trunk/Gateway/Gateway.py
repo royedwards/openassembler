@@ -77,8 +77,8 @@ class oas_gateway(oas_data_handler,oas_fileio,oas_execute,oas_broadcaster):
 			self.oas_Broadcast(self.broadcast_ports,"refresh")		
 		return rv
 	
-	def oas_run(self,mode):
-		return self.oas_run_execute(mode=mode)
+	def oas_run(self,mode,runmode="normal",fixedframe=1):
+		return self.oas_run_execute(mode=mode,runmode=runmode,fixedframe=fixedframe)
 
 	def oas_set(self,mode,nodevalue="",value=""):
 		return self.oas_data_set(mode=mode,nodevalue=nodevalue,value=value)	
@@ -101,3 +101,4 @@ class oas_gateway(oas_data_handler,oas_fileio,oas_execute,oas_broadcaster):
 	def oas_ui_refresh(self):
 		self.oas_Broadcast(self.broadcast_ports,"refresh")
 		
+
