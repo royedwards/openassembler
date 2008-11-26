@@ -16,6 +16,8 @@ kPluginCmdName = "openAssemblerCmd"
 
 kTimeFlag = "-t"
 kTimeLongFlag = "-time"
+kFilenameFlag = "-f"
+kFilenameLongFlag = "-file"
 
 class openAssemblerCmd(OpenMayaMPx.MPxCommand,oas_gateway):
 
@@ -25,15 +27,15 @@ class openAssemblerCmd(OpenMayaMPx.MPxCommand,oas_gateway):
 	def doIt(self,args):
 		
 		time=1
+		filename=""
 		
 		argData = OpenMaya.MArgDatabase(self.syntax(), args)
 		if argData.isFlagSet(kTimeFlag):
-			time = argData.flagArgumentDouble(kTimeFlag, 0)
-			
-		print time
-		#reload(oas_gateway) 
+			time = argData.flagArgumentInt(kTimeFlag, 0)
+		if argData.isFlagSet(kFilenameFlag):
+			filename = argData.flagArgumentStr(kFilenameFlag, "")
 		self.oas_Start()
-		self.oas_open(mode="normal",filename="X:\mayatest.oas",filetype="oas")
+		self.oas_open(mode="normal",filename=filename,filetype="oas")
 		result = self.oas_run(mode="normal",runmode="maya",fixedframe=int(time)) 
 		
 		print result
@@ -44,7 +46,8 @@ def cmdCreator():
 
 def syntaxCreator():
 	syntax = OpenMaya.MSyntax()
-	syntax.addFlag(kTimeFlag, kTimeLongFlag, OpenMaya.MSyntax.kDouble)
+	syntax.addFlag(kTimeFlag, kTimeLongFlag, OpenMaya.MSyntax.kLong)
+	syntax.addFlag(kFilenameFlag, kFilenameLongFlag, OpenMaya.MSyntax.kString)
 	return syntax
 	
 def initializePlugin(mobject):
