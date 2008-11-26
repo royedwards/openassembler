@@ -39,8 +39,11 @@ class oas_start(oas_setup,oas_client,oas_console,oas_server,oas_gateway,Old_GUI,
                 elif args_list[0]=="run":
                         self.oas_Start()
 			if os.path.isfile(args_list[1]):
-                                self.oas_open("silent",filetype=args_list[1][-3:],filename=args_list[1])
-			return self.oas_run(mode="normal")
+				self.oas_open("silent",filetype=args_list[1][-3:],filename=args_list[1])
+			try:
+				 x=self.oas_run(mode="normal",runmode=args_list[2],fixedframe=args_list[3])
+			except:
+				 return self.oas_run(mode="normal")
                 
                 elif args_list[0]=="editor":
                         self.start_old_gui()

@@ -59,7 +59,7 @@ class oas_gateway(oas_data_handler,oas_fileio,oas_execute,oas_broadcaster):
 			self.oas_Broadcast(self.broadcast_ports,"connect "+rv[0]+" "+rv[1]+" "+rv[2])		
 		return rv
 		
-	def oas_new(self,mode):
+	def oas_new(self,mode="normal"):
 		rv=self.oas_Startup()
 		if rv!=0:
 			self.oas_Broadcast(self.broadcast_ports,"new scene")		
@@ -100,5 +100,10 @@ class oas_gateway(oas_data_handler,oas_fileio,oas_execute,oas_broadcaster):
 		
 	def oas_ui_refresh(self):
 		self.oas_Broadcast(self.broadcast_ports,"refresh")
+	def oas_core_tester(self):
+		try:
+			self.oas_frame(mode="silent",frame=1)
+			return 1
+		except:
+			return 0
 		
-

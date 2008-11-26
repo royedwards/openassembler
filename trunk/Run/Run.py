@@ -27,6 +27,7 @@ class oas_execute(oas_data_handler,oas_fileio):
 			if node_cross_list.has_key(str(self.oas_scene_setup['endnode'])):
 				piramid=self.oas_make_piramid(node_cross_list,self.oas_scene_setup['endnode'])
 				optimized=self.oas_make_optimization(piramid)
+				cache_folder=""
 				cache_folder=self.oas_prepare_folders()
 				if cache_folder==False:
 					return 0
@@ -34,14 +35,22 @@ class oas_execute(oas_data_handler,oas_fileio):
 					collection=self.oas_collect_nodes(optimized,node_cross_list,cache_folder)
 					jsfile_ret=self.oas_create_jobfile(optimized,node_cross_list,collection,cache_folder)
 					if self.runmode=="maya":
-						dir=cache_folder
-						#import compileall
-						#compileall.compile_dir(dir)
-						if os.path.isdir(dir):
-							sys.path.append(dir)
+						
+						if os.path.isdir(cache_folder):
+							sys.path.append(cache_folder)
 						import oas_run_job as ojs
-						runciclecall=ojs.run()
-						return runciclecall.run_main()
+						reload(ojs)
+						
+						runclass=ojs.run()
+						back=runclass.run_main()
+						
+						sys.path.remove(cache_folder)
+						
+						f=open(cache_folder+"/result.txt","w")
+						f.write(str(back)) 
+						f.close() 
+						
+						return back
 					else:
 						import platform
 						if platform.system()=="Windows":
@@ -114,6 +123,10 @@ class oas_execute(oas_data_handler,oas_fileio):
 			else:
 				basesave="~/tmp/tmp.oas"
 	    		if self.runmode=="maya":
+				#use this if you want to use the original methond for the folder creation
+				#tmpfilder=self.oas_userhome+"/tmp/"+os.path.basename(basesave)[:-4]+fintime
+				
+				#use this if you do not want to create separate file for the folders
 				tmpfilder=self.oas_userhome+"/tmp"
 			else:
 				tmpfilder=self.oas_userhome+"/tmp/"+os.path.basename(basesave)[:-4]+fintime

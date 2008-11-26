@@ -37,21 +37,21 @@ class openAssemblerNode(OpenMayaMPx.MPxLocatorNode,oas_gateway):
 			
 			self.oas_Start()
 			self.oas_open(mode="normal",filename="X:\mayatest.oas",filetype="oas")
-			
 			result = self.oas_run(mode="normal",runmode="maya",fixedframe=(frame*inputFloat))
-			
-			
-			sys.path.append("C:\Documents and Settings\simanlaci\tmp")
-			import oas_run_job as ojs
-			runciclecall=ojs.run()
-			print "mostjon"
-			print runciclecall.run_main()
-						
+									
 			outputHandle = dataBlock.outputValue( openAssemblerNode.output )
 			outputHandle.setFloat( result )
 			dataBlock.setClean( plug )
 			
-		return OpenMaya.kUnknownParameter
+			#OpenMaya.MGlobal.displayInfo("--- success")
+			
+			return OpenMaya.MStatus.kSuccess
+
+		
+		else:	
+			#OpenMaya.MGlobal.displayInfo("--- failure")
+			return OpenMaya.MStatus.kUnknownParameter
+
 
 def nodeCreator():
 	return OpenMayaMPx.asMPxPtr( openAssemblerNode() )
@@ -61,15 +61,23 @@ def nodeInitializer():
 	unitAttr = OpenMaya.MFnUnitAttribute()
 	openAssemblerNode.time = unitAttr.create("time", "tm", OpenMaya.MFnUnitAttribute.kTime, 0.0)
 	unitAttr.setWritable(1)
+	unitAttr.setConnectable(1)
 
 	nAttr = OpenMaya.MFnNumericAttribute()
 	openAssemblerNode.input = nAttr.create( "input", "in", OpenMaya.MFnNumericData.kFloat, 1.0 )
 	nAttr.setStorable(1)
+	nAttr.setWritable(1)
+	nAttr.setConnectable(1)
+	nAttr.setKeyable(1)
+	nAttr.setChannelBox(1)
 
 	nAttr = OpenMaya.MFnNumericAttribute()
 	openAssemblerNode.output = nAttr.create( "output", "out", OpenMaya.MFnNumericData.kFloat, 0.0 )
 	nAttr.setStorable(1)
 	nAttr.setWritable(1)
+	nAttr.setConnectable(1)
+	nAttr.setCached(0)
+	nAttr.setInternal(0)
 
 	openAssemblerNode.addAttribute( openAssemblerNode.input )
 	openAssemblerNode.addAttribute( openAssemblerNode.output )
