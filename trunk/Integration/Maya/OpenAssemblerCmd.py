@@ -33,7 +33,7 @@ class openAssemblerCmd(OpenMayaMPx.MPxCommand,oas_gateway):
 		if argData.isFlagSet(kTimeFlag):
 			time = argData.flagArgumentInt(kTimeFlag, 0)
 		if argData.isFlagSet(kFilenameFlag):
-			filename = argData.flagArgumentStr(kFilenameFlag, "")
+			filename = argData.flagArgumentString(kFilenameFlag, 0)
 		self.oas_Start()
 		self.oas_open(mode="normal",filename=filename,filetype="oas")
 		result = self.oas_run(mode="normal",runmode="maya",fixedframe=int(time)) 

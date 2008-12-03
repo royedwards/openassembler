@@ -18,9 +18,9 @@ kPluginNodeTypeName = "openAssemblerNode"
 openAssemblerNodeId = OpenMaya.MTypeId(0x87021)
 
 class openAssemblerNode(OpenMayaMPx.MPxLocatorNode,oas_gateway):
-	input = OpenMaya.MObject()
-	output = OpenMaya.MObject()
-	time = OpenMaya.MObject()
+	#input = OpenMaya.MObject()
+	#output = OpenMaya.MObject()
+	#time = OpenMaya.MObject()
 	
 	def __init__(self):
 		OpenMayaMPx.MPxLocatorNode.__init__(self)
@@ -35,13 +35,14 @@ class openAssemblerNode(OpenMayaMPx.MPxLocatorNode,oas_gateway):
 			dataHandle = dataBlock.inputValue( openAssemblerNode.input )
 			inputFloat = dataHandle.asFloat()
 			
-			self.oas_Start()
-			self.oas_open(mode="normal",filename="X:\mayatest.oas",filetype="oas")
-			result = self.oas_run(mode="normal",runmode="maya",fixedframe=(frame*inputFloat))
+			print dataBlock
+			#self.oas_Start()
+			#self.oas_open(mode="normal",filename="X:\mayatest.oas",filetype="oas")
+			#result = self.oas_run(mode="normal",runmode="maya",fixedframe=(frame*inputFloat))
 									
-			outputHandle = dataBlock.outputValue( openAssemblerNode.output )
-			outputHandle.setFloat( result )
-			dataBlock.setClean( plug )
+			#outputHandle = dataBlock.outputValue( openAssemblerNode.output )
+			#outputHandle.setFloat( result )
+			#dataBlock.setClean( plug )
 			
 			#OpenMaya.MGlobal.displayInfo("--- success")
 			
@@ -57,7 +58,7 @@ def nodeCreator():
 	return OpenMayaMPx.asMPxPtr( openAssemblerNode() )
 
 def nodeInitializer():
-
+	
 	unitAttr = OpenMaya.MFnUnitAttribute()
 	openAssemblerNode.time = unitAttr.create("time", "tm", OpenMaya.MFnUnitAttribute.kTime, 0.0)
 	unitAttr.setWritable(1)
