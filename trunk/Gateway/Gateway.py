@@ -97,9 +97,13 @@ class oas_gateway(oas_data_handler,oas_fileio,oas_execute,oas_broadcaster):
 		
 	def oas_server_chk(self,port):
 		return self.oas_broadcast_chk(port)
+
+	def oas_show_in_preferences(self,node):
+		self.oas_Broadcast(self.broadcast_ports,"showpreferences "+str(node))
 		
 	def oas_ui_refresh(self):
 		self.oas_Broadcast(self.broadcast_ports,"refresh")
+		
 	def oas_core_tester(self):
 		try:
 			self.oas_frame(mode="silent",frame=1)

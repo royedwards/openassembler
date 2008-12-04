@@ -205,7 +205,7 @@ class NodeEditorCanvasEvents(GUI_Interface_client,ConnectLine):
         EventTags=TargetCanvas.gettags(CURRENT)
         try:
             pass
-	    #self.loadPreferences(preferencespanel,EventTags[0])
+	    self.oas_gui_show_in_preferences(EventTags[0])
         except:
             pass
 

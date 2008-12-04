@@ -96,6 +96,18 @@ class oas_data_handler(oas_variablechecker,oas_setup):
 # if mode is 0 thna doing nothing at this time maybe later...
 ####################################################################
 
+	def oas_show_attribute_parameters(self, mode="silent",node=""):
+		global_return=[]
+		for nodes in self.oas_rt.keys():
+			if str(self.oas_rt[nodes]['name'])==str(node):
+				for ins in self.oas_rt[nodes]['inputs']:
+					re=[ins,self.oas_rt[nodes]['inputs'][ins]['variable_type'],self.oas_rt[nodes]['inputs'][ins]['value'],self.oas_rt[nodes]['inputs'][ins]['options']]
+					global_return.append(re)
+		if mode=="normal":
+			print global_return
+		else:
+			return global_return
+			
 	def oas_data_show(self,mode="silent",showtype="node"):
 		nodlist=[]
 		try:

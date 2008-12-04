@@ -12,6 +12,8 @@ from Tkinter import *
 import tkFont
 import tkFileDialog
 from ColorConversions import convertColors
+from GUI.common.GUI_Interface import GUI_Interface_client
+
 import colorsys
 
 
@@ -19,7 +21,7 @@ class LoadPreferences(convertColors):
     def Preferences_Loader(self):
     	pass
 
-class CanvasInitPreferencePanel:
+class CanvasInitPreferencePanel(GUI_Interface_client):
 
     def StartUpPreferencePanelCanvas(self):
         
@@ -31,24 +33,22 @@ class CanvasInitPreferencePanel:
 
 	prefscroll=Scrollbar(self,orient="vertical")
 	prefscroll.grid(column=1,row=0,rowspan=3,sticky=N+S)
-	TargetCanvas = Canvas (self, width=445, height=500,bg="gray35",yscrollcommand=prefscroll.set)
+	targetcnvs=TargetCanvas = Canvas (self, width=445, height=500,bg="gray35",yscrollcommand=prefscroll.set)
      	TargetCanvas.grid(column=0,row=1, sticky=N+S+E+W)
 	prefscroll.config(command=TargetCanvas.yview)
 
 	self.grid_rowconfigure(1, weight=1)
 	self.grid_columnconfigure(0, weight=1)
 
-	ParameterFrame=Frame(TargetCanvas)
-	ParameterFrame.rowconfigure(0, weight=1)
-	ParameterFrame.columnconfigure(0, weight=1)
-	
-	# here the stuff comes... it is important!!!
-			
-	TargetCanvas.create_window(0, 0, anchor=NW, window=ParameterFrame)
-	
-	# and this is the msot important.... it takes me 1 hour to find out why it is not working
-	
-	ParameterFrame.update_idletasks()
+
+	#ParameterFrame=Frame(TargetCanvas)
+	#ParameterFrame.rowconfigure(0, weight=1)
+	#ParameterFrame.columnconfigure(0, weight=1)
+	# here the stuff comes... it is important!!!			
+	#TargetCanvas.create_window(0, 0, anchor=NW, window=ParameterFrame)	
+	# and this is the msot important.... it takes me 1 hour to find out why it is not working	
+	#ParameterFrame.update_idletasks()
+
 
 	TargetCanvas.config(scrollregion=TargetCanvas.bbox("all"))
 	
@@ -61,5 +61,5 @@ class CanvasInitPreferencePanel:
 	cancelbutton=Button(frbott,text="Cancel",font=iofont2,width=26,height=0,pady=0,fg="gray90",bg="gray15")
 	cancelbutton.grid(column=1,row=0)
 
-        return ParameterFrame
+        return targetcnvs
 

@@ -314,6 +314,14 @@ exit				:quit from the application
 						return r
 			elif input_command.split()[0]=="refresh":
 				self.oas_ui_refresh()
+
+			elif input_command.split()[0]=="show_attributes":
+					r=self.oas_show_attribute_parameters(mode=mode,node=input_command.split()[1])
+					return r
+
+			elif input_command.split()[0]=="showpreferences":
+				self.oas_show_in_preferences(input_command.split()[1])
+			
 			else:
 				if input_command!="no character given":
 					if mode=="normal":

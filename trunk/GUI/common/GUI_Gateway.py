@@ -41,6 +41,18 @@ class gui_gateway(GUI_Interface_client):
 			x=x.strip().lstrip().strip("\'").lstrip("\'")
 			ret.append(x)
 		return ret
+
+	def oas_gui_attributelist(self,node):
+		r=self.oas_gui_interface_client(self.main_serverport,("show_attributes "+str(node)))
+		re=r.strip("]").lstrip("[").split("], [",1)
+		ret=[]
+		for xx in re:
+			xx=xx.strip("]").lstrip("[")
+			z=xx.split(",")
+			for x in z:
+				x=x.strip().lstrip().strip("\'").lstrip("\'")
+				ret.append(x)
+		return ret
 		
 	def oas_gui_scenenodelist(self):
 		r=self.oas_gui_interface_client(self.main_serverport,("list scene"))
@@ -131,6 +143,9 @@ class gui_gateway(GUI_Interface_client):
 		
 	def oas_gui_refresh(self):
 		self.oas_gui_interface_client(self.main_serverport,("refresh"))
+		
+	def oas_gui_show_in_preferences(self,node):
+		self.oas_gui_interface_client(self.main_serverport,("showpreferences "+str(node)))
 		
 	def oas_gui_deletenode(self,node):
 		self.oas_gui_interface_client(self.main_serverport,("delete node "+str(node)))
