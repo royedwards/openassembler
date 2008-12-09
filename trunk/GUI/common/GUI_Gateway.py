@@ -44,14 +44,16 @@ class gui_gateway(GUI_Interface_client):
 
 	def oas_gui_attributelist(self,node):
 		r=self.oas_gui_interface_client(self.main_serverport,("show_attributes "+str(node)))
-		re=r.strip("]").lstrip("[").split("], [",1)
+		re=r.strip("]").lstrip("[").split("], [")
 		ret=[]
 		for xx in re:
 			xx=xx.strip("]").lstrip("[")
 			z=xx.split(",")
+			zix=[]
 			for x in z:
-				x=x.strip().lstrip().strip("\'").lstrip("\'")
-				ret.append(x)
+				vix=x.strip().lstrip().strip("\'").lstrip("\'")
+				zix.append(vix)
+			ret.append(zix)
 		return ret
 		
 	def oas_gui_scenenodelist(self):

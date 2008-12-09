@@ -23,6 +23,7 @@ class OldPreferences(Frame,CanvasInitPreferencePanel,gui_gateway,oas_GUI_setup,G
         Frame.__init__(self, master)
 	self.grid()
         self.Startup()
+	self.prefcanv=""
 	self._createWidgets()
 	#self.oas_gui_refresh()
 
@@ -58,7 +59,7 @@ class OldPreferences(Frame,CanvasInitPreferencePanel,gui_gateway,oas_GUI_setup,G
 		c=str(self.oas_gui_server_check(self.preferencesport))
 
     def _createWidgets(self):
-            self.preferencec=self.StartUpPreferencePanelCanvas()
+            return self.StartUpPreferencePanelCanvas()
 
 class Old_Preferences(GUI_Interface_server):
 	def start_old_preferences(self):

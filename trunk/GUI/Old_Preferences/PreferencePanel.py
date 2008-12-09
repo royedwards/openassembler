@@ -9,7 +9,7 @@
 
 
 from Tkinter import *
-import tkFont
+import tkFont,sys
 import tkFileDialog
 from ColorConversions import convertColors
 from GUI.common.GUI_Interface import GUI_Interface_client
@@ -30,18 +30,19 @@ class CanvasInitPreferencePanel(GUI_Interface_client):
         iofont = tkFont.Font ( family=self.font, size=int(self.fontsize)+2 )
         label=Label(fr,textvariable=self.nodeInPreferences,anchor="nw",width=44,font=iofont,bg="gray15",fg="gray90",relief="flat")
         label.grid()	
-
 	prefscroll=Scrollbar(self,orient="vertical")
 	prefscroll.grid(column=1,row=0,rowspan=3,sticky=N+S)
-	targetcnvs=TargetCanvas = Canvas (self, width=445, height=500,bg="gray35",yscrollcommand=prefscroll.set)
+	TargetCanvas = Canvas (self, width=200, height=400,bg="gray35",yscrollcommand=prefscroll.set)
      	TargetCanvas.grid(column=0,row=1, sticky=N+S+E+W)
+	self.prefcanv=TargetCanvas
+	
 	prefscroll.config(command=TargetCanvas.yview)
-
+	
 	self.grid_rowconfigure(1, weight=1)
 	self.grid_columnconfigure(0, weight=1)
 
-
 	#ParameterFrame=Frame(TargetCanvas)
+	#ParameterFrame.grid()
 	#ParameterFrame.rowconfigure(0, weight=1)
 	#ParameterFrame.columnconfigure(0, weight=1)
 	# here the stuff comes... it is important!!!			
@@ -50,16 +51,15 @@ class CanvasInitPreferencePanel(GUI_Interface_client):
 	#ParameterFrame.update_idletasks()
 
 
-	TargetCanvas.config(scrollregion=TargetCanvas.bbox("all"))
+	#TargetCanvas.config(scrollregion=TargetCanvas.bbox("all"))
 	
 	frbott=Frame(self)
 	frbott.grid(column=0,row=2)
 	iofont2 = tkFont.Font ( family=self.font, size=int(self.fontsize) )
-	setbutton=Button(frbott,text="Set",font=iofont2,width=26,height=0,pady=0,fg="gray90",bg="gray15")
+	setbutton=Button(frbott,text="Set",font=iofont2,width=16,height=0,pady=0,fg="gray90",bg="gray15")
 	setbutton.grid(column=0,row=0)
 
-	cancelbutton=Button(frbott,text="Cancel",font=iofont2,width=26,height=0,pady=0,fg="gray90",bg="gray15")
+	cancelbutton=Button(frbott,text="Cancel",font=iofont2,width=16,height=0,pady=0,fg="gray90",bg="gray15")
+	cancelbutton.bind('<KeyRelease>',lambda event:sys.exit())
 	cancelbutton.grid(column=1,row=0)
-
-        return targetcnvs
 
