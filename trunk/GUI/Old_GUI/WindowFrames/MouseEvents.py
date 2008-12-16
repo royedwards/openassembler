@@ -184,8 +184,8 @@ class NodeEditorCanvasEvents(GUI_Interface_client,ConnectLine):
                 try:
                     if EventTags[3]=="IN":
                         if self.origin_node!="":
-			    self.oas_gui_connect(self.origin_node,self.origin_out,EventTags[0],EventTags[2])
-                except:
+				self.oas_gui_connect(self.origin_node,self.origin_out,EventTags[0],EventTags[2])
+		except:
                     pass
         else:
             pass
@@ -206,7 +206,7 @@ class NodeEditorCanvasEvents(GUI_Interface_client,ConnectLine):
         try:
             pass
 	    self.oas_gui_show_in_preferences(EventTags[0])
-        except:
+	except:
             pass
 
 

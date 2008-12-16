@@ -81,7 +81,10 @@ class oas_gateway(oas_data_handler,oas_fileio,oas_execute,oas_broadcaster):
 		return self.oas_run_execute(mode=mode,runmode=runmode,fixedframe=fixedframe)
 
 	def oas_set(self,mode,nodevalue="",value=""):
-		return self.oas_data_set(mode=mode,nodevalue=nodevalue,value=value)	
+		rv= self.oas_data_set(mode=mode,nodevalue=nodevalue,value=value)
+		if rv!=0:
+			self.oas_Broadcast(self.broadcast_ports,"set "+str(nodevalue)+" "+str(value))	
+		return rv
 		
 	def oas_positions(self,mode,nodevalue="",posx=100,posy=100):
 		return self.oas_data_positions(mode=mode,nodevalue=nodevalue,posx=posx,posy=posy)

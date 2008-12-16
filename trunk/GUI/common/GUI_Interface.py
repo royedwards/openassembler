@@ -53,7 +53,10 @@ class GUI_Interface_server:
 				buff = clientSocket.recv(2048)
 				if buff.strip() == "server halt":
 			     		clientSocket.close()
-					oas_socket.shutdown(2)
+					try:
+						oas_socket.shutdown(2)
+					except:
+						pass
 					e=False
 				if buff.strip() == "chk":
 					clientSocket.send("1")

@@ -25,7 +25,6 @@ class OldPreferences(Frame,CanvasInitPreferencePanel,gui_gateway,oas_GUI_setup,G
         self.Startup()
 	self.prefcanv=""
 	self._createWidgets()
-	#self.oas_gui_refresh()
 
     def Startup(self):  
 	
@@ -50,6 +49,8 @@ class OldPreferences(Frame,CanvasInitPreferencePanel,gui_gateway,oas_GUI_setup,G
 	self.fontsize=int(fnt[1])
 	self.nodeInPreferences=StringVar()
 	self.nodeInPreferences.set("OpenAssembler")
+	self.nip=StringVar()
+	self.nip.set("OpenAssembler")
 	llock=thread.allocate_lock()
 	thread.start_new_thread(self.oas_gui_interface_server,(self.preferencesport,llock))
 	

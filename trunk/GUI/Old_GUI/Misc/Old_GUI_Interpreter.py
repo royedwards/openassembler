@@ -67,7 +67,7 @@ class old_gui_interpreter(gui_gateway,NodeType01,ConnectLine):
 				if command.split()[1]=="scene":
 					self.re_new()
 					
-			elif command.split()[0]=="rename":
+			elif command.split()[0]=="rename":				
 				nsettings=self.oas_gui_scenenode_show(command.split()[2])
 				self.editorc.itemconfig(command.split()[1], text=command.split()[2],tag=(nsettings[0],"UPPERLABEL",nsettings[2],command.split()[2],str(nsettings[0])+"select"))
 				self.editorc.dtag(command.split()[1])

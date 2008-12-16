@@ -101,8 +101,17 @@ class oas_data_handler(oas_variablechecker,oas_setup):
 		for nodes in self.oas_rt.keys():
 			if str(self.oas_rt[nodes]['name'])==str(node):
 				for ins in self.oas_rt[nodes]['inputs']:
-					re=[ins,self.oas_rt[nodes]['inputs'][ins]['variable_type'],self.oas_rt[nodes]['inputs'][ins]['value'],self.oas_rt[nodes]['inputs'][ins]['options']]
+
+					con_chk=0
+					for con in self.oas_rt_connections.keys():
+						if (self.oas_rt[self.oas_rt_connections[con]['in_node']]['name']==str(node) and self.oas_rt_connections[con]['in_value']==str(ins)):
+							con_chk=1
+					re=[ins,self.oas_rt[nodes]['inputs'][ins]['variable_type'],self.oas_rt[nodes]['inputs'][ins]['value'],self.oas_rt[nodes]['inputs'][ins]['options'],str(con_chk)]
+
+
 					global_return.append(re)
+
+
 		if mode=="normal":
 			print global_return
 		else:

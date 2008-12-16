@@ -172,7 +172,11 @@ class gui_gateway(GUI_Interface_client):
 		ret=self.oas_gui_interface_client(self.main_serverport,("check "+str(port)))
 		return ret
 
-	def oas_gui_set_positions(self,node,posx,posy):
-		ret=self.oas_gui_interface_client(self.main_serverport,("positions "+str(node)+" "+str(posx)+" "+str(posy)))
+	def oas_gui_set(self,node,attributename,value):
+		ret=self.oas_gui_interface_client(self.main_serverport,("set "+str(node)+"."+str(attributename)+" "+str(value)))
 		return ret
 		
+	def oas_gui_set_positions(self,node,posx,posy):
+		ret=self.oas_gui_interface_client(self.main_serverport,("positions "+str(node)+" "+str(posx)+" "+str(posy)))
+		
+

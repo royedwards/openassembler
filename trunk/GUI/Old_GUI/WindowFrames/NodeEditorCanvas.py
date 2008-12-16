@@ -29,6 +29,7 @@ class CanvasInitNodeEditor(NodeEditorCanvasEvents):
             self.lasty=event.y
             self.B3ClickNodeEditor(event, TargetCanvas,self.lastx,self.lasty,EventTags)
         TargetCanvas.bind("<Button-3>", handlerB3Click)
+	TargetCanvas.bind("<Control-Button-1>", handlerB3Click)
 
         def handlerRelease(event, self=self, TargetCanvas=TargetCanvas):
             self.lastx=event.x
@@ -37,7 +38,8 @@ class CanvasInitNodeEditor(NodeEditorCanvasEvents):
 
         TargetCanvas.bind("<B1-ButtonRelease>", handlerRelease)
         TargetCanvas.bind("<B2-ButtonRelease>", handlerRelease)
-        TargetCanvas.bind("<B3-ButtonRelease>", handlerRelease)
+        TargetCanvas.bind("<Control-B1-ButtonRelease>", handlerRelease)
+	TargetCanvas.bind("<B3-ButtonRelease>", handlerRelease)
 
         def handlerB1DoubleClick(event, self=self, TargetCanvas=TargetCanvas):
             self.lastx=event.x

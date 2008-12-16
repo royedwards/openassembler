@@ -18,17 +18,17 @@ class NodeType01:
         if sizey<70:
             sizey=70
 
-        TargetCanvas.create_polygon(x,y,x,y,x+sizex-20,y,x+sizex-20,y,x+sizex,y,x+sizex,y+20,x+sizex,y+20,x,y+20,x,y+20,smooth=1,splinesteps=12,width=1,fill=BaseColorTop,outline="gray20",tag=(str(ID),"UPPERPART",str(FuctionType),NodeUpperLabel,ID+"select"))
+        TargetCanvas.create_polygon(x,y,x,y,x+sizex-20,y,x+sizex-20,y,x+sizex,y,x+sizex,y+20,x+sizex,y+20,x,y+20,x,y+20,smooth=1,splinesteps=12,width=1,fill=BaseColorTop,outline="gray20",tag=(str(ID),"UPPERPART",str(FuctionType),"x",ID+"select"))
         TargetCanvas.create_text(x+int(sizex/2),y+10,text=NodeUpperLabel,font=iofont,fill="gray95",tag=(str(ID),"UPPERLABEL",str(FuctionType),NodeUpperLabel,ID+"select"))
 
-        TargetCanvas.create_polygon(x,y+sizey-20,x,y+sizey-20,x+sizex,y+sizey-20,x+sizex,y+sizey-20,x+sizex,y+sizey,x+sizex,y+sizey,x+20,y+sizey,x+20,y+sizey,x,y+sizey,smooth=1,splinesteps=12,width=1,fill=BaseColorBottom,outline="gray20",tag=(str(ID),"BOTTOMPART",str(FuctionType),NodeUpperLabel,ID+"select"))
+        TargetCanvas.create_polygon(x,y+sizey-20,x,y+sizey-20,x+sizex,y+sizey-20,x+sizex,y+sizey-20,x+sizex,y+sizey,x+sizex,y+sizey,x+20,y+sizey,x+20,y+sizey,x,y+sizey,smooth=1,splinesteps=12,width=1,fill=BaseColorBottom,outline="gray20",tag=(str(ID),"BOTTOMPART",str(FuctionType),"x",ID+"select"))
 
-        TargetCanvas.create_rectangle(x,y+20,x+sizex,y+sizey-20,fill=BaseColorCenter,width=1,outline="",tag=(str(ID),"CENTERPART",str(FuctionType),NodeUpperLabel,ID+"select"))
-        TargetCanvas.create_line(x,y+20,x,y+sizey-20,width=1,fill="gray20",tag=(str(ID),"LEFTLINE",str(FuctionType),NodeUpperLabel,ID+"select"))
-        TargetCanvas.create_line(x+7,y+20,x+7,y+sizey-20,width=1,fill="gray20",tag=(str(ID),"LEFTSeparatorLINE",str(FuctionType),NodeUpperLabel,ID+"select"))
+        TargetCanvas.create_rectangle(x,y+20,x+sizex,y+sizey-20,fill=BaseColorCenter,width=1,outline="",tag=(str(ID),"CENTERPART",str(FuctionType),"x",ID+"select"))
+        TargetCanvas.create_line(x,y+20,x,y+sizey-20,width=1,fill="gray20",tag=(str(ID),"LEFTLINE",str(FuctionType),"x",ID+"select"))
+        TargetCanvas.create_line(x+7,y+20,x+7,y+sizey-20,width=1,fill="gray20",tag=(str(ID),"LEFTSeparatorLINE",str(FuctionType),"x",ID+"select"))
 
-        TargetCanvas.create_line(x+sizex,y+20,x+sizex,y+sizey-20,width=1,fill="gray20",tag=(str(ID),"RIGHTLINE",str(FuctionType),NodeUpperLabel,ID+"select"))
-        TargetCanvas.create_line(x+sizex-7,y+20,x+sizex-7,y+sizey-20,width=1,fill="gray20",tag=(str(ID),"RIGHTSeparatorLINE",str(FuctionType),NodeUpperLabel,ID+"select"))
+        TargetCanvas.create_line(x+sizex,y+20,x+sizex,y+sizey-20,width=1,fill="gray20",tag=(str(ID),"RIGHTLINE",str(FuctionType),"x",ID+"select"))
+        TargetCanvas.create_line(x+sizex-7,y+20,x+sizex-7,y+sizey-20,width=1,fill="gray20",tag=(str(ID),"RIGHTSeparatorLINE",str(FuctionType),"x",ID+"select"))
 
         n=1
         while n<=len(Input):
