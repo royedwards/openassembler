@@ -41,20 +41,43 @@ class LoadPreferences(old_gui_controllers):
 		string=[]
 		inter=[]
 		db=[]				
-		conchk="gray90"
 		for n in range(0,len(attrList)):
-			conchk="gray90"
-			if str(attrList[n][4])==str(1):
-				conchk="darkred"
-						
+								
 			if (attrList[n][1]=="int") or (attrList[n][1]=="float"):
 				string.append(StringVar())
 				m=len(string)
-				height=self.controllerNumberSimple(ParameterFrame,node_datas[1],height,string[m-1],attrList[n][0],attrList[n][2],conchk)		
+				height=self.controllerNumberSimple(ParameterFrame,node_datas[1],height,string[m-1],attrList[n][0],attrList[n][2],attrList[n][4])		
 			elif attrList[n][1]=="string":
 				string.append(StringVar())
 				m=len(string)
-				height=self.controllerTextLine(ParameterFrame,node_datas[1],height,string[m-1],attrList[n][0],attrList[n][2],conchk)
+				height=self.controllerTextLine(ParameterFrame,node_datas[1],height,string[m-1],attrList[n][0],attrList[n][2],attrList[n][4])
+				
+        		elif attrList[n][1]=="boolean":
+            			string.append(StringVar())
+            			m=len(string)
+            			height=self.controllerBoolean(ParameterFrame,node_datas[1],height,string[m-1],attrList[n][0],attrList[n][2],attrList[n][4])
+				string[m-1].set(str(attrList[n][2]))
+					
+			elif attrList[n][1]=="text":
+				string.append(StringVar())
+				m=len(string)
+				height=self.controllerMassText(ParameterFrame,node_datas[1],height,string[m-1],attrList[n][0],attrList[n][2],attrList[n][4])		
+			
+			elif attrList[n][1]=="path":
+				string.append(StringVar())
+				m=len(string)
+				height=self.controllerPath(ParameterFrame,node_datas[1],height,string[m-1],attrList[n][0],attrList[n][2],attrList[n][4])
+			
+			elif attrList[n][1]=="vector":
+		    		string.append(StringVar())
+		    		string.append(StringVar())
+		    		string.append(StringVar())
+            	    		m=len(string)
+		    		de=str(attrList[n][2]).strip(")").lstrip("(").split(",")
+		    		if len(de)<3:
+		    			de=["0","0","0"]
+			
+				height=self.controllerVectorPoint(ParameterFrame,node_datas[1],height,string[m-1],string[m-2],string[m-3],attrList[n][0],de[0],de[1],de[2],attrList[n][4])
 				
 		self.prefcanv.config(scrollregion=self.prefcanv.bbox("all"))
 
@@ -70,16 +93,16 @@ class CanvasInitPreferencePanel(GUI_Interface_client):
 		self.nip.set(old)
 		
     def StartUpPreferencePanelCanvas(self):
-        fr=Frame(self,bg="gray35",relief=GROOVE,bd=2)
+        fr=Frame(self,relief=GROOVE,bd=2)
         fr.grid(column=0,row=0)
 	
 	iofont = tkFont.Font ( family=self.font, size=int(self.fontsize)+2 )
-        label=Entry(fr,textvariable=self.nip,width=44,font=iofont,bg="gray15",fg="gray90",relief="flat")
+        label=Entry(fr,textvariable=self.nip,width=44,font=iofont,bg="gray80")
         label.grid()	
 	label.bind('<Return>',lambda event:self.namechange_event(self.nodeInPreferences.get(),self.nip.get()))
 	prefscroll=Scrollbar(self,orient="vertical")
 	prefscroll.grid(column=1,row=0,rowspan=3,sticky=N+S)
-	TargetCanvas = Canvas (self,bg="gray35",height=400,width=200,yscrollcommand=prefscroll.set)
+	TargetCanvas = Canvas (self,height=400,width=200,yscrollcommand=prefscroll.set)
      	TargetCanvas.grid(column=0,row=1, sticky=N+S+E+W)
 	self.prefcanv=TargetCanvas
 	

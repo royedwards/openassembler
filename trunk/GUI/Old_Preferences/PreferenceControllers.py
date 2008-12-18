@@ -15,30 +15,32 @@ from GUI.common.GUI_Gateway import gui_gateway
 class old_gui_controllers(gui_gateway):
 
 	def controllerNumberSimple(self,TargetCanvas,Node,pos,variable,parametername,defaultvalue,conchk):
-		sstate="normal"
-		if conchk=="darkred":
+		if str(conchk)=="1":
 			sstate="disabled"
-		fr=Frame(TargetCanvas,height=10,width=145,bg="gray35",bd=0)
-		fr.grid()
+		else:
+			sstate="normal"
+		fr=Frame(TargetCanvas)
+		fr.grid(sticky=SW)
 		
 		iofont = tkFont.Font ( family=self.font, size=int(self.fontsize) )
-		Label(fr,text=parametername+":",anchor="nw",width=15,font=iofont,bg="gray35", fg=conchk).grid(row=0,column=0,pady=2)
-		e=Entry(fr,font=iofont,width=15,bg="gray55",state=sstate,relief="groove",bd=1,textvariable=variable,highlightbackground="gray35",justify=LEFT)
+		Label(fr,text=parametername+":",anchor="nw",width=15,font=iofont).grid(row=0,column=0,pady=2)
+		e=Entry(fr,font=iofont,width=15,state=sstate,textvariable=variable,justify=LEFT,bg="gray80")
 		e.grid(row=0,column=1,sticky=SW)
 		variable.set(defaultvalue)
 		e.bind('<Return>',lambda event:self.oas_gui_set(self.nodeInPreferences.get(),parametername, variable.get()))
 		return pos+30
 		
 	def controllerTextLine(self,TargetCanvas,Node,pos,variable,parametername,defaultvalue,conchk):
-		sstate="normal"
-		if conchk=="darkred":
+		if str(conchk)=="1":
 			sstate="disabled"
-		fr=Frame(TargetCanvas,height=10,width=145,bg="gray35",bd=0)
-		fr.grid()
+		else:
+			sstate="normal"
+		fr=Frame(TargetCanvas)
+		fr.grid(sticky=SW)
 		
 		iofont = tkFont.Font ( family=self.font, size=int(self.fontsize) )
-		Label(fr,text=parametername+":",anchor="nw",width=15,font=iofont,bg="gray35", fg=conchk).grid(row=0,column=0,pady=2)
-		e=Entry(fr,font=iofont,width=25,bg="gray55",relief="groove",bd=1,state=sstate,textvariable=variable,highlightbackground="gray35",justify=LEFT)
+		Label(fr,text=parametername+":",anchor="nw",width=15,font=iofont).grid(row=0,column=0,pady=2)
+		e=Entry(fr,font=iofont,width=25,state=sstate,textvariable=variable,justify=LEFT,bg="gray80")
 		e.grid(row=0,column=1,sticky=SW)
 		variable.set(defaultvalue)
 		e.bind('<Return>',lambda event:self.oas_gui_set(self.nodeInPreferences.get(),parametername, variable.get()))
@@ -46,19 +48,26 @@ class old_gui_controllers(gui_gateway):
 		
 
     	def controllerBoolean(self,TargetCanvas,Node,pos,varriable,parametername,defaultvalue,conchk):
-        	sstate="normal"
-        	if conchk=="darkred":
-        	  sstate="disabled"
-        	fr=Frame(TargetCanvas,height=30,width=145,bg="gray35",bd=0)
-        	fr.grid
-        	
+		if str(conchk)=="1":
+			sstate="disabled"
+		else:
+			sstate="normal"
+        	fr=Frame(TargetCanvas)
+        	fr.grid(sticky=SW)
 		iofont = tkFont.Font ( family=self.font, size=int(self.fontsize) )
-        	ch=Checkbutton(fr,text=parametername,variable=varriable,onvalue="True",offvalue="False",state=sstate,font=iofont,anchor="w", fg=conchk,width=25,height=0)
-        	ch.grid()
-        	ch.var=varriable
-        	ch.bind('<B1-ButtonRelease>',lambda event:self.oas_gui_set(self.nodeInPreferences.get(),parametername, varriable.get()))
-        	TargetCanvas.create_window(5,pos,window=fr,anchor="nw")
-        	return pos+30
+		Label(fr,text=parametername+":",anchor="nw",width=15,font=iofont).grid(row=0,column=0,pady=2)
+        	ch=Checkbutton(fr,text="",width=28,variable=varriable,onvalue="1.0",offvalue="0.0",state=sstate,font=iofont,anchor="w")
+        	ch.grid(row=0,column=1)
+		ch.var=varriable
+        	ch.bind('<B1-ButtonRelease>',lambda event:self._boolhelp(self.nodeInPreferences.get(),parametername,varriable))
+		return pos+30
+
+	def _boolhelp(self,np,prn,varr):
+		if varr.get()=="0.0":
+			va="1.0"
+		else:
+			va="0.0"
+		self.oas_gui_set(np,prn, va )
 
 
     	def controllerPassThrou(self,pos):
@@ -66,49 +75,49 @@ class old_gui_controllers(gui_gateway):
 	
 
     	def controllerVectorPoint(self,TargetCanvas,Node,pos,v1,v2,v3,parametername,d1,d2,d3,conchk):
-		sstate="normal"
-        	if conchk=="darkred":
-        	  sstate="disabled"
-        	fr=Frame(TargetCanvas,height=30,width=145,bg="gray35",bd=0)
-        	fr.grid
+		if str(conchk)=="1":
+			sstate="disabled"
+		else:
+			sstate="normal"
+        	fr=Frame(TargetCanvas)
+        	fr.grid(sticky=SW)
         
 		iofont = tkFont.Font ( family=self.font, size=int(self.fontsize) )
-        	Label(fr,text=parametername+":",anchor="nw",width=10,font=iofont,bg="gray35", fg=conchk).grid(row=0,column=0,pady=2)
-        	e=Entry(fr,font=iofont,width=6,bg="gray55",relief="groove",state=sstate,bd=1,textvariable=v1,highlightbackground="gray35",justify=LEFT)
+        	Label(fr,text=parametername+":",anchor="nw",width=10,font=iofont).grid(row=0,column=0,pady=2)
+        	e=Entry(fr,font=iofont,width=6,state=sstate,textvariable=v1,justify=LEFT,bg="gray80")
         	e.grid(row=0,column=1,sticky=SW,padx=2)
-        	ee=Entry(fr,font=iofont,width=6,bg="gray55",relief="groove",state=sstate,bd=1,textvariable=v2,highlightbackground="gray35",justify=LEFT)
+        	ee=Entry(fr,font=iofont,width=6,state=sstate,textvariable=v2,justify=LEFT,bg="gray80")
         	ee.grid(row=0,column=2,sticky=SW,padx=1)
-		eee=Entry(fr,font=iofont,width=6,bg="gray55",relief="groove",state=sstate,bd=1,textvariable=v3,highlightbackground="gray35",justify=LEFT)
+		eee=Entry(fr,font=iofont,width=6,state=sstate,textvariable=v3,justify=LEFT,bg="gray80")
         	eee.grid(row=0,column=3,sticky=SW,padx=1)
 		v1.set(d1)
 		v2.set(d2)
 		v3.set(d3)
-        	e.bind('<Return>',lambda event:self.ChangeSettings(Node, "Data",parametername, str(";"+str(v1.get())+";"+str(v2.get())+";"+ str(v3.get())+";"  )   ))
-		ee.bind('<Return>',lambda event:self.ChangeSettings(Node, "Data",parametername, str(";"+str(v1.get())+";"+str(v2.get())+";"+ str(v3.get())+";"  )   ))
-		eee.bind('<Return>',lambda event:self.ChangeSettings(Node, "Data",parametername, str(";"+str(v1.get())+";"+str(v2.get())+";"+ str(v3.get())+";"  )   ))
-        	TargetCanvas.create_window(5,pos,window=fr,anchor="nw")
+        	e.bind('<Return>',lambda event:self.oas_gui_set(self.nodeInPreferences.get(),parametername, str("("+str(v1.get())+","+str(v2.get())+","+ str(v3.get())+")"  ) ))
+		ee.bind('<Return>',lambda event:self.oas_gui_set(self.nodeInPreferences.get(),parametername, str("("+str(v1.get())+","+str(v2.get())+","+ str(v3.get())+")"  )  ))
+		eee.bind('<Return>',lambda event:self.oas_gui_set(self.nodeInPreferences.get(),parametername, str("("+str(v1.get())+","+str(v2.get())+","+ str(v3.get())+")"  )   ))
         	return pos+30
 
 
     	def _masTextSave(self,Node,textzone,parametername):
         	a=str(textzone.get(1.0,END))[:-1]
-        	self.ChangeSettings(Node, "Data",parametername, a)
+        	self.oas_gui_set(self.nodeInPreferences.get(),parametername, a)
 
     	def controllerMassText(self,TargetCanvas,Node,pos,variable,parametername,defaultvalue,conchk):
-        	sstate="normal"
-        	if conchk=="darkred":
-        	  sstate="disabled"
-        	fr=Frame(TargetCanvas,height=30,width=145,bg="gray35",bd=0)
-        	fr.grid
+		if str(conchk)=="1":
+			sstate="disabled"
+		else:
+			sstate="normal"
+        	fr=Frame(TargetCanvas)
+        	fr.grid(sticky=SW)
         	iofont = tkFont.Font ( family=self.font, size=int(self.fontsize) )
-        	Label(fr,text=parametername+":",anchor="nw",width=28,font=iofont,bg="gray35", fg=conchk).grid(row=0,column=0,pady=2)
-        	e=Text(fr,font=iofont,width=30,height=8,bg="gray55",state=sstate,relief="sunken",wrap="word",bd=2,highlightbackground="gray35")
-        	e.grid(row=1,column=0,sticky=N)
+        	Label(fr,text=parametername+":",anchor="nw",width=15,font=iofont).grid(row=0,column=0,pady=2,sticky=NW)
+        	e=Text(fr,font=iofont,width=25,height=14,state=sstate,wrap="word",bg="gray80",bd=2)
+        	e.grid(row=0,column=1,sticky=NW)
         	e.insert(CURRENT, defaultvalue)
-        	b=Button (fr,width=30,highlightcolor="gray35",bd=1,height=0,state=sstate,padx=0,pady=0,highlightbackground="gray35",text="Save",font=iofont)
-        	b.grid(row=2,column=0)
+        	b=Button (fr,width=25,height=0,state=sstate,padx=0,pady=0,text="Save",font=iofont)
+        	b.grid(row=1,column=1,columnspan=2)
         	b.bind('<B1-ButtonRelease>', lambda event: self._masTextSave(Node,e,parametername))
-        	TargetCanvas.create_window(5,pos,window=fr,anchor="nw")
         	return pos+210
 
 
@@ -119,26 +128,25 @@ class old_gui_controllers(gui_gateway):
         	    pass
         	else:
         	    variable.set(fdiagback)
-        	    self.ChangeSettings(Node,"Data", parametername, variable.get())
-        	    self.loadPreferences(TargetCanvas,Node)
+        	    self.oas_gui_set(self.nodeInPreferences.get(),parametername, variable.get())
         	return
 
 	    
 	def controllerPath(self,TargetCanvas,Node,pos,variable,parametername,defaultvalue,conchk):
-        	sstate="normal"
-        	if conchk=="darkred":
-        	  sstate="disabled"
-        	fr=Frame(TargetCanvas,height=30,width=145,bg="gray35",bd=0)
-        	fr.grid
+		if str(conchk)=="1":
+			sstate="disabled"
+		else:
+			sstate="normal"
+        	fr=Frame(TargetCanvas)
+        	fr.grid(sticky=SW)
         	iofont = tkFont.Font ( family=self.font, size=int(self.fontsize) )
-        	Label(fr,text=parametername+":",anchor="nw",width=9,font=iofont,bg="gray35", fg=conchk).grid(row=0,column=0)
-        	e=Entry(fr,font=iofont,width=14,bg="gray55",relief="groove",state=sstate,bd=1,textvariable=variable,highlightbackground="gray35",justify=LEFT)
+        	Label(fr,text=parametername+":",anchor="nw",width=9,font=iofont).grid(row=0,column=0)
+        	e=Entry(fr,font=iofont,width=14,state=sstate,textvariable=variable,justify=LEFT,bg="gray80")
         	e.grid(row=0,column=1,sticky=N,padx=2)
         	variable.set(defaultvalue)
-        	e.bind('<KeyRelease>',lambda event:self.ChangeSettings(Node, "Data",parametername, variable.get()))
-        	b=Button (fr,width=6,highlightcolor="gray35",bd=1,height=0,padx=0,state=sstate,pady=0,highlightbackground="gray35",text="Open",font=iofont)
+        	e.bind('<Return>',lambda event:self.oas_gui_set(self.nodeInPreferences.get(),parametername, varriable.get()))
+        	b=Button (fr,width=6,bd=1,height=0,padx=0,state=sstate,pady=0,text="Open",font=iofont)
         	b.grid(row=0,column=3)
         	b.bind('<B1-ButtonRelease>', lambda event:self.openFile(TargetCanvas,Node, parametername, variable))
-        	TargetCanvas.create_window(5,pos,window=fr,anchor="nw")
         	return pos+30
 

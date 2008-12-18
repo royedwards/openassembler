@@ -13,7 +13,6 @@ from PreferencePanel import LoadPreferences
 class old_preferences_interpreter(LoadPreferences):
 
 	def old_gui_do(self,command):
-		print command
 		try:
 			if command.split()[0]=="set":
 				if command.split()[1].split(".")[0]==self.nodeInPreferences.get():

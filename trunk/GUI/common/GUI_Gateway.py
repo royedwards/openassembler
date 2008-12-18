@@ -48,7 +48,15 @@ class gui_gateway(GUI_Interface_client):
 		ret=[]
 		for xx in re:
 			xx=xx.strip("]").lstrip("[")
-			z=xx.split(",")
+			if len(xx.split("("))>1:
+				z=[]
+				z.append(xx.split("(")[0].split(",")[0])
+				z.append(xx.split("(")[0].split(",")[1])
+				z.append("("+str(xx.split("(")[1].split(")")[0])+")")
+				z.append(xx.split(")")[1].split(",")[0])
+				z.append(xx.split(")")[1].split(",")[1])
+			else:
+				z=xx.split(",")
 			zix=[]
 			for x in z:
 				vix=x.strip().lstrip().strip("\'").lstrip("\'")
