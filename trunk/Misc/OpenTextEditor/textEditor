@@ -1,0 +1,261 @@
+#! /usr/bin/env python
+
+######################################################################################
+#
+#  OpenTextEditor V1
+#  Owner: Laszlo Mates
+#  Email: laszlo.mates@gmail.com
+#  Date: 2009.01.27
+# 
+######################################################################################
+
+from OpenTextEditor.TextEditor import Ui_text_editor
+from PyQt4 import QtCore, QtGui
+from PyQt4 import Qsci
+import sys,os,glob
+
+class textEditorWindow(QtGui.QMainWindow, Ui_text_editor):
+    def __init__(self, parent=None, f=QtCore.Qt.WindowFlags()):
+        QtGui.QMainWindow.__init__(self, parent, f)
+        Ui_text_editor.setupUi(self,self)
+
+
+class GUI_main(textEditorWindow):
+	def __init__(self,args):
+		
+		textEditorWindow.__init__(self)
+		#print dir(self.tabWidget)
+
+		self.tabWidget.clear()
+
+		filelist=[]
+		for scfile in args:
+			glb=glob.glob(scfile)
+			for g in glb:
+				filelist.append(g)
+		if len(filelist)>0:
+			chk=0
+			for scfile in filelist:
+				if os.path.isfile(scfile):
+					self.open_event(scfile)
+					chk=1
+			if chk==0:
+				self.new_event()
+		else:
+			self.new_event()
+
+        	QtCore.QObject.connect(self.actionExit, QtCore.SIGNAL("triggered()"), self.close)
+		#QtCore.QObject.connect(self.actionOpen, QtCore.SIGNAL("activated()"), self.open_event)
+		QtCore.QObject.connect(self.actionOpen, QtCore.SIGNAL("triggered()"), self.open_event)
+		QtCore.QObject.connect(self.actionSave, QtCore.SIGNAL("triggered()"), self.save_event)
+		QtCore.QObject.connect(self.actionNew, QtCore.SIGNAL("triggered()"), self.new_event)
+		QtCore.QObject.connect(self.actionAbout, QtCore.SIGNAL("triggered()"), self.about_event)
+		QtCore.QObject.connect(self.actionPython, QtCore.SIGNAL("triggered()"), self.python_event)
+		QtCore.QObject.connect(self.actionC, QtCore.SIGNAL("triggered()"), self.cpp_event)
+		QtCore.QObject.connect(self.actionClose, QtCore.SIGNAL("triggered()"), self.close_event)
+		QtCore.QObject.connect(self.actionRun, QtCore.SIGNAL("triggered()"), self.run_event)
+		QtCore.QObject.connect(self.actionSave_As, QtCore.SIGNAL("triggered()"), self.saveas_event)
+		QtCore.QObject.connect(self.actionClose_All, QtCore.SIGNAL("triggered()"), self.closeall_event)
+
+	def python_event(self):
+		self.tabWidget.widget(self.tabWidget.currentIndex()).childAt(1,1).setLexer(Qsci.QsciLexerPython())
+		
+	def cpp_event(self):
+		self.tabWidget.widget(self.tabWidget.currentIndex()).childAt(1,1).setLexer(Qsci.QsciLexerCPP())
+
+	def close_event(self):
+		if os.path.isfile(self.tabWidget.tabToolTip(self.tabWidget.currentIndex())):
+			fle=open(self.tabWidget.tabToolTip(self.tabWidget.currentIndex()),"r")
+			flr=fle.read()
+			fle.close()
+			if (str(self.tabWidget.widget(self.tabWidget.currentIndex()).childAt(1,1).text()))==str(flr):
+				pass
+			else:
+				self.saveas_event()
+		self.tabWidget.removeTab(self.tabWidget.currentIndex())
+		if self.tabWidget.count()==0:
+			self.new_event()
+		
+	def closeall_event(self):
+		for n in range(0,self.tabWidget.count()):
+			self.tabWidget.setCurrentIndex(self.tabWidget.count()-n)
+			self.close_event()
+
+		
+	def run_event(self):
+		if os.path.isfile(self.tabWidget.tabToolTip(self.tabWidget.currentIndex())):
+			fle=open(self.tabWidget.tabToolTip(self.tabWidget.currentIndex()),"r")
+			flr=fle.read()
+			fle.close()
+			if (str(self.tabWidget.widget(self.tabWidget.currentIndex()).childAt(1,1).text()))==str(flr):
+				pass
+			else:
+				self.saveas_event()
+		os.system("python "+str(self.tabWidget.tabToolTip(self.tabWidget.currentIndex())))
+		
+	def about_event(self):
+		qd=QtGui.QMessageBox(self)
+		qd.setText("OpenTools TextEditor v0.1\nOwner: Laszlo Mates\nlaszlo.mates@gmail.com\n2008.01.27")
+		qd.show()
+
+	def save_event(self):
+		if os.path.isfile(self.tabWidget.tabToolTip(self.tabWidget.currentIndex())):
+			fle=open(self.tabWidget.tabToolTip(self.tabWidget.currentIndex()),"w")
+			fle.write(str(self.tabWidget.widget(self.tabWidget.currentIndex()).childAt(1,1).text()))
+			fle.close()
+		else:
+			filename = QtGui.QFileDialog.getSaveFileName(self, 'Save file','')	
+			if filename=="":
+				return 0
+			fle=open(filename,"w")
+			fle.write(str(self.tabWidget.widget(self.tabWidget.currentIndex()).childAt(1,1).text()))
+			fle.close()
+			
+			self.tabWidget.setTabText(self.tabWidget.currentIndex(), QtGui.QApplication.translate("text_editor", str(str(filename).split("/")[-1]), None, QtGui.QApplication.UnicodeUTF8))
+			self.tabWidget.setTabToolTip(self.tabWidget.currentIndex(), QtGui.QApplication.translate("text_editor", str(filename), None, QtGui.QApplication.UnicodeUTF8))
+			
+		#print self.tabWidget.widget(self.tabWidget.currentIndex())
+		#print self.tabWidget.tabText(self.tabWidget.currentIndex())
+		#print self.tabWidget.widget(self.tabWidget.currentIndex()).childAt(1,1).text()
+	
+	def saveas_event(self):
+		old=self.tabWidget.tabToolTip(self.tabWidget.currentIndex())
+		filename = QtGui.QFileDialog.getSaveFileName(self, 'Save '+old+" As:",'')	
+		if filename=="":
+			return 0
+		fle=open(filename,"w")
+		fle.write(str(self.tabWidget.widget(self.tabWidget.currentIndex()).childAt(1,1).text()))
+		fle.close()
+			
+		self.tabWidget.setTabText(self.tabWidget.currentIndex(), QtGui.QApplication.translate("text_editor", str(str(filename).split("/")[-1]), None, QtGui.QApplication.UnicodeUTF8))
+		self.tabWidget.setTabToolTip(self.tabWidget.currentIndex(), QtGui.QApplication.translate("text_editor", str(filename), None, QtGui.QApplication.UnicodeUTF8))
+			
+	
+	def new_event(self):
+		self.tab1 = QtGui.QWidget()
+		self.tab1.setObjectName("tab_")
+			
+		self.gridlayout1 = QtGui.QGridLayout(self.tab1)
+		self.gridlayout1.setMargin(1)
+		self.gridlayout1.setObjectName("gridlayout_")
+
+		self.text_ed = Qsci.QsciScintilla(self.tab1)
+		self.text_ed.setAcceptDrops(True)
+		self.text_ed.setMidLineWidth(1)
+		self.text_ed.setObjectName("text_ed_")
+		self.gridlayout1.addWidget(self.text_ed,0,0,1,1)
+		self.tabWidget.addTab(self.tab1,"")
+			
+		font = QtGui.QFont()
+		#font.setFamily("Consolas")
+		font.setFixedPitch(True)
+		#font.setPointSize(10)
+
+		fm = QtGui.QFontMetrics(font)
+
+		self.text_ed.setFont(font)
+		self.text_ed.setMarginsFont(font)
+
+		self.text_ed.setMarginWidth(0, fm.width( "00000" ) + 2)
+		self.text_ed.setMarginLineNumbers(0, True)
+
+		#self.text_ed.setFolding(Qsci.QsciScintilla.BoxedTreeFoldStyle)
+
+		self.text_ed.setBraceMatching(Qsci.QsciScintilla.SloppyBraceMatch)
+
+		self.text_ed.setCaretLineVisible(True)
+		self.text_ed.setCaretLineBackgroundColor(QtGui.QColor("#e8e8e8"))
+
+		self.text_ed.setMarginsBackgroundColor(QtGui.QColor("#333333"))
+		self.text_ed.setMarginsForegroundColor(QtGui.QColor("#CCCCCC"))
+
+		self.text_ed.setFoldMarginColors(QtGui.QColor("#cad4c0"),QtGui.QColor("#333300"))
+
+		self.text_ed.setLexer(Qsci.QsciLexerPython())
+			
+		self.tabWidget.setCurrentIndex(self.tabWidget.indexOf(self.tab1))
+
+		self.tabWidget.setTabText(self.tabWidget.indexOf(self.tab1), QtGui.QApplication.translate("text_editor", "", None, QtGui.QApplication.UnicodeUTF8))
+		self.tabWidget.setTabToolTip(self.tabWidget.indexOf(self.tab1), QtGui.QApplication.translate("text_editor", "", None, QtGui.QApplication.UnicodeUTF8))
+
+	
+	def open_event(self,*input):
+		
+		if len(input)>0:
+			filename=input[0]
+		else:
+			filename = QtGui.QFileDialog.getOpenFileName(self, 'Open file','')
+	
+		for n in range(0,self.tabWidget.count()):
+			if str(self.tabWidget.tabToolTip(n)).split("/")[-1]==str(str(filename).split("/")[-1]):
+				return 0
+
+		if os.path.isfile(filename):
+			file=open(filename)
+			data = file.read()
+			file.close()
+			data=data.replace("\r","")
+			self.tab1 = QtGui.QWidget()
+			self.tab1.setObjectName("tab_"+str(filename))
+			
+			self.gridlayout1 = QtGui.QGridLayout(self.tab1)
+			self.gridlayout1.setMargin(1)
+			self.gridlayout1.setObjectName("gridlayout_"+str(filename))
+
+			self.text_ed = Qsci.QsciScintilla(self.tab1)
+			self.text_ed.setAcceptDrops(True)
+			self.text_ed.setMidLineWidth(1)
+			self.text_ed.setObjectName("text_ed_"+str(filename))
+			self.text_ed.setText(str(data))
+			self.gridlayout1.addWidget(self.text_ed,0,0,1,1)
+			self.tabWidget.addTab(self.tab1,"")
+			
+			font = QtGui.QFont()
+			#font.setFamily("Consolas")
+			font.setFixedPitch(True)
+			#font.setPointSize(10)
+
+			fm = QtGui.QFontMetrics(font)
+
+			self.text_ed.setFont(font)
+			self.text_ed.setMarginsFont(font)
+
+			self.text_ed.setMarginWidth(0, fm.width( "00000" ) + 2)
+			self.text_ed.setMarginLineNumbers(0, True)
+
+			#self.text_ed.setFolding(Qsci.QsciScintilla.BoxedTreeFoldStyle)
+
+			self.text_ed.setBraceMatching(Qsci.QsciScintilla.SloppyBraceMatch)
+
+			self.text_ed.setCaretLineVisible(True)
+			self.text_ed.setCaretLineBackgroundColor(QtGui.QColor("#e8e8e8"))
+
+			self.text_ed.setMarginsBackgroundColor(QtGui.QColor("#333333"))
+			self.text_ed.setMarginsForegroundColor(QtGui.QColor("#CCCCCC"))
+
+			self.text_ed.setFoldMarginColors(QtGui.QColor("#cad4c0"),QtGui.QColor("#333300"))
+
+			if str(filename)[-2:]=="py":
+				self.text_ed.setLexer(Qsci.QsciLexerPython())
+			elif str(filename)[-2:]=="cpp":
+				self.text_ed.setLexer(Qsci.QsciLexerCPP())
+				
+			else:
+				self.text_ed.setLexer(Qsci.QsciLexerPython())
+			
+			self.tabWidget.setCurrentIndex(self.tabWidget.indexOf(self.tab1))
+
+			self.tabWidget.setTabText(self.tabWidget.indexOf(self.tab1), QtGui.QApplication.translate("text_editor", str(str(filename).split("/")[-1]), None, QtGui.QApplication.UnicodeUTF8))
+			self.tabWidget.setTabToolTip(self.tabWidget.indexOf(self.tab1), QtGui.QApplication.translate("text_editor", str((filename)), None, QtGui.QApplication.UnicodeUTF8))
+
+
+def main(args):
+	a=QtGui.QApplication(args)
+	ui = GUI_main(args)
+	ui.show()
+	sys.exit(a.exec_())
+
+
+if __name__ == "__main__":
+	main(sys.argv[1:])
+
