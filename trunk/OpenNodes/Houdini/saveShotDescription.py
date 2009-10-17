@@ -9,6 +9,7 @@ define
 	input string Sequence "" ""
 	input string Shot "" ""
 	input functionCall noShotDataDialog "" ""
+	input file pathOverride "" ""
 	output any result "" ""
 
 }
@@ -52,7 +53,10 @@ class saveShotDescription():
 			noShotDataDialog=connections["noShotDataDialog"]
 		except:
 			noShotDataDialog=""
-
+		try:
+			pathOverride=str(connections["pathOverride"])
+		except:
+			pathOverride=""
 
 		ch=0
 		for node in hou.node("/obj").children():
@@ -100,8 +104,20 @@ class saveShotDescription():
 			st=nll.eval()
 			shotdesc+=st+"\n"
 
-		setA(shotROOTdbPath+".shotsetup",shotdesc)
-
+		if pathOverride=="":
+			setA(shotROOTdbPath+".shotsetup",shotdesc)
+			return 1
+		else:
+			if pathOverride==0:
+				return 0
+			else:
+				try:
+					fl=open(pathOverride,"w")
+					fl.write(shotdesc)
+					fl.close()
+					return pathOverride
+				except:
+					return 0
 		return 1
 		
 def geT(Path):

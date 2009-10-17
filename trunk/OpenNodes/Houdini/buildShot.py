@@ -8,7 +8,7 @@ define
 	input string Type "" ""
 	input string Project "" ""
 	input string Shot "" ""
-	input Path shotOverride "" ""
+	input file shotOverride "" ""
 	output any result "" ""
 
 }
@@ -95,6 +95,7 @@ class buildShot():
 				if os.path.isfile(shotOverride):
 					fl=open(shotOverride,"r")
 					attribute=fl.read()
+					attribute=attribute.strip()
 					fl.close()
 			else:
 				attribute=getA(":"+Project+":Movie:"+Sequence+":"+Shot+".shotsetup")
@@ -301,6 +302,7 @@ class buildShot():
 									prfile=open(str(vpath+"/"+desc_files),"r")
 									prcont=prfile.read()
 									prfile.close()
+
 							if prcont!="":
 								try:
 									exec(prcont)
@@ -308,9 +310,20 @@ class buildShot():
 										locals().pop("hou_node")
 									except:
 										print "hou_locale deletion problem"
+
+									if len(locals()["hou_parm"].keyframes())>0:
+										for kf in locals()["hou_parm"].keyframes():
+											kf.interpretAccelAsRatio(False)
+											locals()["hou_parm"].setKeyframe(kf)
+										hou.setFrame(locals()["hou_parm"].keyframes()[0].frame())
+										exec(prcont)
+										try:
+											locals().pop("hou_node")
+										except:
+											print "hou_locale deletion problem"
+
 								except:
 									print "There was some error while loading the attributes back!", desc_files,item[0]
-
 
 					attr=hou.StringParmTemplate(item[0]+"_PassBelongings",item[0],1,(psez,))
 					hou.node(path).addSpareParmTuple(attr,("PassBelongings",))		

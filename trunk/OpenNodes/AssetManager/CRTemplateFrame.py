@@ -17,6 +17,7 @@ define
 	input any Endframe "200" ""
 	input any Increment "1" ""
 	input any Head_n_Tail "5" ""
+	input file pathOverride "" ""
 	input string Comment "" ""
 	output any result "" ""
 
@@ -26,6 +27,10 @@ import os,sys
 
 class CRTemplateFrame():
 	def CRTemplateFrame_main(self, **connections):
+		try:
+			pathOverride=str(connections["pathOverride"])
+		except:
+			pathOverride=""
 		try:
 			renderBuilderScript=str(connections["renderBuilderScript"])
 		except:
@@ -83,7 +88,7 @@ class CRTemplateFrame():
 
 		try:
 
-			os.system("hython "+str(renderBuilderScript)+" "+str(TemplateOAS)+" "+str(LorF)+" "+str(Project)+" "+str(Shot)+" "+str(Node_Pass)+" "+str(Param_Setup)+" "+str(FirstFrame)+" "+str(Endframe)+" "+str(Increment)+" "+str(Head_n_Tail)+" "+str(Type)+" "+str(Comment))
+			os.system("hython "+str(renderBuilderScript)+" "+str(TemplateOAS)+" "+str(LorF)+" "+str(Project)+" "+str(Shot)+" "+str(Node_Pass)+" "+str(Param_Setup)+" "+str(FirstFrame)+" "+str(Endframe)+" "+str(Increment)+" "+str(Head_n_Tail)+" "+str(Type)+" "+str(pathOverride)+" "+str(Comment))
 
 			return 1
 

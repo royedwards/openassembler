@@ -131,7 +131,7 @@ class saveAssetData():
 			if pname=="dbPath" or pname=="dbType":
 				pass
 			else:
-				pyvar=pm.asCode()
+				pyvar=pm.asCode(save_keys_in_frames=True)
 				fl=open(vpath+"/"+pname+".py","w")
 				fl.write(pyvar)
 				fl.close()

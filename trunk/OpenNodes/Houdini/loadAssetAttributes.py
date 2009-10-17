@@ -75,6 +75,18 @@ class loadAssetAttributes():
 						locals().pop("hou_node")
 					except:
 						print "hou_locale deletion problem"
+
+					if len(locals()["hou_parm"].keyframes())>0:
+						for kf in locals()["hou_parm"].keyframes():
+							kf.interpretAccelAsRatio(False)
+							locals()["hou_parm"].setKeyframe(kf)
+						hou.setFrame(locals()["hou_parm"].keyframes()[0].frame())
+						exec(prcont)
+						try:
+							locals().pop("hou_node")
+						except:
+							print "hou_locale deletion problem"
+
 				except:
 					print "There was some error while loading the attributes back!", desc_files,AssetName
 

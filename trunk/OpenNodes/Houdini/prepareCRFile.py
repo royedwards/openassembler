@@ -15,6 +15,7 @@ define
 	input any Increment "1" ""
 	input any Head_n_Tail "5" ""
 	input string Comment "" ""
+	input file pathOverride "" ""
 	output array1D name_hipFile "" ""
 
 }
@@ -83,6 +84,10 @@ class prepareCRFile():
 			Type=str(connections["Type"])
 		except:
 			Type=""
+		try:
+			pathOverride=str(connections["pathOverride"])
+		except:
+			pathOverride=""
 
 		try:
 
@@ -112,7 +117,10 @@ class prepareCRFile():
 
 				tmpname=crHDA("Cache",Param_Setup,":"+Project+":Movie:"+Sequence+":"+Shot+":Caches:"+Node_Pass+":"+Param_Setup,"tmp_for_caching")
 
-				versionwanabe="v"+str(int(str(glv(dbPath))[1:])+1).zfill(3)
+				if glv(dbPath)==0:
+					versionwanabe="v001"
+				else:
+					versionwanabe="v"+str(int(str(glv(dbPath))[1:])+1).zfill(3)
 
 				picturepath=grf(Project,Sequence,Shot,Node_Pass,versionwanabe,Type,Param_Setup,Node_Pass)
 
@@ -144,13 +152,21 @@ class prepareCRFile():
 
 			try:
 
-				origfilecontent=getA(":"+Project+":Movie:"+Sequence+":"+Shot+".shotsetup")
+				if pathOverride=="":
+					origfilecontent=getA(":"+Project+":Movie:"+Sequence+":"+Shot+".shotsetup")
+				else:
+					if os.path.isfile(pathOverride):
+						fx=open(pathOverride,"r")
+						origfilecontent=fx.read()
+						fx.close()
+					else:
+						origfilecontent=getA(":"+Project+":Movie:"+Sequence+":"+Shot+".shotsetup")
 
 				vp=gVP(dbPath+"@"+newversion)
 
 				fl=open(str(vp)+"/shotsetup.atr","w")
 				fl.write(origfilecontent)
-				fl.close()
+				fl.close()					
 
 			except:
 				["Shotdescription can not be saved...","",""]
@@ -171,12 +187,18 @@ class prepareCRFile():
 			# build the scene
 
 			hou.hipFile.clear()
-
+		
 			if Type=="Cache":
-				bShot(Project,Shot,"Full")
+				if os.path.isfile(str(vp)+"/shotsetup.atr"):
+					bShot(Project,Shot,"Full",str(vp)+"/shotsetup.atr")
+				else:
+					bShot(Project,Shot,"Full","")
 			else:
 				cucc="Pass:"+str(Node_Pass)
-				bShot(Project,Shot,cucc)
+				if os.path.isfile(str(vp)+"/shotsetup.atr"):
+					bShot(Project,Shot,cucc,str(vp)+"/shotsetup.atr")
+				else:
+					bShot(Project,Shot,cucc,"")
 
 			# make all node allowediting
 
@@ -189,6 +211,17 @@ class prepareCRFile():
 			# record the rendernode_picturepath/bgeopath and set the framerange parameters
 
 			if Type=="Render":
+				resstring=getA(":"+Project+".resolution").strip()
+				res=resstring.split("x")
+				newx=int(res[0])*1.2
+				newy=int(res[1])*1.2
+				campath=hou.node("/obj/"+Param_Setup).parm("camera").eval()
+				if hou.node("/obj/"+Param_Setup).parm("override_camerares").eval()==0:
+					hou.node(campath).parm("winsizex").set(1.2)
+					hou.node(campath).parm("winsizey").set(1.2)
+					hou.node(campath).parm("resx").set(newx)
+					hou.node(campath).parm("resy").set(newy)
+
 				hou.node("/obj/"+Param_Setup).parm("picture_out").set(fullpath)
 				hou.node("/obj/"+Node_Pass).setDisplayFlag(True)
 				hou.node("/obj/"+Param_Setup).parm("framerange1").set(int(FirstFrame)-int(Head_n_Tail))
@@ -219,8 +252,8 @@ class prepareCRFile():
 def geT(Path):
 	return getElementType().getElementType_main(Path=Path)
 
-def bShot(Project,Shot,Type):
-	return buildShot().buildShot_main(Type=Type,Project=Project,Shot=Shot)
+def bShot(Project,Shot,Type,shotOverride):
+	return buildShot().buildShot_main(Type=Type,Project=Project,Shot=Shot,shotOverride=shotOverride)
 
 def sFS(Project,Shot):
 	return sequenceFromShot().sequenceFromShot_main(Project=Project,Shot=Shot)

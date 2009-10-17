@@ -10,6 +10,7 @@ define
 	input int Priority "100" ""
 	input int startFrame "1" ""
 	input int endFrame "10" ""
+	input int blockSize "1" ""
 	output any jobID "" ""
 
 }
@@ -46,14 +47,20 @@ class drqueueSubmitJob():
 		except:
 			endFrame=10
 		try:
+			blockSize=int(connections["blockSize"])
+		except:
+			blockSize=1
+		try:
 			job = drqueue.job()
 			job.name = Name
 			job.frame_start = startFrame
 			job.frame_end = endFrame
 			job.cmd = Command
+			job.block_size=blockSize
 			job.priority = Priority
 			job.send_to_queue()
 			id=job.id
+			drqueue.request_job_limits_nmaxcpuscomputer_set(id,1,1)
 			return id
 		except:
 			return None
