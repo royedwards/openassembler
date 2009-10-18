@@ -62,7 +62,23 @@ class updateAssetInScene():
 				try:
 					exec(code)
 				except:
-					print "Some Parameter was missing found!"
+					print "Some Parameter was missing!"
+				try:
+					locals().pop("hou_node")
+				except:
+					print "hou_locale deletion problem"
+
+
+				if len(locals()["hou_parm"].keyframes())>0:
+					for kf in locals()["hou_parm"].keyframes():
+						kf.interpretAccelAsRatio(False)
+						locals()["hou_parm"].setKeyframe(kf)
+					hou.setFrame(locals()["hou_parm"].keyframes()[0].frame())
+					exec(code)
+					try:
+						locals().pop("hou_node")
+					except:
+						print "hou_locale deletion problem"
 
 			newasset.setDisplayFlag(visib)
 			try:
