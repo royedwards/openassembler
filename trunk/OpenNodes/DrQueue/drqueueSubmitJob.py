@@ -60,7 +60,7 @@ class drqueueSubmitJob():
 			job.priority = Priority
 			job.send_to_queue()
 			id=job.id
-			drqueue.request_job_limits_nmaxcpuscomputer_set(id,1,1)
+			#drqueue.request_job_limits_nmaxcpuscomputer_set(id,1,1)
 			return id
 		except:
 			return None

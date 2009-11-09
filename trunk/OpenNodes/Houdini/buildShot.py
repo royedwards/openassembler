@@ -139,6 +139,9 @@ class buildShot():
 				except:
 					blls= allbuild
 
+				if item[3]=="0":
+					item[3]="v000"
+
 				if item[1] == "Model":
 					if loadORnot(Type,psez,blls)==1:
 						LHD(item[2],"Model",item[3],":"+Project+":Assets:Items:"+item[2],item[0])
@@ -278,7 +281,7 @@ class buildShot():
 
 				elif item[1] == "Cache":
 					if loadORnot(Type,psez,blls)==1:
-						or_nodename=item[0].rsplit("_",2)[0]
+						or_nodename=item[0].rsplit("_",1)[0].rsplit(item[2],1)[0].rsplit("_",1)[0]
 						LHD(item[2],"Cache" ,item[3],":"+Project+":Movie:"+Sequence+":"+Shot+":Caches:"+or_nodename+":"+item[2],item[0])
 						hou.node("/obj/"+item[0]).matchCurrentDefinition()
 						hou.node("/obj/"+item[0]).setDisplayFlag(False)

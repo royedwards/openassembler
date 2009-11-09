@@ -104,7 +104,7 @@ class prepareCRFile():
 				dbPath=":"+Project+":Movie:"+Sequence+":"+Shot+":Caches:"+Node_Pass+":"+Param_Setup+":Cache"
 
 				if geT(":"+Project+":Movie:"+Sequence+":"+Shot+":Caches")=="" or geT(":"+Project+":Movie:"+Sequence+":"+Shot+":Caches")==0:
-					return ["No Cache folder...","",""]
+					return ["No Cache folder...","","",""]
 
 				if geT(":"+Project+":Movie:"+Sequence+":"+Shot+":Caches:"+Node_Pass)=="" or geT(":"+Project+":Movie:"+Sequence+":"+Shot+":Caches:"+Node_Pass)==0:
 					re=crE(":"+Project+":Movie:"+Sequence+":"+Shot+":Caches","container",Node_Pass)
@@ -135,18 +135,18 @@ class prepareCRFile():
 				newversion=pubA("/obj/tmp_for_caching",Comment)
 
 				if str(newversion)=="0":
-					return ["Prooblem with the cachenodepublishing...","",""]
+					return ["Prooblem with the cachenodepublishing...","","",""]
 
 				hou.node("/obj/tmp_for_caching").destroy()
 
 			else:
-				return ["Unknown category...","",""]
+				return ["Unknown category...","","",""]
 
 			# create a new version
 			if Type=="Render":
 				newversion=crNV(dbPath,"Render",Comment)
 				if newversion==0:
-					return ["Can not create new version...",dbPath,""]
+					return ["Can not create new version...",dbPath,"",""]
 
 			# Save The Shot description file
 
@@ -169,7 +169,7 @@ class prepareCRFile():
 				fl.close()					
 
 			except:
-				["Shotdescription can not be saved...","",""]
+				["Shotdescription can not be saved...","","",""]
 
 			# make the render-folder and get the path
 
@@ -237,17 +237,32 @@ class prepareCRFile():
 
 			# save the hipfile
 
+			rrunner="/cg/tools/cgru/houdini/houdini10/hrender_af.py $*\n"
+			if Type=="Render":			
+				frr=open(picturepath+"/hipFile/render.sh","w")
+			else:
+				frr=open(picturepath+"/render.sh","w")
+			frr.write(rrunner)
+			frr.close()
+			try:
+				if Type=="Render":
+					os.system("chmod 755 "+picturepath+"/hipFile/render.sh")
+				elif Type=="Cache":
+					os.system("chmod 755 "+picturepath+"/render.sh")
+			except:
+				pass
+
 			if Type=="Render":
 				renderednode="/obj/"+Param_Setup+"/Sequence/out"
 				hou.hipFile.save(picturepath+"/hipFile/"+Node_Pass+".hip")
-				return [Shot+"_"+Node_Pass+"_"+newversion+"_render",picturepath+"/hipFile/"+Node_Pass+".hip",renderednode]
+				return [Shot+"_"+Node_Pass+"_"+newversion+"_render",picturepath+"/hipFile/"+Node_Pass+".hip",renderednode,picturepath+"/hipFile"]
 			elif Type=="Cache":
 				renderednode="/obj/"+Node_Pass+"/cacher_toHide/"+Param_Setup
 				hou.hipFile.save(picturepath+"/"+Node_Pass+"_"+Param_Setup+".hip")
-				return [Shot+"_"+Node_Pass+"_"+Param_Setup+"_"+newversion+"_cache",picturepath+"/"+Node_Pass+"_"+Param_Setup+".hip",renderednode]
+				return [Shot+"_"+Node_Pass+"_"+Param_Setup+"_"+newversion+"_cache",picturepath+"/"+Node_Pass+"_"+Param_Setup+".hip",renderednode,picturepath]
 
 		except:
-			return ["Unknown error...","",""]
+			return ["Unknown error...","","",""]
 
 def geT(Path):
 	return getElementType().getElementType_main(Path=Path)

@@ -424,7 +424,7 @@ class complicatedAssetWidget(object):
 	if attributes.has_key("shotSetupPath"):
 		self.shotSetupPath=attributes["shotSetupPath"]
 
-	if self.dbType=="Pass" or self.dbType=="Misc" or self.dbType=="Cache" or self.dbType=="Camera" or self.dbType=="RenderSetup" or self.dbType=="Lightrig":
+	if self.dbType=="Pass" or self.dbType=="Misc" or self.dbType=="Cache" or self.dbType=="Camera" or self.dbType=="Rendersetup" or self.dbType=="Lightrig":
 		self.pub_but.setDisabled(True)
 
 	cPath=getCPath(self.dbPath)

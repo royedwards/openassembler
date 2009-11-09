@@ -59,6 +59,7 @@ class loadAssetAttributes():
 			attr=hou.StringParmTemplate(AssetName,AssetName,1,(Version,))
 			hou.node("/obj/ShotData").addSpareParmTuple(attr,("Setupversions",))
 		for desc_files in dir_content:
+			prcont=""
 			if os.path.isfile(str(vpath+"/"+desc_files))==True:
 				if os.path.splitext(desc_files)[1][1:][:2]=="py":
 					prfile=open(str(vpath+"/"+desc_files),"r")
