@@ -19,7 +19,7 @@ def AddSysPath(new_path):
         return do
 
 
-AddSysPath("/opt/OpenTools/OpenAssembler")
+AddSysPath("/W/Projects/projectDb/Softwares/bin/OpenAssembler")
 
 from Core.Console.Console import oas_console
 from Core.Dbase.Dbase_init import dBase_Init
@@ -43,9 +43,10 @@ class oas_loader(dBase_Init,oas_console,oas_gateway):
 		inc=args[8]
 		ht=args[9]
 		type=args[10]
+		pathOverride=args[11]
 
 		comm=""
-		for n in range(11,len(args)):
+		for n in range(12,len(args)):
 			comm+=args[n]+" "
 
 		comm=comm.strip()
@@ -58,13 +59,15 @@ class oas_loader(dBase_Init,oas_console,oas_gateway):
 		self.oas_set(nodevalue="dataNode.Node_Pass",value=node_pass)
 		self.oas_set(nodevalue="dataNode.Param_Setup",value=parm_setup)
 	
+		self.oas_set(nodevalue="dataNode.pathOverride",value=pathOverride)
+
 		self.oas_set(nodevalue="_HnT_._in",value=ht)
 		self.oas_set(nodevalue="_firstFrame_._in",value=ff)
 		self.oas_set(nodevalue="_endFrame_._in",value=ef)
 		self.oas_set(nodevalue="dataNode.Increment",value=inc)
 
 		self.oas_set(nodevalue="_Type_._in",value=type)
-		self.oas_set(nodevalue="dataNode.Comment",value=comm)
+		self.oas_set(nodevalue="comment_in._in",value=comm)
 
 		self.oas_set(nodevalue="_LorF_._in",value=target)
 

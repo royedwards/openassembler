@@ -27,7 +27,7 @@ class saveScript():
 		except:
 			Overwrite=0
 		try:
-			ret=nuke.saveScriptAs(filename = file, overwrite = Overwrite)
+			ret=nuke.scriptSaveAs(filename = file, overwrite = Overwrite)
 			if ret==True:
 				return 1
 			else:

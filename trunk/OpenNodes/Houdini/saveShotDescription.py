@@ -86,6 +86,8 @@ class saveShotDescription():
 			ass_dbname=tmp.rsplit(":",1)[1]
 			ass_type=hou.node("/obj/"+ass).parm("dbType").eval()
 			ass_version=hou.node("/obj/"+ass).type().definition().version()
+			if ass_version=="" or str(ass_version)=="0":
+				ass_version="v000"
 			try:
 				ass_par_version=hou.node(path).parm(ass).eval()
 			except:

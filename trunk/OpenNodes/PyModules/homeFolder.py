@@ -9,6 +9,7 @@ define
 
 }
 '''
+import os,sys
 
 class homeFolder():
 	def homeFolder_main(self, **connections):

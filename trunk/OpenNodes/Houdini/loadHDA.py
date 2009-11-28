@@ -67,8 +67,12 @@ class loadHDA():
 		elif vlist==0:
 			return 0
 
+		if Version=="v000" and vlist!=[]:
+			Version="v001"
+
 		vers=getVerFrompath(str(dbPath)+":"+str(Type)+"@"+str(Version))
 		chk=0
+
 		for v in vlist:
 			if str(v)==str(vers):
 				chk=1

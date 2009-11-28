@@ -139,8 +139,11 @@ class buildShot():
 				except:
 					blls= allbuild
 
-				if item[3]=="0":
+				if item[3]=="0" or item[3]=="":
 					item[3]="v000"
+
+				if item[4]=="0" or item[4]=="":
+					item[4]="v000"
 
 				if item[1] == "Model":
 					if loadORnot(Type,psez,blls)==1:

@@ -31,6 +31,8 @@ from Houdini.buildShot import buildShot
 from OpenEdit.sequenceFromShot import sequenceFromShot
 from AssetManager.saveShotDescriptionTo import saveShotDescriptionTo
 from DigitalApes.getRenderFolder import getRenderFolder
+from DigitalApes.getEmailCommand import getEmailCommand
+from DigitalApes.doDOD import doDOD
 
 from OpenProject.createElement import createElement
 from OpenProject.getElementType import getElementType
@@ -236,8 +238,10 @@ class prepareCRFile():
 				pass
 
 			# save the hipfile
-
-			rrunner="/cg/tools/cgru/houdini/houdini10/hrender_af.py $*\n"
+			if Type=="Render":
+				rrunner="/cg/tools/cgru/houdini/houdini10/hrender_af.py $*\n"
+			else:
+				rrunner="hrender -e -f "  +str(int(FirstFrame)-int(Head_n_Tail))+ " " + str(int(Endframe)+int(Head_n_Tail)) + " -d " + str("/obj/"+Node_Pass+"/cacher_toHide/"+Param_Setup) + " " + str(picturepath+"/"+Node_Pass+"_"+Param_Setup+".hip") + "\n"
 			if Type=="Render":			
 				frr=open(picturepath+"/hipFile/render.sh","w")
 			else:
@@ -251,6 +255,32 @@ class prepareCRFile():
 					os.system("chmod 755 "+picturepath+"/render.sh")
 			except:
 				pass
+
+			if Type=="Render":
+				emr=gM(Shot+"_"+Node_Pass+"_"+newversion+"_render")			
+				frr=open(picturepath+"/hipFile/email.sh","w")
+				frr.write(emr)
+				frr.close()
+				try:
+					if Type=="Render":
+						os.system("chmod 755 "+picturepath+"/hipFile/email.sh")
+				except:
+					pass
+
+			if Type=="Render":
+				try:
+					#ppp=dOD(str(picturepath+"/seq/"+Shot+"_"+Node_Pass+"_"+newversion+".%04d.exr"),str(picturepath+"/hipFile/autoDOD.nk"),str(int(FirstFrame)-int(Head_n_Tail)),str(int(Endframe)+int(Head_n_Tail)) )
+					ppp=str("nuke -t /W/Projects/projectDb/Softwares/OpenNodes/Nuke/autoDOD.py "+str(picturepath+"/seq/"+Shot+"_"+Node_Pass+"_"+newversion+".%04d.exr")+","+str(picturepath+"/hipFile/autoDOD.nk")+","+str(FirstFrame)+","+str(Endframe))
+					dodd=ppp+"\nnuke -i -X Write1 -m 2 -x "+picturepath+"/hipFile/autoDOD.nk"+" %1-%2\n"			
+					frr=open(picturepath+"/hipFile/dod.sh","w")
+					frr.write(dodd)
+					frr.close()
+					try:
+						os.system("chmod 755 "+picturepath+"/hipFile/dod.sh")
+					except:
+						pass
+				except:
+					pass
 
 			if Type=="Render":
 				renderednode="/obj/"+Param_Setup+"/Sequence/out"
@@ -299,3 +329,9 @@ def pubA(assetPath,Comment):
 
 def glv(Path):
 	return getLatestVersion().getLatestVersion_main(Path=Path)
+
+def gM(JobName):
+	return getEmailCommand().getEmailCommand_main(JobName=JobName)
+
+def dOD(seqPath,nukePath,firstFrame,lastFrame):
+	return doDOD().doDOD_main(seqPath=seqPath,nukePath=nukePath,firstFrame=firstFrame,lastFram=lastFram)
