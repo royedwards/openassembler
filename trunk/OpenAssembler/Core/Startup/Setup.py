@@ -209,5 +209,5 @@ class oas_setup(oas_variablechecker):
 							settings={"_do_cache":"False"}
 							nodelist[str(entry_name)]={'tag':str(entry_firsttag),'path':str(singledir+"/"+desc_files),'inputs':inputs,'outputs':outputs, "settings":settings}
 		settings_def={"_do_cache":"False","QtMainWindowUi":""}
-		nodelist["_def"]={'tag':str("oascore"),'path':str("OpenAssembler internal function"),'inputs':{"Input":{'variable_type':"any",'value':"",'options':""},"Hython":{'variable_type':"int",'value':"0",'options':""}},'outputs':{},"settings":settings_def}
+		nodelist["_def"]={'tag':str("oascore"),'path':str("OpenAssembler internal function"),'inputs':{"Input":{'variable_type':"any",'value':"",'options':""},"Hython":{'variable_type':"int",'value':"0",'options':""},"Nuke":{'variable_type':"int",'value':"0",'options':""}},'outputs':{},"settings":settings_def}
 		return nodelist

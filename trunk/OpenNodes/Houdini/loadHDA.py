@@ -107,6 +107,37 @@ class loadHDA():
 					hou.hda.uninstallFile(otlpath)
 				asset.type().definition().setVersion(vers)
 				asset.type().definition().updateFromNode(asset)
+
+				colorC=hou.Color()
+				if Type=="Model":
+					colorC.setRGB((0.35,0.35,0.35))
+				elif Type=="Engine":
+					colorC.setRGB((1,0,0))
+				elif Type=="Setup":
+					colorC.setRGB((0,.8,0))
+				elif Type=="Deform":
+					colorC.setRGB((0,0.35,0))
+				elif Type=="Material":
+					colorC.setRGB((0,0,0.8))
+				elif Type=="Lightrig":
+					colorC.setRGB((1,1,0))
+				elif Type=="Camera":
+					colorC.setRGB((0,1,1))	
+				elif Type=="RenderSetup":
+					colorC.setRGB((1,0,1))
+				elif Type=="Pass":
+					colorC.setRGB((1,0.7,0.4))
+				elif Type=="Misc":
+					colorC.setRGB((0.4,0.7,1))			
+				elif Type=="Cache":
+					colorC.setRGB((0.4,0.1,0.1))
+				elif Type=="Shader":
+					colorC.setRGB((0.7,0.2,1))
+				try:
+					asset.setColor(colorC)
+				except:
+					pass
+
 				return vers
 			else:
 				return 0

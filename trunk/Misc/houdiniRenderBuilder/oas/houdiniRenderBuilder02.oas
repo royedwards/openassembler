@@ -5,74 +5,7 @@
 define
 {
 	name houdiniRenderBuilder02
-	end ifafa
-}
-
-node stringAdder
-{
-	name addollar
-
-	input	any	in01 ""
-	input	any	in03 ""
-	input	any	in02 " &"
-
-	output	string	sum
-
-	setting	_do_cache	"False"
-}
-
-node stringAdder
-{
-	name afaCollection
-
-	input	any	in01 "render.sh -s %1 -e %2 -b 1 --numcpus @AF_CAPACITY@ "
-	input	any	in03 " "
-	input	any	in02 ""
-	input	any	in04 ""
-
-	output	string	sum
-
-	setting	_do_cache	"False"
-}
-
-node in_out
-{
-	name _firstFrame_
-
-	input	any	_in ""
-
-	output	any	out_
-
-	setting	_do_cache	"False"
-}
-
-node _def
-{
-	name afA
-
-	input	int	Hython "0"
-	input	any	Input ""
-	input	int	Nuke "0"
-
-
-	setting	_do_cache	"False"
-	setting	QtMainWindowUi	""
-}
-
-node multiMath
-{
-	name htff
-
-	input	float	A "1.0"
-	input	float	B "1.0"
-
-	output	float	pow
-	output	float	add
-	output	float	div
-	output	float	mult
-	output	float	sub
-
-	setting	_do_cache	"False"
+	end renderpath
 }
 
 node string_if
@@ -86,84 +19,6 @@ node string_if
 
 	output	string	A_equal_B
 	output	string	B_part_A
-
-	setting	_do_cache	"False"
-}
-
-node in_out
-{
-	name comment_in
-
-	input	any	_in ""
-
-	output	any	out_
-
-	setting	_do_cache	"False"
-}
-
-node _def
-{
-	name fR
-
-	input	int	Hython "0"
-	input	any	Input ""
-	input	int	Nuke "0"
-
-
-	setting	_do_cache	"False"
-	setting	QtMainWindowUi	""
-}
-
-node string_if
-{
-	name ifafarender
-
-	input	string	A ""
-	input	functionCall	callIfFalse ">_afaCache"
-	input	string	B "Render"
-	input	functionCall	callIfTrue ">_afaRender"
-
-	output	string	A_equal_B
-	output	string	B_part_A
-
-	setting	_do_cache	"False"
-}
-
-node _def
-{
-	name onFarm
-
-	input	int	Hython "0"
-	input	any	Input ""
-	input	int	Nuke "0"
-
-
-	setting	_do_cache	"False"
-	setting	QtMainWindowUi	""
-}
-
-node string_if
-{
-	name ifafa
-
-	input	string	A ""
-	input	functionCall	callIfFalse ">onLocal"
-	input	string	B "Afanasy"
-	input	functionCall	callIfTrue ">afA"
-
-	output	string	A_equal_B
-	output	string	B_part_A
-
-	setting	_do_cache	"False"
-}
-
-node in_out
-{
-	name renderStarter
-
-	input	any	_in "[somewhere]/renderscript.py"
-
-	output	any	out_
 
 	setting	_do_cache	"False"
 }
@@ -183,59 +38,81 @@ node _def
 
 node in_out
 {
-	name _endFrame_
+	name renderStarter
 
-	input	any	_in ""
+	input	any	_in "/W/Projects/projectDb/Softwares/OAS/RenderScript/renderscript.py"
 
 	output	any	out_
 
 	setting	_do_cache	"False"
 }
 
-node getArrayItem
+node afanasySubmitJob
 {
-	name filepath
+	name afarendersubmit
 
-	input	int	itemNumber "1"
-	input	array1D	Array ""
+	input	string	Comment ""
+	input	int	memory "3000"
+	input	string	PostCommand ""
+	input	string	workDir ""
+	input	int	Capacity "1000"
+	input	string	Name ""
+	input	stirng	HostMask ""
+	input	string	BlockName "Render"
+	input	int	blockSize "5"
+	input	int	endFrame "10"
+	input	string	HostExcludeMask ""
+	input	int	Priority "100"
+	input	int	autoDOD "0"
+	input	int	MaxHosts "8"
+	input	string	Command ""
+	input	int	maxMult "4"
+	input	string	DODCommand "dod.sh"
+	input	string	EmailCommand "email.sh"
+	input	int	startFrame "1"
+	input	string	Type "hbatch"
+	input	string	DependOn ""
 
-	output	any	out_item
+	output	any	jobID
 
 	setting	_do_cache	"False"
-}
-
-node getArrayItem
-{
-	name renderworkdir
-
-	input	int	itemNumber "3"
-	input	array1D	Array ""
-
-	output	any	out_item
-
-	setting	_do_cache	"False"
-}
-
-node _def
-{
-	name onLocal
-
-	input	int	Hython "0"
-	input	any	Input ""
-	input	int	Nuke "0"
-
-
-	setting	_do_cache	"False"
-	setting	QtMainWindowUi	""
 }
 
 node in_out
 {
-	name _Type_
+	name _HnT_
 
 	input	any	_in ""
 
 	output	any	out_
+
+	setting	_do_cache	"False"
+}
+
+node getShotsFarmSetup
+{
+	name getShotsFarmSetup750550
+
+	input	string	Project ""
+	input	string	Shot ""
+	input	string	Sequence ""
+
+	output	array1D	farmsetup
+
+	setting	_do_cache	"False"
+}
+
+node string_if
+{
+	name ifafarender
+
+	input	string	A ""
+	input	functionCall	callIfFalse ">_afaCache"
+	input	string	B "Render"
+	input	functionCall	callIfTrue ">_afaRender"
+
+	output	string	A_equal_B
+	output	string	B_part_A
 
 	setting	_do_cache	"False"
 }
@@ -254,6 +131,76 @@ node stringAdder
 	input	any	in06 ""
 
 	output	string	sum
+
+	setting	_do_cache	"False"
+}
+
+node in_out
+{
+	name _firstFrame_
+
+	input	any	_in ""
+
+	output	any	out_
+
+	setting	_do_cache	"False"
+}
+
+node sequenceFromShot
+{
+	name sequenceFromShot433431
+
+	input	string	Project ""
+	input	string	Shot ""
+
+	output	any	sequence
+
+	setting	_do_cache	"False"
+}
+
+node getArrayItem
+{
+	name filepath
+
+	input	int	itemNumber "1"
+	input	array1D	Array ""
+
+	output	any	out_item
+
+	setting	_do_cache	"False"
+}
+
+node _def
+{
+	name AorL
+
+	input	int	Hython "0"
+	input	any	Input ""
+	input	int	Nuke "0"
+
+
+	setting	_do_cache	"False"
+	setting	QtMainWindowUi	""
+}
+
+node in_out
+{
+	name projectIN
+
+	input	any	_in ""
+
+	output	any	out_
+
+	setting	_do_cache	"False"
+}
+
+node in_out
+{
+	name _Type_
+
+	input	any	_in ""
+
+	output	any	out_
 
 	setting	_do_cache	"False"
 }
@@ -279,47 +226,6 @@ node prepareCRFile
 	setting	_do_cache	"False"
 }
 
-node multiMath
-{
-	name htef
-
-	input	float	A "1.0"
-	input	float	B "1.0"
-
-	output	float	pow
-	output	float	add
-	output	float	div
-	output	float	mult
-	output	float	sub
-
-	setting	_do_cache	"False"
-}
-
-node getArrayItem
-{
-	name farmname
-
-	input	int	itemNumber "0"
-	input	array1D	Array ""
-
-	output	any	out_item
-
-	setting	_do_cache	"False"
-}
-
-node _def
-{
-	name _afaCache
-
-	input	int	Hython "0"
-	input	any	Input ""
-	input	int	Nuke "0"
-
-
-	setting	_do_cache	"False"
-	setting	QtMainWindowUi	""
-}
-
 node drqueueSubmitJob
 {
 	name submitR
@@ -336,6 +242,31 @@ node drqueueSubmitJob
 	setting	_do_cache	"False"
 }
 
+node stringAdder
+{
+	name afaCollection
+
+	input	any	in01 "render.sh -s %1 -e %2 -b 1 --numcpus @AF_CAPACITY@ "
+	input	any	in03 " "
+	input	any	in02 ""
+	input	any	in04 ""
+
+	output	string	sum
+
+	setting	_do_cache	"False"
+}
+
+node in_out
+{
+	name comment_in
+
+	input	any	_in ""
+
+	output	any	out_
+
+	setting	_do_cache	"False"
+}
+
 node afanasySubmitJob
 {
 	name afacachesubmit
@@ -346,14 +277,16 @@ node afanasySubmitJob
 	input	string	workDir ""
 	input	int	Capacity "1000"
 	input	string	Name ""
+	input	stirng	HostMask ""
 	input	string	BlockName "Cache"
 	input	int	blockSize "5"
 	input	int	endFrame "10"
-	input	int	maxMult "1"
+	input	string	HostExcludeMask ""
 	input	int	Priority "100"
 	input	int	autoDOD "0"
 	input	int	MaxHosts "8"
 	input	string	Command ""
+	input	int	maxMult "1"
 	input	string	DODCommand ""
 	input	string	EmailCommand ""
 	input	int	startFrame "1"
@@ -365,13 +298,18 @@ node afanasySubmitJob
 	setting	_do_cache	"False"
 }
 
-node in_out
+node multiMath
 {
-	name _HnT_
+	name htff
 
-	input	any	_in ""
+	input	float	A "1.0"
+	input	float	B "1.0"
 
-	output	any	out_
+	output	float	pow
+	output	float	add
+	output	float	div
+	output	float	mult
+	output	float	sub
 
 	setting	_do_cache	"False"
 }
@@ -389,17 +327,31 @@ node _def
 	setting	QtMainWindowUi	""
 }
 
-node _def
+node getArrayItem
 {
-	name AorL
+	name farmname
 
-	input	int	Hython "0"
-	input	any	Input ""
-	input	int	Nuke "0"
+	input	int	itemNumber "0"
+	input	array1D	Array ""
 
+	output	any	out_item
 
 	setting	_do_cache	"False"
-	setting	QtMainWindowUi	""
+}
+
+node string_if
+{
+	name ifafa
+
+	input	string	A ""
+	input	functionCall	callIfFalse ">onLocal"
+	input	string	B "Afanasy"
+	input	functionCall	callIfTrue ">afA"
+
+	output	string	A_equal_B
+	output	string	B_part_A
+
+	setting	_do_cache	"False"
 }
 
 node string_if
@@ -419,7 +371,7 @@ node string_if
 
 node _def
 {
-	name fC
+	name fR
 
 	input	int	Hython "0"
 	input	any	Input ""
@@ -432,7 +384,19 @@ node _def
 
 node getArrayItem
 {
-	name renderpath
+	name _memory
+
+	input	int	itemNumber "1"
+	input	array1D	Array ""
+
+	output	any	out_item
+
+	setting	_do_cache	"False"
+}
+
+node getArrayItem
+{
+	name _hostmask
 
 	input	int	itemNumber "2"
 	input	array1D	Array ""
@@ -455,6 +419,31 @@ node stringAdder
 	setting	_do_cache	"False"
 }
 
+node getArrayItem
+{
+	name renderworkdir
+
+	input	int	itemNumber "3"
+	input	array1D	Array ""
+
+	output	any	out_item
+
+	setting	_do_cache	"False"
+}
+
+node _def
+{
+	name fC
+
+	input	int	Hython "0"
+	input	any	Input ""
+	input	int	Nuke "0"
+
+
+	setting	_do_cache	"False"
+	setting	QtMainWindowUi	""
+}
+
 node in_out
 {
 	name _LorF_
@@ -462,17 +451,6 @@ node in_out
 	input	any	_in ""
 
 	output	any	out_
-
-	setting	_do_cache	"False"
-}
-
-node shellCommand
-{
-	name shellCommand552768
-
-	input	string	command ""
-
-	output	any	result
 
 	setting	_do_cache	"False"
 }
@@ -493,91 +471,231 @@ node drqueueSubmitJob
 	setting	_do_cache	"False"
 }
 
-node afanasySubmitJob
+node _def
 {
-	name afarendersubmit
+	name _afaCache
 
-	input	string	Comment ""
-	input	int	memory "3000"
-	input	string	PostCommand ""
-	input	string	workDir ""
-	input	int	Capacity "1000"
-	input	string	Name ""
-	input	string	BlockName "Render"
-	input	int	blockSize "5"
-	input	int	endFrame "10"
-	input	int	maxMult "4"
-	input	int	Priority "100"
-	input	int	autoDOD "0"
-	input	int	MaxHosts "8"
-	input	string	Command ""
-	input	string	DODCommand "dod.sh"
-	input	string	EmailCommand "email.sh"
-	input	int	startFrame "1"
-	input	string	Type "hbatch"
-	input	string	DependOn ""
+	input	int	Hython "0"
+	input	any	Input ""
+	input	int	Nuke "0"
 
-	output	any	jobID
+
+	setting	_do_cache	"False"
+	setting	QtMainWindowUi	""
+}
+
+node getArrayItem
+{
+	name _hostexclude
+
+	input	int	itemNumber "3"
+	input	array1D	Array ""
+
+	output	any	out_item
+
+	setting	_do_cache	"False"
+}
+
+node in_out
+{
+	name _endFrame_
+
+	input	any	_in ""
+
+	output	any	out_
+
+	setting	_do_cache	"False"
+}
+
+node getArrayItem
+{
+	name _priority
+
+	input	int	itemNumber "0"
+	input	array1D	Array ""
+
+	output	any	out_item
+
+	setting	_do_cache	"False"
+}
+
+node _def
+{
+	name onFarm
+
+	input	int	Hython "0"
+	input	any	Input ""
+	input	int	Nuke "0"
+
+
+	setting	_do_cache	"False"
+	setting	QtMainWindowUi	""
+}
+
+node in_out
+{
+	name shotIN
+
+	input	any	_in ""
+
+	output	any	out_
+
+	setting	_do_cache	"False"
+}
+
+node _def
+{
+	name afA
+
+	input	int	Hython "0"
+	input	any	Input ""
+	input	int	Nuke "0"
+
+
+	setting	_do_cache	"False"
+	setting	QtMainWindowUi	""
+}
+
+node shellCommand
+{
+	name shellCommand552768
+
+	input	string	command ""
+
+	output	any	result
+
+	setting	_do_cache	"False"
+}
+
+node getArrayItem
+{
+	name renderpath
+
+	input	int	itemNumber "2"
+	input	array1D	Array ""
+
+	output	any	out_item
+
+	setting	_do_cache	"False"
+}
+
+node multiMath
+{
+	name htef
+
+	input	float	A "1.0"
+	input	float	B "1.0"
+
+	output	float	pow
+	output	float	add
+	output	float	div
+	output	float	mult
+	output	float	sub
+
+	setting	_do_cache	"False"
+}
+
+node _def
+{
+	name onLocal
+
+	input	int	Hython "0"
+	input	any	Input ""
+	input	int	Nuke "0"
+
+
+	setting	_do_cache	"False"
+	setting	QtMainWindowUi	""
+}
+
+node stringAdder
+{
+	name addollar
+
+	input	any	in01 ""
+	input	any	in03 ""
+	input	any	in02 " &"
+
+	output	string	sum
 
 	setting	_do_cache	"False"
 }
 
 connection
 {
-	renderworkdir.out_item stringAdder554139.in02
-	commandCollector.sum addollar.in01
-	comment_in.out_ afacachesubmit.Comment
-	_Type_.out_ ifitiscache.A
-	htef.add afacachesubmit.blockSize
-	htef.add afacachesubmit.endFrame
-	_HnT_.out_ dataNode.Head_n_Tail
-	dataNode.name_hipFile farmname.Array
-	_firstFrame_.out_ dataNode.FirstFrame
-	dataNode.name_hipFile renderpath.Array
-	_Type_.out_ ifafarender.A
-	_Type_.out_ commandCollector.in08
-	farmname.out_item submitC.Name
-	farmname.out_item afarendersubmit.Name
-	ifitiscache.A_equal_B onFarm.Input
-	dataNode.name_hipFile renderworkdir.Array
-	commandCollector.sum submitC.Command
-	afaCollection.sum afarendersubmit.Command
-	filepath.out_item afaCollection.in02
-	comment_in.out_ dataNode.Comment
+	renderpath.out_item afaCollection.in04
+	_memory.out_item afarendersubmit.memory
+	dataNode.name_hipFile filepath.Array
+	getShotsFarmSetup750550.farmsetup _hostmask.Array
 	htff.sub afarendersubmit.startFrame
-	htef.add afarendersubmit.endFrame
-	filepath.out_item commandCollector.in04
-	submitC.jobID fC.Input
-	_Type_.out_ dataNode.Type
+	projectIN.out_ getShotsFarmSetup750550.Project
+	submitR.jobID fR.Input
+	farmname.out_item submitC.Name
+	ifafa.A_equal_B AorL.Input
+	getShotsFarmSetup750550.farmsetup _hostexclude.Array
+	shotIN.out_ dataNode.Shot
+	farmname.out_item submitR.Name
+	_priority.out_item afacachesubmit.Priority
 	_endFrame_.out_ htef.A
+	projectIN.out_ sequenceFromShot433431.Project
+	_Type_.out_ commandCollector.in08
+	htef.add afacachesubmit.blockSize
+	htff.sub afacachesubmit.startFrame
+	projectIN.out_ dataNode.Project
+	_Type_.out_ ifafarender.A
+	comment_in.out_ afarendersubmit.Comment
+	_endFrame_.out_ dataNode.Endframe
+	renderpath.out_item commandCollector.in06
+	_Type_.out_ ifitiscache.A
+	_HnT_.out_ dataNode.Head_n_Tail
+	_hostexclude.out_item afacachesubmit.HostExcludeMask
+	htef.add submitR.endFrame
+	filepath.out_item commandCollector.in04
+	renderStarter.out_ commandCollector.in02
+	_memory.out_item afacachesubmit.memory
+	getShotsFarmSetup750550.farmsetup _memory.Array
+	shotIN.out_ getShotsFarmSetup750550.Shot
+	_HnT_.out_ htff.B
+	htef.add afarendersubmit.endFrame
+	afarendersubmit.jobID _afaRender.Input
+	dataNode.name_hipFile renderpath.Array
+	sequenceFromShot433431.sequence getShotsFarmSetup750550.Sequence
+	_LorF_.out_ ifafa.A
+	filepath.out_item afaCollection.in02
+	_HnT_.out_ htef.B
+	_hostexclude.out_item afarendersubmit.HostExcludeMask
+	afaCollection.sum afarendersubmit.Command
+	_hostmask.out_item afarendersubmit.HostMask
+	submitC.jobID fC.Input
+	htff.sub submitR.startFrame
+	getShotsFarmSetup750550.farmsetup _priority.Array
+	commandCollector.sum addollar.in01
+	addollar.sum shellCommand552768.command
+	renderworkdir.out_item afarendersubmit.workDir
+	dataNode.name_hipFile renderworkdir.Array
+	ifitiscache.A_equal_B onFarm.Input
+	renderworkdir.out_item stringAdder554139.in02
+	ifafarender.A_equal_B afA.Input
+	_hostmask.out_item afacachesubmit.HostMask
+	htef.add afacachesubmit.endFrame
+	afacachesubmit.jobID _afaCache.Input
+	commandCollector.sum submitC.Command
+	ifonfarm.A_equal_B __init__.Input
+	_firstFrame_.out_ htff.A
+	farmname.out_item afarendersubmit.Name
+	afaCollection.sum afacachesubmit.Command
 	shellCommand552768.result onLocal.Input
 	commandCollector.sum submitR.Command
-	renderpath.out_item commandCollector.in06
-	dataNode.name_hipFile filepath.Array
+	comment_in.out_ afacachesubmit.Comment
+	_firstFrame_.out_ dataNode.FirstFrame
+	_priority.out_item afarendersubmit.Priority
+	_Type_.out_ dataNode.Type
+	dataNode.name_hipFile farmname.Array
+	comment_in.out_ dataNode.Comment
 	_LorF_.out_ ifonfarm.A
-	farmname.out_item submitR.Name
-	ifafarender.A_equal_B afA.Input
-	afarendersubmit.jobID _afaRender.Input
-	_endFrame_.out_ dataNode.Endframe
+	shotIN.out_ sequenceFromShot433431.Shot
 	renderworkdir.out_item afacachesubmit.workDir
-	renderworkdir.out_item afarendersubmit.workDir
-	_HnT_.out_ htff.B
-	ifonfarm.A_equal_B __init__.Input
-	ifafa.A_equal_B AorL.Input
-	_LorF_.out_ ifafa.A
-	_HnT_.out_ htef.B
-	afacachesubmit.jobID _afaCache.Input
-	afaCollection.sum afacachesubmit.Command
-	addollar.sum shellCommand552768.command
-	submitR.jobID fR.Input
-	htff.sub submitR.startFrame
-	htef.add submitR.endFrame
-	htff.sub afacachesubmit.startFrame
 	farmname.out_item afacachesubmit.Name
-	renderpath.out_item afaCollection.in04
-	renderStarter.out_ commandCollector.in02
-	comment_in.out_ afarendersubmit.Comment
-	_firstFrame_.out_ htff.A
 }
 
 scene_settings
@@ -590,41 +708,49 @@ scene_settings
 
 node_positions
 {
-	addollar -1303:-491
-	afaCollection -1762:-3306
-	_firstFrame_ -3137:-1698
-	afA -2207:-2572
-	htff -2621:-1885
 	ifonfarm -1227:-2472
-	comment_in -3224:-1161
-	fR -697:-1793
-	ifafarender -2639:-2532
-	onFarm -897:-2256
-	ifafa -1254:-920
-	renderStarter -2803:-473
 	_afaRender -523:-3258
-	_endFrame_ -3142:-1534
-	filepath -2445:-989
-	renderworkdir -2433:-638
-	onLocal -572:-533
-	_Type_ -3482:-223
+	renderStarter -2803:-473
+	afarendersubmit -992:-3336
+	_HnT_ -3229:-1366
+	getShotsFarmSetup750550 -3197:-3932
+	ifafarender -2639:-2532
 	commandCollector -2092:-514
-	dataNode -2800:-1164
-	htef -2628:-1528
-	farmname -2453:-1229
-	_afaCache -498:-3995
-	submitR -1225:-1753
-	afacachesubmit -994:-4121
-	_HnT_ -3138:-1370
-	__init__ -496:-2513
+	_firstFrame_ -3228:-1694
+	sequenceFromShot433431 -3608:-3858
+	filepath -2445:-989
 	AorL -887:-957
+	projectIN -4089:-3939
+	_Type_ -3482:-223
+	dataNode -2800:-1164
+	submitR -1225:-1753
+	afaCollection -1762:-3306
+	comment_in -3224:-1161
+	afacachesubmit -986:-4283
+	htff -2621:-1885
+	__init__ -496:-2513
+	farmname -2453:-1229
+	ifafa -1254:-920
 	ifitiscache -1231:-2215
-	fC -691:-1464
-	renderpath -2445:-806
+	fR -697:-1793
+	_memory -2876:-3734
+	_hostmask -2881:-3535
 	stringAdder554139 -1833:-3715
-	_LorF_ -1534:-2575
-	shellCommand552768 -882:-493
+	renderworkdir -2433:-638
+	fC -691:-1464
+	_LorF_ -1625:-2459
 	submitC -1221:-1425
-	afarendersubmit -981:-3249
+	_afaCache -498:-3995
+	_hostexclude -2879:-3343
+	_endFrame_ -3233:-1530
+	_priority -2883:-3931
+	onFarm -897:-2256
+	shotIN -4081:-3530
+	afA -2207:-2572
+	shellCommand552768 -882:-493
+	renderpath -2445:-806
+	htef -2628:-1528
+	onLocal -572:-533
+	addollar -1303:-491
 }
 

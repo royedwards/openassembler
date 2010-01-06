@@ -24,6 +24,8 @@ define
 	input int MaxHosts "8" ""
 	input int autoDOD "0" ""
 	input string DODCommand "" ""
+	input string HostMask "" ""
+	input string HostExcludeMask "" ""
 	output any jobID "" ""
 
 }
@@ -38,6 +40,14 @@ except:
 
 class afanasySubmitJob():
 	def afanasySubmitJob_main(self, **connections):
+		try:
+			HostMask=str(connections["HostMask"])
+		except:
+			HostMask=""
+		try:
+			HostExcludeMask=str(connections["HostExcludeMask"])
+		except:
+			HostExcludeMask=""
 		try:
 			DODCommand=str(connections["DODCommand"])
 		except:
@@ -125,6 +135,10 @@ class afanasySubmitJob():
 			else:
 				job.setDescription('Afanasy Job.')
 			job.setMaxHosts(MaxHosts)
+			if HostMask!="":
+				job.setHostsMask(HostMask)
+			if HostExcludeMask!="":
+				job.setHostsMaskExclude(HostExcludeMask)
 			block1 = job.addBlock( Name+" "+BlockName, Type)
 			block1.setCommand(Command)
 			if DependOn!="":
@@ -140,7 +154,7 @@ class afanasySubmitJob():
 			if autoDOD!=0:
 				block_dod= job.addBlock( Name+" "+"autoDOD", "nuke")
 				block_dod.setCommand(DODCommand)
-				block_dod.setTasksDependMask(Name+" "+BlockName)
+				block_dod.setDependMask(Name+" "+BlockName)
 				block_dod.setWorkingDirectory(workDir)
 				block_dod.setNeedMemory(memory)
 				block_dod.setCapacity(500)
@@ -150,9 +164,9 @@ class afanasySubmitJob():
 				block_email= job.addBlock( Name+" "+"Email", "generic")
 				block_email.setCommand(EmailCommand)
 				if autoDOD!=0:
-					block_email.setTasksDependMask(Name+" "+"autoDOD")
+					block_email.setDependMask(Name+" "+"autoDOD")
 				else:
-					block_email.setTasksDependMask(Name+" "+BlockName)
+					block_email.setDependMask(Name+" "+BlockName)
 				block_email.setWorkingDirectory(workDir)
 				block_email.setCapacity(10)
 				block_email.setNumeric( 1, 1, 1)

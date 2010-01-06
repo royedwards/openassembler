@@ -16,11 +16,11 @@ import os, sys,shutil
 class copyFile():
    def copyFile_main(self, **connections):
 	try:
-		 _from=connections["_from"]
+		 _from=str(connections["_from"])
 	except:
 		 _from=""
 	try:
-		_to=connections["_to"]
+		_to=str(connections["_to"])
 	except:
 		_to=""
 

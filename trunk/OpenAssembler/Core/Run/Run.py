@@ -109,6 +109,8 @@ class oas_execute(oas_data_handler,oas_fileio):
 					pyhy="python"
 					if str(self.oas_rt[self.node_cross_list["__init__"]]["inputs"]["Hython"]["value"])==str(1):
 						pyhy="hython"
+					elif str(self.oas_rt[self.node_cross_list["__init__"]]["inputs"]["Nuke"]["value"])==str(1):
+						pyhy="nuke -t"
 					else:
 						pyhy="python"
 					if os.name=="nt":

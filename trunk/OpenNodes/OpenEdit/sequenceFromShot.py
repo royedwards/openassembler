@@ -7,7 +7,7 @@ define
 	tags oped
 	input string Project "" ""
 	input string Shot "" ""
-	output array1D sequence "" ""
+	output any sequence "" ""
 
 }
 '''

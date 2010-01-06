@@ -53,8 +53,8 @@ class oas_loader(dBase_Init,oas_console,oas_gateway):
 
 		self.oas_open(filename=oas_template,filetype="oas")
 
-		self.oas_set(nodevalue="dataNode.Project",value=project)
-		self.oas_set(nodevalue="dataNode.Shot",value=shot)
+		self.oas_set(nodevalue="projectIN._in",value=project)
+		self.oas_set(nodevalue="shotIN._in",value=shot)
 
 		self.oas_set(nodevalue="dataNode.Node_Pass",value=node_pass)
 		self.oas_set(nodevalue="dataNode.Param_Setup",value=parm_setup)
