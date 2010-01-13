@@ -13,7 +13,10 @@ import os,sys
 class Ui_oas_attribute_widget(object):
     def setupUi(self, oas_attribute_widget,name,value,status,variabletype,nodeSet):
 
-	self.nodeSet=nodeSet	pathname = os.path.dirname(sys.argv[0])	print pathname	fullpath=os.path.abspath(pathname)	print fullpath
+	self.nodeSet=nodeSet	
+	pathname = os.path.dirname(sys.argv[0])
+	fullpath=os.path.abspath(pathname)	
+
 	if os.name=="nt":
 		iconPath=fullpath+"/Icons"
 	elif os.name=="posix":
