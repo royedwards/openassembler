@@ -24,7 +24,6 @@ class GUI_main(textEditorWindow):
 	def __init__(self,args):
 		
 		textEditorWindow.__init__(self)
-		#print dir(self.tabWidget)
 
 		self.tabWidget.clear()
 
@@ -95,7 +94,7 @@ class GUI_main(textEditorWindow):
 		
 	def about_event(self):
 		qd=QtGui.QMessageBox(self)
-		qd.setText("OpenTools TextEditor v0.1\nOwner: Laszlo Mates\nlaszlo.mates@gmail.com\n2008.01.27")
+		qd.setText("OpenTools TextEditor 0.3\nOwner: Laszlo Mates\nlaszlo.mates@gmail.com\n2008.01.27")
 		qd.show()
 
 	def save_event(self):
@@ -147,21 +146,21 @@ class GUI_main(textEditorWindow):
 		self.tabWidget.addTab(self.tab1,"")
 			
 		font = QtGui.QFont()
-		#font.setFamily("Consolas")
+		font.setFamily("Consolas")
 		font.setFixedPitch(True)
-		#font.setPointSize(10)
+		font.setPointSize(14)
 
 		fm = QtGui.QFontMetrics(font)
 
-		self.text_ed.setFont(font)
 		self.text_ed.setMarginsFont(font)
 
+		self.text_ed.setFont(font)
+
 		self.text_ed.setMarginWidth(0, fm.width( "00000" ) + 2)
+
 		self.text_ed.setMarginLineNumbers(0, True)
 
-		#self.text_ed.setFolding(Qsci.QsciScintilla.BoxedTreeFoldStyle)
-
-		self.text_ed.setBraceMatching(Qsci.QsciScintilla.SloppyBraceMatch)
+		#self.text_ed.setBraceMatching(Qsci.QsciScintilla.SloppyBraceMatch)
 
 		self.text_ed.setCaretLineVisible(True)
 		self.text_ed.setCaretLineBackgroundColor(QtGui.QColor("#e8e8e8"))
@@ -171,8 +170,10 @@ class GUI_main(textEditorWindow):
 
 		self.text_ed.setFoldMarginColors(QtGui.QColor("#cad4c0"),QtGui.QColor("#333300"))
 
-		self.text_ed.setLexer(Qsci.QsciLexerPython())
-			
+		lexer=Qsci.QsciLexerPython()
+		lexer.setFont(font)
+		self.text_ed.setLexer(lexer)
+		
 		self.tabWidget.setCurrentIndex(self.tabWidget.indexOf(self.tab1))
 
 		self.tabWidget.setTabText(self.tabWidget.indexOf(self.tab1), QtGui.QApplication.translate("text_editor", "", None, QtGui.QApplication.UnicodeUTF8))
@@ -211,9 +212,9 @@ class GUI_main(textEditorWindow):
 			self.tabWidget.addTab(self.tab1,"")
 			
 			font = QtGui.QFont()
-			#font.setFamily("Consolas")
+			font.setFamily("Consolas")
 			font.setFixedPitch(True)
-			#font.setPointSize(10)
+			font.setPointSize(14)
 
 			fm = QtGui.QFontMetrics(font)
 
@@ -223,9 +224,7 @@ class GUI_main(textEditorWindow):
 			self.text_ed.setMarginWidth(0, fm.width( "00000" ) + 2)
 			self.text_ed.setMarginLineNumbers(0, True)
 
-			#self.text_ed.setFolding(Qsci.QsciScintilla.BoxedTreeFoldStyle)
-
-			self.text_ed.setBraceMatching(Qsci.QsciScintilla.SloppyBraceMatch)
+			#self.text_ed.setBraceMatching(Qsci.QsciScintilla.SloppyBraceMatch)
 
 			self.text_ed.setCaretLineVisible(True)
 			self.text_ed.setCaretLineBackgroundColor(QtGui.QColor("#e8e8e8"))
@@ -235,13 +234,19 @@ class GUI_main(textEditorWindow):
 
 			self.text_ed.setFoldMarginColors(QtGui.QColor("#cad4c0"),QtGui.QColor("#333300"))
 
-			if str(filename)[-2:]=="py":
-				self.text_ed.setLexer(Qsci.QsciLexerPython())
-			elif str(filename)[-2:]=="cpp":
-				self.text_ed.setLexer(Qsci.QsciLexerCPP())
-				
-			else:
-				self.text_ed.setLexer(Qsci.QsciLexerPython())
+			try:
+				if str(filename)[-2:]=="cpp":
+					lexer=Qsci.QsciLexerCPP()
+					lexer.setFont(font)
+					self.text_ed.setLexer(lexer)
+				else:
+					lexer=Qsci.QsciLexerPython()
+					lexer.setFont(font)
+					self.text_ed.setLexer(lexer)
+			except:
+				lexer=Qsci.QsciLexerPython()
+				lexer.setFont(font)
+				self.text_ed.setLexer(lexer)
 			
 			self.tabWidget.setCurrentIndex(self.tabWidget.indexOf(self.tab1))
 

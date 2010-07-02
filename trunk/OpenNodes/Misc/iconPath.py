@@ -16,5 +16,5 @@ class iconPath:
 	if os.name=="nt":
 		iconPath="C:/OpenTools/Icons/"
 	elif os.name=="posix":
-		iconPath="/opt/OpenTools/Icons/"
+		iconPath="/Volumes/projects/assetManager/projectDb/GYAR_Pipeline/Icons"
 	return iconPath

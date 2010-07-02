@@ -14,7 +14,7 @@ define
 
 }
 '''
-import os, sys
+import os, sys,time
 from PyQt4 import QtCore, QtGui
 
 class addWidget():
@@ -34,7 +34,10 @@ class addWidget():
 		if str(connections["_do_cache"]) == "True":
 			_cache=connections["_cache"]
 			if _cache.has_key("oas_Widgets"):
-				_cache["oas_Widgets"][str(name)]={"widgetItem":item,"accessPoint":Widget}
+				if _cache["oas_Widgets"].has_key(str(name)):
+					_cache["oas_Widgets"][str(name)+"_"+str(time.time())]={"widgetItem":item,"accessPoint":Widget}
+				else:
+					_cache["oas_Widgets"][str(name)]={"widgetItem":item,"accessPoint":Widget}
 			else:
 				_cache["oas_Widgets"]={str(name):{"widgetItem":item,"accessPoint":Widget}}
 

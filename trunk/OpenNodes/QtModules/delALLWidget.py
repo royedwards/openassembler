@@ -15,6 +15,7 @@ from PyQt4 import QtCore, QtGui
 class delALLWidget():
 	def delALLWidget_main(self, **connections):
 		_cache=connections["_cache"]
+
 		if _cache.has_key("oas_Widgets"):
 
 			for key in _cache["oas_Widgets"].keys():

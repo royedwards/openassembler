@@ -12,6 +12,7 @@ define
 	output array1D split_A_with_B "" ""
 	output array1D split_to_lines "" ""
 	output array1D sp_and_st "" ""
+	output string A_lower "" ""
 
 }
 '''
@@ -45,3 +46,6 @@ class string_Functions():
 				if item!="":
 					fin.append(item.strip())
 			return fin
+
+		if oas_output=="A_lower":
+			return A.lower()
