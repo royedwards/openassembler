@@ -1,0 +1,2 @@
+### exit ###
+Well this will exit from the application and it will close any open window, server and everything except of course the remote console, which will be froozen until the next server for the same ip and port will not appear up.
